@@ -1,3 +1,4 @@
+// src/components/OperationToggle.tsx
 import { type ParfileConfig } from '../types';
 
 interface OperationToggleProps {
@@ -6,28 +7,21 @@ interface OperationToggleProps {
 }
 
 export const OperationToggle = ({ operation, onOperationChange }: OperationToggleProps) => {
+  const baseClasses = "flex-1 px-4 py-2 text-sm font-medium text-center border-y first:border-l last:border-r first:rounded-l-md last:rounded-r-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500";
+  const activeClasses = "bg-blue-600 text-white";
+  const inactiveClasses = "bg-white text-gray-700 hover:bg-gray-50";
+
   return (
-    <fieldset>
-      <legend>Operation Type</legend>
-      <input
-        type="radio"
-        id="op_export"
-        name="operation"
-        value="EXPORT"
-        checked={operation === 'EXPORT'}
-        onChange={() => onOperationChange('EXPORT')}
-      />
-      <label htmlFor="op_export">Export (expdp)</label>
-      <br />
-      <input
-        type="radio"
-        id="op_import"
-        name="operation"
-        value="IMPORT"
-        checked={operation === 'IMPORT'}
-        onChange={() => onOperationChange('IMPORT')}
-      />
-      <label htmlFor="op_import">Import (impdp)</label>
-    </fieldset>
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Operation Type</label>
+      <div className="flex">
+        <div onClick={() => onOperationChange('EXPORT')} className={`${baseClasses} ${operation === 'EXPORT' ? activeClasses : inactiveClasses}`}>
+          Export (expdp)
+        </div>
+        <div onClick={() => onOperationChange('IMPORT')} className={`${baseClasses} ${operation === 'IMPORT' ? activeClasses : inactiveClasses}`}>
+          Import (impdp)
+        </div>
+      </div>
+    </div>
   );
 };
