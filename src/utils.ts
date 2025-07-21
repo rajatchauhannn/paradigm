@@ -35,23 +35,3 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
   return { errors, warnings };
 };
 
-
-// A mock function to simulate calling a backend AI service
-export const mockValidateWithAI = async (parfileContent: string): Promise<ValidationResult> => {
-  console.log("Sending to AI for validation:", parfileContent);
-  
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 2000));
-
-  // Return a sample, hardcoded response
-  return {
-    errors: [], // Assume no syntax errors if our generator is good
-    warnings: [
-      "PARALLEL is set to 8, which might be too high for a database with only 4 CPU cores, potentially causing resource contention."
-    ],
-    suggestions: [
-      "Consider adding COMPRESSION=ALL to reduce the final dumpfile size.",
-      "For a schema-level export, adding EXCLUDE=STATISTICS can speed up the metadata portion of the job if you plan to gather stats later."
-    ]
-  };
-};
