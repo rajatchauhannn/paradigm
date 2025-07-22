@@ -31,7 +31,10 @@ app.post('/validate', async (req: Request, res: Response) => {
 You are an expert Oracle Database Administrator. Analyze the following Oracle Data Pump parameters.
 Your response MUST be a valid JSON object with three keys: "errors", "warnings", and "suggestions".
 Each key should have a value of a string array. Provide only the raw JSON object in your response. Response should be CONCISE.
-Give only important information.
+Give only important information which should only be relevant to the given parfile.
+Do not include any additional text or explanations.
+IF there are no errors, warnings, or suggestions, return empty arrays for those keys.
+KEEP IT AS SHORT AS POSSIBLE.
     `;
 
     const prompt = `${systemInstruction}\n\n${parfileContent}`;
