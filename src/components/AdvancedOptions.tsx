@@ -5,6 +5,8 @@ import { compressionOptions, contentOptions } from '../constants';
 const inputClasses = "block w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm";
 const selectClasses = "block w-full mt-1 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md";
 const textareaClasses = "shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md";
+const estimateOptions = ['NO', 'YES']; 
+const estimateMethodOptions = ['BLOCKS', 'STATISTICS']; 
 
 interface AdvancedOptionsProps {
   config: ParfileConfig;
@@ -37,6 +39,17 @@ export const AdvancedOptions = ({ config, setConfig, showAdvanced, onShowAdvance
               <label htmlFor="parallel" className="block text-sm font-medium text-gray-700">Parallel</label>
               <input id="parallel" type="text" pattern="[0-9]*" min="1" value={config.parallel || ''} onChange={handleParallelInputChange} className={inputClasses}/>
             </div>
+            <div>
+              <label htmlFor="version" className="block text-sm font-medium text-gray-700">Version (for compatibility)</label>
+              <input 
+                id="version" 
+                type="text" 
+                placeholder="COMPATIBLE | LATEST | 12.2" 
+                value={config.version || ''} 
+                onChange={(e) => setConfig(prev => ({...prev, version: e.target.value}))} 
+                className={inputClasses} 
+              />
+            </div>
 
             {config.operation === 'EXPORT' && (
               <div className="space-y-4">
@@ -60,14 +73,50 @@ export const AdvancedOptions = ({ config, setConfig, showAdvanced, onShowAdvance
                   <label htmlFor="flashback_scn" className="block text-sm font-medium text-gray-700">Flashback SCN</label>
                   <input id="flashback_scn" type="text" placeholder="System Change Number" value={config.flashback_scn} onChange={(e) => setConfig(prev => ({...prev, flashback_scn: e.target.value, flashback_time: ''}))} className={inputClasses} />
                 </div>
+                <div>
+                  <label htmlFor="estimate_only" className="block text-sm font-medium text-gray-700">Estimate Only (Dry Run)</label>
+                  <select 
+                    id="estimate_only" 
+                    value={config.estimate_only} 
+                    onChange={(e) => setConfig(prev => ({...prev, estimate_only: e.target.value as any}))} 
+                    className={selectClasses}
+                  >
+                    {estimateOptions.map(o => <option key={o} value={o}>{o}</option>)}
+                  </select>
+                <div>
+                  <label htmlFor="estimate" className="block text-sm font-medium text-gray-700">Estimation Method</label>
+                  <select 
+                    id="estimate" 
+                    value={config.estimate} 
+                    onChange={(e) => setConfig(prev => ({...prev, estimate: e.target.value as any}))} 
+                    className={`${selectClasses} ${config.estimate_only !== 'YES' ? 'disabled:bg-gray-100' : ''}`}
+                    disabled={config.estimate_only !== 'YES'}
+                  >
+                    {estimateMethodOptions.map(o => <option key={o} value={o}>{o}</option>)}
+                  </select>
+                </div>
+                </div>
               </div>
             )}
             
             {config.operation === 'IMPORT' && (
-              <div>
-                <label htmlFor="remap_schema" className="block text-sm font-medium text-gray-700">Remap Schema</label>
-                <input id="remap_schema" type="text" placeholder="source_schema:target_schema" value={config.remap_schema} onChange={(e) => setConfig(prev => ({...prev, remap_schema: e.target.value}))} className={inputClasses} />
-              </div>
+              <>
+                <div>
+                  <label htmlFor="remap_schema" className="block text-sm font-medium text-gray-700">Remap Schema</label>
+                  <input id="remap_schema" type="text" placeholder="source_schema:target_schema" value={config.remap_schema} onChange={(e) => setConfig(prev => ({...prev, remap_schema: e.target.value}))} className={inputClasses} />
+                </div>
+                <div>
+                  <label htmlFor="sqlfile" className="block text-sm font-medium text-gray-700">SQL File (generates DDL, no import)</label>
+                  <input 
+                    id="sqlfile" 
+                    type="text" 
+                    placeholder="import_ddl.sql" 
+                    value={config.sqlfile || ''} 
+                    onChange={(e) => setConfig(prev => ({...prev, sqlfile: e.target.value}))} 
+                    className={inputClasses} 
+                  />
+                </div>
+              </>
             )}
           </div>
         </div>

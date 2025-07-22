@@ -31,6 +31,10 @@ const getInitialState = (): ParfileConfig => ({
   remap_schema: "",
   flashback_time: "",
   flashback_scn: "",
+  version: '', 
+  estimate_only: 'NO',
+  estimate: 'BLOCKS',
+  sqlfile: '',
 });
 
 function App() {
@@ -75,8 +79,8 @@ function App() {
   const handleShowAdvancedToggle = (isChecked: boolean) => {
     setShowAdvanced(isChecked);
     if (!isChecked) {
-      const { parallel, compression, content, query, remap_schema, flashback_time, flashback_scn } = getInitialState();
-      setConfig(c => ({ ...c, parallel, compression, content, query, remap_schema, flashback_time, flashback_scn }));
+      const { parallel, compression, content, query, remap_schema, flashback_time, flashback_scn, version, estimate_only, sqlfile } = getInitialState();
+      setConfig(c => ({ ...c, parallel, compression, content, query, remap_schema, flashback_time, flashback_scn, version, estimate_only, sqlfile }));
     }
   };
 
@@ -90,13 +94,14 @@ function App() {
 
   const generateParfileContent = () => {
     const params = [];
-    const { userid, directory, dumpfile, logfile, parallel, operation, compression, content, query, flashback_time, flashback_scn, export_mode, schemas, tables, tablespaces, remap_schema, table_exists_action } = config;
+    const { userid, directory, dumpfile, logfile, parallel, operation, compression, content, query, flashback_time, flashback_scn, export_mode, schemas, tables, tablespaces, remap_schema, table_exists_action, version, estimate_only, estimate, sqlfile } = config;
 
     if (userid) params.push(userid.match(/[\s/@]/) ? `USERID='${userid}'` : `USERID=${userid}`);
     if (directory) params.push(`DIRECTORY=${directory}`);
     if (dumpfile) params.push(`DUMPFILE=${dumpfile}`);
     if (logfile) params.push(`LOGFILE=${logfile}`);
     if (parallel && parallel > 1) params.push(`PARALLEL=${parallel}`);
+    if (version) params.push(`VERSION=${version}`);
 
     if (operation === 'EXPORT') {
       if (compression !== 'NONE') params.push(`COMPRESSION=${compression}`);
@@ -104,6 +109,11 @@ function App() {
       if (query) params.push(`QUERY=${query}`);
       if (flashback_time) params.push(`FLASHBACK_TIME="${flashback_time}"`);
       else if (flashback_scn) params.push(`FLASHBACK_SCN=${flashback_scn}`);
+      if (estimate_only === 'YES') {
+        params.push(`ESTIMATE_ONLY=YES`);
+        // Only add the ESTIMATE parameter if the mode is active
+        params.push(`ESTIMATE=${estimate}`);
+      }
       
       if (export_mode === 'SCHEMAS' && schemas) params.push(`SCHEMAS=${schemas}`);
       else if (export_mode === 'TABLES' && tables) params.push(`TABLES=${tables}`);
@@ -115,6 +125,9 @@ function App() {
       if (schemas) params.push(`SCHEMAS=${schemas}`);
       if (remap_schema) params.push(`REMAP_SCHEMA=${remap_schema}`);
       if (table_exists_action) params.push(`TABLE_EXISTS_ACTION=${table_exists_action}`);
+      if (sqlfile) {
+      params.push(`SQLFILE=${sqlfile}`);
+    }
     }
 
     return params.join('\n');
@@ -169,7 +182,7 @@ function App() {
             <div><AdvancedOptions config={config} setConfig={setConfig} showAdvanced={showAdvanced} onShowAdvancedToggle={handleShowAdvancedToggle} onParallelChange={handleParallelChange} /></div>
           </div>
           {/* Column 2: Output & Standard Validation */}
-          <div className="lg:col-span-4 space-y-6">
+          <div className="lg:col-span-4 space-y-6 lg:sticky top-20">
             <div className="bg-white shadow-md sm:rounded-lg">
               <div className="p-4 flex justify-between items-center"><h3 className="text-sm font-semibold">Output</h3><fieldset className="flex gap-x-4"><div className="flex items-center"><input id="mode_parfile" type="radio" value="parfile" checked={outputMode === "parfile"} onChange={(e) => setOutputMode(e.target.value as any)} className="h-4 w-4 text-blue-600" /><label htmlFor="mode_parfile" className="ml-2">Parfile + Cmd</label></div><div className="flex items-center"><input id="mode_command" type="radio" value="command" checked={outputMode === "command"} onChange={(e) => setOutputMode(e.target.value as any)} className="h-4 w-4 text-blue-600" /><label htmlFor="mode_command" className="ml-2">Command Only</label></div></fieldset></div>
               <div className="p-4 pt-0 space-y-4">
@@ -181,7 +194,7 @@ function App() {
             {(isInvalid || validationResult.warnings.length > 0) && <div className="bg-white shadow-md sm:rounded-lg p-4 space-y-3">{isInvalid && <div className="rounded-md bg-red-50 p-3"><h3 className="text-xs font-bold text-red-800">Configuration Errors</h3><div className="mt-2 text-xs text-red-700"><ul className="list-disc pl-4 space-y-1">{validationResult.errors.map((e) => <li key={e}>{e}</li>)}</ul></div></div>}{!isInvalid && validationResult.warnings.length > 0 && <div className="rounded-md bg-yellow-50 p-3"><h3 className="text-xs font-bold text-yellow-800">Warnings</h3><div className="mt-2 text-xs text-yellow-700"><ul className="list-disc pl-4 space-y-1">{validationResult.warnings.map((w) => <li key={w}>{w}</li>)}</ul></div></div>}</div>}
           </div>
           {/* Column 3: AI Validation */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-4 lg:sticky top-20">
             <div className="bg-white shadow-md sm:rounded-lg">
               <div className="p-4">
                 <h3 className="text-sm font-semibold mb-3">Advanced Validation</h3>

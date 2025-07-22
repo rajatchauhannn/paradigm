@@ -24,4 +24,8 @@ export interface ParfileConfig {
   remap_schema?: string;
   flashback_time?: string;
   flashback_scn?: string;
+  version?: string;
+  estimate_only?: 'YES' | 'NO';
+  estimate?: 'BLOCKS' | 'STATISTICS';
+  sqlfile?: string;
 }
