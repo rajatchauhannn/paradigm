@@ -5,6 +5,7 @@ import { compressionOptions, contentOptions } from '../constants';
 const inputClasses = "block w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm";
 const selectClasses = "block w-full mt-1 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md";
 const textareaClasses = "shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md";
+
 interface AdvancedOptionsProps {
   config: ParfileConfig;
   setConfig: React.Dispatch<React.SetStateAction<ParfileConfig>>;
@@ -14,6 +15,14 @@ interface AdvancedOptionsProps {
 }
 
 export const AdvancedOptions = ({ config, setConfig, showAdvanced, onShowAdvancedToggle, onParallelChange }: AdvancedOptionsProps) => {
+  
+  const handleParallelInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Sanitize input to only allow integers
+    const parsed = parseInt(value.replace(/[^0-9]/g, ''), 10);
+    onParallelChange(isNaN(parsed) ? undefined : parsed);
+  };
+
   return (
     <div>
       <div className="flex items-center">
@@ -26,7 +35,7 @@ export const AdvancedOptions = ({ config, setConfig, showAdvanced, onShowAdvance
           <div className="space-y-4">
             <div>
               <label htmlFor="parallel" className="block text-sm font-medium text-gray-700">Parallel</label>
-              <input id="parallel" type="number" min="1" value={config.parallel || ''} onChange={(e) => onParallelChange(e.target.value === '' ? undefined : parseInt(e.target.value, 10))} className={inputClasses}/>
+              <input id="parallel" type="text" pattern="[0-9]*" min="1" value={config.parallel || ''} onChange={handleParallelInputChange} className={inputClasses}/>
             </div>
 
             {config.operation === 'EXPORT' && (
@@ -41,7 +50,7 @@ export const AdvancedOptions = ({ config, setConfig, showAdvanced, onShowAdvance
                 </div>
                 <div>
                   <label htmlFor="query" className="block text-sm font-medium text-gray-700">Query</label>
-                  <textarea id="query" rows={4} value={config.query} placeholder='"TABLE.NAME:WHERE clause"' onChange={(e) => setConfig(prev => ({...prev, query: e.target.value}))} className={textareaClasses} />
+                  <textarea id="query" rows={4} value={config.query} placeholder='TABLE_NAME:"WHERE clause"' onChange={(e) => setConfig(prev => ({...prev, query: e.target.value}))} className={textareaClasses} />
                 </div>
                 <div>
                   <label htmlFor="flashback_time" className="block text-sm font-medium text-gray-700">Flashback Time</label>

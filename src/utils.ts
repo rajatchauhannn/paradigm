@@ -1,37 +1,54 @@
+// src/utils.ts
 import { type ParfileConfig } from './types';
 
 export interface ValidationResult {
   errors: string[];
   warnings: string[];
-}
-
-export interface ValidationResult {
-  errors: string[];
-  warnings: string[];
-  suggestions?: string[]; // Add this new optional property
+  suggestions?: string[];
 }
 
 export const validateConfig = (config: ParfileConfig): ValidationResult => {
   const errors: string[] = [];
   const warnings: string[] = [];
 
-  if (!config.directory) errors.push("'DIRECTORY' cannot be empty.");
-  if (!config.dumpfile) errors.push("'DUMPFILE' cannot be empty.");
+  // General Validations (USERID is no longer required)
+  if (!config.directory) {
+    errors.push('DIRECTORY is required.');
+  }
 
+  // File Naming Validations
+  if (!config.dumpfile) {
+    errors.push('DUMPFILE name is required.');
+  } else if (!config.dumpfile.toLowerCase().endsWith('.dmp')) {
+    errors.push('DUMPFILE must have a .dmp extension.');
+  }
+
+  if (!config.logfile) {
+    errors.push('LOGFILE name is required.');
+  } else if (!config.logfile.toLowerCase().endsWith('.log')) {
+    errors.push('LOGFILE must have a .log extension.');
+  }
+
+  // Export-Specific Validations
   if (config.operation === 'EXPORT') {
-    if (config.export_mode === 'SCHEMAS' && !config.schemas) errors.push("Export mode is 'Schemas', but no schema names are provided.");
-    if (config.export_mode === 'TABLES' && !config.tables) errors.push("Export mode is 'Tables', but no table names are provided.");
-    if (config.export_mode === 'TABLESPACES' && !config.tablespaces) errors.push("Export mode is 'Tablespaces', but no tablespace names are provided.");
-
-    if (config.parallel && config.parallel > 1 && !config.dumpfile.includes('%U')) {
-      warnings.push("PARALLEL is > 1 but DUMPFILE does not contain '%U'. The export will not run in parallel.");
+    if (config.export_mode === 'SCHEMAS' && !config.schemas) {
+      errors.push('At least one schema must be specified for SCHEMAS export mode.');
+    }
+    if (config.export_mode === 'TABLES' && !config.tables) {
+      errors.push('At least one table must be specified for TABLES export mode.');
+    }
+    if (config.export_mode === 'TABLESPACES' && !config.tablespaces) {
+      errors.push('At least one tablespace must be specified for TABLESPACES export mode.');
+    }
+    if ((config.flashback_scn || config.flashback_time) && config.content !== 'DATA_ONLY') {
+      warnings.push('FLASHBACK is only applied to table data. It is recommended to use CONTENT=DATA_ONLY.');
     }
   }
 
-  if (config.operation === 'IMPORT') {
-    if (!config.table_exists_action) errors.push("'Table Exists Action' must be selected for an import.");
+  // Import-Specific Validations
+  if (config.operation === 'IMPORT' && !config.table_exists_action) {
+    errors.push('A "Table Exists Action" must be selected for IMPORT operations.');
   }
 
   return { errors, warnings };
 };
-
