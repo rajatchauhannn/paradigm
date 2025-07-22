@@ -147,7 +147,32 @@ function App() {
     return `nohup ${opCommand} ${commandParams.join(' ')} &`;
   };
   
-  const handleAiValidate = async () => { /* AI validation logic remains unchanged */ };
+  const handleAiValidate = async () => {
+    setIsAiValidating(true);
+    setAiValidationResult(null);
+    const contentToValidate =
+      outputMode === "command" ? generateCommand() : generateParfileContent();
+    try {
+      const response = await fetch("/api/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ parfileContent: contentToValidate }),
+      });
+      const result = await response.json();
+      if (!response.ok)
+        throw new Error(result.errors?.[0] || "An unknown error occurred.");
+      setAiValidationResult(result);
+    } catch (error: any) {
+      setAiValidationResult({
+        errors: [error.message],
+        warnings: [],
+        suggestions: [],
+      });
+    } finally {
+      setIsAiValidating(false);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-gray-100 font-sans text-sm">
