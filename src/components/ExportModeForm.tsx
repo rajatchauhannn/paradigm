@@ -13,7 +13,6 @@ interface ExportModeProps {
 export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
   return (
     <div>
-      <h3 className="text-lg font-medium text-gray-900">Export Mode</h3>
       <div className="mt-4 space-y-4">
         <div>
           <label htmlFor="export_mode" className="sr-only">Export Mode</label>

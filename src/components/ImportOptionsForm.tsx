@@ -13,10 +13,8 @@ interface ImportOptionsProps {
 export const ImportOptionsForm = ({ config, setConfig }: ImportOptionsProps) => {
   return (
     <div>
-      <h3 className="text-lg font-medium text-gray-900">Import Options</h3>
       <div className="mt-4 space-y-4">
         <div>
-          <label htmlFor="table_exists_action" className="block text-sm font-medium text-gray-700">Table Exists Action</label>
           <select id="table_exists_action" value={config.table_exists_action} onChange={(e) => setConfig(prev => ({ ...prev, table_exists_action: e.target.value as any }))} className={selectClasses}>
             <option value="" disabled>-- Must Select --</option>
             <option value="SKIP">SKIP</option>

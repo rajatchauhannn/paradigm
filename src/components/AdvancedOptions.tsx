@@ -22,7 +22,7 @@ export const AdvancedOptions = ({ config, setConfig, showAdvanced, onShowAdvance
       </div>
 
       {showAdvanced && (
-        <div className="mt-4 p-4 border border-gray-200 rounded-md bg-gray-50/50">
+        <div className="pt-4">
           <div className="space-y-4">
             <div>
               <label htmlFor="parallel" className="block text-sm font-medium text-gray-700">Parallel</label>

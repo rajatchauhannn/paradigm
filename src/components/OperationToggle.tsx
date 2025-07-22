@@ -13,7 +13,6 @@ export const OperationToggle = ({ operation, onOperationChange }: OperationToggl
 
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">Operation Type</label>
       <div className="flex">
         <div onClick={() => onOperationChange('EXPORT')} className={`${baseClasses} ${operation === 'EXPORT' ? activeClasses : inactiveClasses}`}>
           Export (expdp)
