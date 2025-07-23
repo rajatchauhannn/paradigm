@@ -595,6 +595,34 @@ export const AdvancedOptions = ({
                       </p>
                     </div>
 
+                    <div className="md:col-span-2 p-3 border border-yellow-400 rounded-md bg-yellow-50">
+                      <div className="flex items-center">
+                        <input
+                          id="master_only"
+                          type="checkbox"
+                          className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                          checked={!!config.master_only}
+                          onChange={(e) =>
+                            setConfig((c) => ({
+                              ...c,
+                              master_only: e.target.checked,
+                            }))
+                          }
+                        />
+                        <label
+                          htmlFor="master_only"
+                          className="ml-2 block text-sm font-medium text-yellow-800"
+                        >
+                          Import Master Table Only (Expert Use)
+                        </label>
+                      </div>
+                      <p className="mt-1 text-xs text-yellow-700">
+                        For job recovery only. Loads the job state without
+                        importing data. Most other import options will be
+                        ignored.
+                      </p>
+                    </div>
+
                     {/* Select for XML Validation */}
                     <div>
                       <label
