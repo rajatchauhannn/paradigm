@@ -33,6 +33,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     table_exists_action,
     partition_options,
     skip_unusable_indexes,
+    disable_streams_configuration,
     data_options_skip_constraints,
     data_options_xml_validation,
     import_mode,
@@ -112,6 +113,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     if (partition_options)
       params.push(`PARTITION_OPTIONS=${partition_options}`);
     if (skip_unusable_indexes) params.push(`SKIP_UNUSABLE_INDEXES=Y`);
+    if (disable_streams_configuration) params.push("STREAMS_CONFIGURATION=N");
     if (sqlfile) params.push(`SQLFILE=${sqlfile}`);
     if (transform) params.push(`TRANSFORM=${transform}`);
     if (remap_data) params.push(`REMAP_DATA=${remap_data}`);

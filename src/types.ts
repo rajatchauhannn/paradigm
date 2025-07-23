@@ -53,6 +53,7 @@ export interface ParfileConfig {
   reuse_dumpfiles?: "Y" | "N";
 
   // Advanced - import
+  disable_streams_configuration?: boolean;
   skip_unusable_indexes?: boolean;
   partition_options?: PartitionOptions;
   data_options_skip_constraints?: boolean;

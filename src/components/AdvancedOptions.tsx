@@ -569,6 +569,32 @@ export const AdvancedOptions = ({
                       </p>
                     </div>
 
+                    <div className="md:col-span-2">
+                      <div className="flex items-center">
+                        <input
+                          id="disable_streams_configuration"
+                          type="checkbox"
+                          className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                          checked={!!config.disable_streams_configuration}
+                          onChange={(e) =>
+                            setConfig((c) => ({
+                              ...c,
+                              disable_streams_configuration: e.target.checked,
+                            }))
+                          }
+                        />
+                        <label
+                          htmlFor="disable_streams_configuration"
+                          className="ml-2 block text-sm font-medium text-gray-700"
+                        >
+                          Disable Streams Configuration Import
+                        </label>
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500">
+                        Prevents Oracle Streams metadata from being imported.
+                      </p>
+                    </div>
+
                     {/* Select for XML Validation */}
                     <div>
                       <label
