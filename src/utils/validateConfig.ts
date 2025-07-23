@@ -51,9 +51,14 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
         "At least one table must be specified for TABLES export mode."
       );
     }
-    if (config.export_mode === "TABLESPACES" && !config.tablespaces) {
+    if (
+      ["TABLESPACES", "TRANSPORTABLE_TABLESPACES"].includes(
+        config.export_mode
+      ) &&
+      !config.tablespaces
+    ) {
       errors.push(
-        "At least one tablespace must be specified for TABLESPACES export mode."
+        `At least one tablespace must be specified for ${config.export_mode} mode.`
       );
     }
     if (

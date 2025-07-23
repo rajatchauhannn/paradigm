@@ -34,6 +34,9 @@ export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
             <option value="SCHEMAS">Schemas</option>
             <option value="TABLES">Tables</option>
             <option value="TABLESPACES">Tablespaces</option>
+            <option value="TRANSPORTABLE_TABLESPACES">
+              Transportable Tablespaces
+            </option>
             <option value="FULL">Full Database</option>
           </select>
         </div>
@@ -78,7 +81,8 @@ export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
             />
           </div>
         )}
-        {config.export_mode === "TABLESPACES" && (
+        {(config.export_mode === "TABLESPACES" ||
+          config.export_mode === "TRANSPORTABLE_TABLESPACES") && (
           <div>
             <label
               htmlFor="tablespaces"
@@ -89,7 +93,7 @@ export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
             <input
               id="tablespaces"
               type="text"
-              placeholder="USERS"
+              placeholder="USERS,EXAMPLE" // <-- Changed placeholder
               value={config.tablespaces}
               onChange={(e) =>
                 setConfig((prev) => ({ ...prev, tablespaces: e.target.value }))

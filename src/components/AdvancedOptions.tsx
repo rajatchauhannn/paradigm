@@ -35,6 +35,8 @@ export const AdvancedOptions = ({
 }: AdvancedOptionsProps) => {
   const isFullExport = config.export_mode === "FULL";
   const isMetadataOnlyExport = config.content === "METADATA_ONLY";
+  const isTransportableExport =
+    config.export_mode === "TRANSPORTABLE_TABLESPACES";
   const isTransportableImport = config.import_mode === "TRANSPORTABLE";
 
   const handleParallelInputChange = (
@@ -174,7 +176,12 @@ export const AdvancedOptions = ({
                         content: e.target.value as any,
                       }))
                     }
-                    className={selectClasses}
+                    className={`${selectClasses} ${
+                      isTransportableExport
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={isTransportableExport}
                   >
                     {contentOptions.map((o) => (
                       <option key={o} value={o}>
@@ -341,7 +348,10 @@ export const AdvancedOptions = ({
                         : ""
                     }`}
                     disabled={
-                      !!config.sample || isFullExport || isMetadataOnlyExport
+                      !!config.sample ||
+                      isFullExport ||
+                      isMetadataOnlyExport ||
+                      isTransportableExport
                     }
                   />
                 </div>
@@ -367,7 +377,10 @@ export const AdvancedOptions = ({
                         : ""
                     }`}
                     disabled={
-                      !!config.query || isFullExport || isMetadataOnlyExport
+                      !!config.query ||
+                      isFullExport ||
+                      isMetadataOnlyExport ||
+                      isTransportableExport
                     }
                   />
                   <p className="mt-1 text-xs text-gray-500">

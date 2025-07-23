@@ -1,7 +1,12 @@
 // src/types.ts
 
 export type Operation = "EXPORT" | "IMPORT";
-export type ExportMode = "SCHEMAS" | "TABLES" | "TABLESPACES" | "FULL";
+export type ExportMode =
+  | "SCHEMAS"
+  | "TABLES"
+  | "TABLESPACES"
+  | "FULL"
+  | "TRANSPORTABLE_TABLESPACES";
 export type TableExistsAction = "SKIP" | "APPEND" | "TRUNCATE" | "REPLACE" | "";
 export type Content = "ALL" | "DATA_ONLY" | "METADATA_ONLY";
 export type Compression =

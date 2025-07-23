@@ -84,10 +84,12 @@ export const generateParfileContent = (config: ParfileConfig): string => {
       params.push(`TABLES=${tables}`);
     else if (export_mode === "TABLESPACES" && tablespaces)
       params.push(`TABLESPACES=${tablespaces}`);
+    else if (export_mode === "TRANSPORTABLE_TABLESPACES" && tablespaces)
+      params.push(`TRANSPORTABLE_TABLESPACES=${tablespaces}`);
     else if (export_mode === "FULL") params.push("FULL=Y");
 
     if (compression !== "NONE") params.push(`COMPRESSION=${compression}`);
-    if (content !== "ALL") params.push(`CONTENT=${content}`);
+    if (content) params.push(`CONTENT=${content}`);
     if (query) params.push(`QUERY=${query}`);
     if (sample) params.push(`SAMPLE=${sample}`);
     if (flashback_time) params.push(`FLASHBACK_TIME="${flashback_time}"`);
