@@ -27,6 +27,7 @@ const getInitialState = (): ParfileConfig => ({
   content: "ALL",
   query: "",
   sample: "",
+  filesize: "",
   remap_schema: "",
   remap_tablespace: "",
   flashback_time: "",
@@ -56,13 +57,16 @@ export const useParfileConfig = () => {
     setConfig((currentConfig) => {
       let newDumpfile = currentConfig.dumpfile;
       const isParallel = currentConfig.parallel && currentConfig.parallel > 1;
+      const hasFilesize = !!currentConfig.filesize;
       const hasWildcard = newDumpfile.includes("%U");
 
       if (currentConfig.operation === "EXPORT") {
-        if (isParallel && !hasWildcard)
+        // ADD hasFilesize to the condition
+        if ((isParallel || hasFilesize) && !hasWildcard) {
           newDumpfile = newDumpfile.replace(/(\.dmp)$/i, "_%U$1");
-        else if (!isParallel && hasWildcard)
+        } else if (!isParallel && !hasFilesize && hasWildcard) {
           newDumpfile = newDumpfile.replace(/_%U/i, "");
+        }
       }
 
       const newLogfile = isLogfileSame
@@ -77,7 +81,13 @@ export const useParfileConfig = () => {
       }
       return currentConfig;
     });
-  }, [config.parallel, config.dumpfile, isLogfileSame, config.operation]);
+  }, [
+    config.parallel,
+    config.dumpfile,
+    config.filesize,
+    isLogfileSame,
+    config.operation,
+  ]);
 
   // Handlers
   const handleOperationChange = (op: ParfileConfig["operation"]) =>
@@ -107,6 +117,7 @@ export const useParfileConfig = () => {
         disable_streams_configuration,
         master_only,
         transport_datafiles,
+        filesize,
         import_mode,
         remap_data,
         remap_schema,
@@ -115,7 +126,7 @@ export const useParfileConfig = () => {
         flashback_scn,
         version,
         metrics,
-        disable_cluster, 
+        disable_cluster,
         job_name,
         estimate_only,
         estimate,
@@ -140,6 +151,7 @@ export const useParfileConfig = () => {
         disable_streams_configuration,
         master_only,
         transport_datafiles,
+        filesize,
         import_mode,
         remap_data,
         remap_schema,
@@ -148,7 +160,7 @@ export const useParfileConfig = () => {
         flashback_scn,
         version,
         metrics,
-        disable_cluster, 
+        disable_cluster,
         job_name,
         estimate_only,
         estimate,

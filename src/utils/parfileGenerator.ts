@@ -21,6 +21,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     content,
     query,
     sample,
+    filesize,
     flashback_time,
     flashback_scn,
     estimate_only,
@@ -96,6 +97,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
       params.push(`ESTIMATE=${estimate}`);
     }
     if (reuse_dumpfiles === "Y") params.push("REUSE_DUMPFILES=Y");
+    if (filesize) params.push(`FILESIZE=${filesize}`);
   } else if (operation === "IMPORT") {
     // These parameters apply to all import modes
     if (schemas) params.push(`SCHEMAS=${schemas}`);

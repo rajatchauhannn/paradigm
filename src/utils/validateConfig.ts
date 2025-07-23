@@ -90,6 +90,20 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
         );
       }
     }
+    if (config.filesize) {
+      // This regex checks for a number followed by an optional K, M, G, or T (case-insensitive).
+      const filesizeRegex = /^\d+([KMGT])?$/i;
+      if (!filesizeRegex.test(config.filesize)) {
+        errors.push(
+          `The value '${config.filesize}' for FILESIZE is invalid. It must be a number followed by an optional unit (K, M, G, T).`
+        );
+      }
+      if (!config.dumpfile.includes("%U")) {
+        errors.push(
+          "DUMPFILE must contain the %U wildcard when FILESIZE is specified. The tool should add this automatically."
+        );
+      }
+    }
   }
 
   // Import-Specific Validations

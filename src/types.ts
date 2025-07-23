@@ -42,6 +42,7 @@ export interface ParfileConfig {
   job_name?: string;
 
   // Advanced - export
+  filesize?: string;
   sample?: string;
   encryption_password?: string;
   compression?: Compression;

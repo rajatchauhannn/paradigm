@@ -496,6 +496,29 @@ export const AdvancedOptions = ({
                     <option value="Y">Yes</option>
                   </select>
                 </div>
+
+                <div>
+                  <label htmlFor="filesize" className={labelClasses}>
+                    Filesize (per dump file)
+                  </label>
+                  <input
+                    id="filesize"
+                    type="text"
+                    value={config.filesize || ""}
+                    placeholder="e.g., 10G, 500M, 2048K"
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        filesize: e.target.value,
+                      }))
+                    }
+                    className={inputClasses}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Splits the export into multiple files of this size. DUMPFILE
+                    name will be updated with %U.
+                  </p>
+                </div>
               </>
             )}
 
