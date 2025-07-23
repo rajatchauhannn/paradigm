@@ -23,6 +23,7 @@ const getInitialState = (): ParfileConfig => ({
   job_name: "",
   estimate_only: "NO",
   estimate: "BLOCKS",
+  reuse_dumpfiles: "N",
   sqlfile: "",
   include: "",
   exclude: "",
@@ -87,6 +88,7 @@ export const useParfileConfig = () => {
         job_name,
         estimate_only,
         estimate,
+        reuse_dumpfiles,
         sqlfile,
       } = getInitialState();
       setConfig((c) => ({
@@ -102,6 +104,7 @@ export const useParfileConfig = () => {
         job_name,
         estimate_only,
         estimate,
+        reuse_dumpfiles,
         sqlfile,
       }));
     }

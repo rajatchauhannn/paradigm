@@ -37,6 +37,7 @@ export interface ParfileConfig {
   flashback_scn?: string;
   estimate_only?: "YES" | "NO";
   estimate?: "BLOCKS" | "STATISTICS";
+  reuse_dumpfiles?: "Y" | "N";
 
   // Advanced - import
   remap_schema?: string;

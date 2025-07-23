@@ -199,7 +199,7 @@ export const AdvancedOptions = ({
                 className={inputClasses}
               />
             </div>
-            
+
             {/* --- Unified Filter Control (FIXED) --- */}
             <div className="md:col-span-2">
               <label htmlFor="filter_type" className={labelClasses}>
@@ -342,6 +342,26 @@ export const AdvancedOptions = ({
                         {o}
                       </option>
                     ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="reuse_dumpfiles" className={labelClasses}>
+                    Reuse Dumpfiles
+                  </label>
+                  <select
+                    id="reuse_dumpfiles"
+                    value={config.reuse_dumpfiles}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        reuse_dumpfiles: e.target.value as any,
+                      }))
+                    }
+                    className={selectClasses}
+                  >
+                    <option value="N">No</option>
+                    <option value="Y">Yes</option>
                   </select>
                 </div>
               </>

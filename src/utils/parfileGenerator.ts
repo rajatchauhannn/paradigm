@@ -24,6 +24,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     version,
     estimate_only,
     estimate,
+    reuse_dumpfiles,
     sqlfile,
     include,
     exclude,
@@ -51,6 +52,9 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     if (estimate_only === "YES") {
       params.push("ESTIMATE_ONLY=YES");
       params.push(`ESTIMATE=${estimate}`);
+    }
+    if (reuse_dumpfiles === "Y") {
+      params.push("REUSE_DUMPFILES=Y");
     }
     if (export_mode === "SCHEMAS" && schemas) params.push(`SCHEMAS=${schemas}`);
     else if (export_mode === "TABLES" && tables)
