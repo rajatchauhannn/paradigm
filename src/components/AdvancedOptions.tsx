@@ -694,6 +694,34 @@ export const AdvancedOptions = ({
                   </div>
                 </div>
 
+                <div className="md:col-span-2">
+                  <label htmlFor="transport_datafiles" className={labelClasses}>
+                    Transport Datafiles (Source Paths)
+                  </label>
+                  <textarea
+                    id="transport_datafiles"
+                    rows={3}
+                    value={config.transport_datafiles || ""}
+                    placeholder="'/path/to/source_file1.dbf', '/path/to/source_file2.dbf'"
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        transport_datafiles: e.target.value,
+                      }))
+                    }
+                    className={`${textareaClasses} ${
+                      config.import_mode !== "TRANSPORTABLE"
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={config.import_mode !== "TRANSPORTABLE"}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Required for Transportable mode. List the source datafile
+                    paths.
+                  </p>
+                </div>
+
                 {/* --- UPDATE a.remap_schema --- */}
                 <div>
                   <label htmlFor="remap_schema" className={labelClasses}>

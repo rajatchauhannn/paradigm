@@ -31,6 +31,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     tablespaces,
     // Import specific
     table_exists_action,
+    transport_datafiles,
     partition_options,
     master_only,
     skip_unusable_indexes,
@@ -123,6 +124,8 @@ export const generateParfileContent = (config: ParfileConfig): string => {
 
     // Mode-specific remapping
     if (import_mode === "TRANSPORTABLE") {
+      if (transport_datafiles)
+        params.push(`TRANSPORT_DATAFILES=${transport_datafiles}`);
       if (remap_datafile) params.push(`REMAP_DATAFILE=${remap_datafile}`);
     } else {
       // Standard mode

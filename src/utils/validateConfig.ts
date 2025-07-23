@@ -97,6 +97,19 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
     errors.push(
       'A "Table Exists Action" must be selected for IMPORT operations.'
     );
+    if (config.import_mode === "TRANSPORTABLE") {
+      if (!config.transport_datafiles) {
+        errors.push("TRANSPORT_DATAFILES is required for Transportable mode.");
+      } else {
+        // This regex checks for one or more single-quoted strings, separated by commas.
+        const datafileRegex = /^'[^']+'(,\s*'[^']+')*$/;
+        if (!datafileRegex.test(config.transport_datafiles)) {
+          errors.push(
+            "TRANSPORT_DATAFILES format is invalid. It must be a comma-separated list of single-quoted paths, e.g., '/path/file1.dbf','/path/file2.dbf'."
+          );
+        }
+      }
+    }
   }
 
   return { errors, warnings };

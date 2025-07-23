@@ -53,6 +53,7 @@ export interface ParfileConfig {
   reuse_dumpfiles?: "Y" | "N";
 
   // Advanced - import
+  transport_datafiles?: string;
   master_only?: boolean;
   disable_streams_configuration?: boolean;
   skip_unusable_indexes?: boolean;
