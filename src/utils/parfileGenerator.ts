@@ -9,53 +9,65 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     logfile,
     parallel,
     job_name,
+    version,
+    include,
+    exclude,
     operation,
+    // Export specific
     compression,
     content,
     query,
     flashback_time,
     flashback_scn,
+    estimate_only,
+    estimate,
+    reuse_dumpfiles,
     export_mode,
     schemas,
     tables,
     tablespaces,
+    // Import specific
+    table_exists_action,
+    import_mode,
     remap_schema,
     remap_tablespace,
-    table_exists_action,
-    transform,
-    version,
-    estimate_only,
-    estimate,
-    reuse_dumpfiles,
+    remap_datafile,
     sqlfile,
-    include,
-    exclude,
+    transform,
     network_link,
   } = config;
 
   const isNetworkImport = operation === "IMPORT" && !!network_link;
 
-  if (userid)
+  // --- General Parameters ---
+  if (userid) {
     params.push(
       userid.match(/[\s/@]/) ? `USERID='${userid}'` : `USERID=${userid}`
     );
-
-  if (network_link && isNetworkImport) {
-    params.push(`NETWORK_LINK=${network_link}`);
   }
-  // Conditionally add DIRECTORY and DUMPFILE
+  if (job_name) params.push(`JOB_NAME=${job_name}`);
+
+  // DIRECTORY and DUMPFILE are skipped for network imports
   if (!isNetworkImport) {
     if (directory) params.push(`DIRECTORY=${directory}`);
     if (dumpfile) params.push(`DUMPFILE=${dumpfile}`);
   }
+
   if (logfile) params.push(`LOGFILE=${logfile}`);
   if (parallel && parallel > 1) params.push(`PARALLEL=${parallel}`);
   if (version) params.push(`VERSION=${version}`);
-  if (job_name) params.push(`JOB_NAME=${job_name}`);
-  if (include) params.push(`INCLUDE=${config.include}`);
-  if (exclude) params.push(`EXCLUDE=${config.exclude}`);
+  if (include) params.push(`INCLUDE=${include}`);
+  if (exclude) params.push(`EXCLUDE=${exclude}`);
 
+  // --- Operation-Specific Parameters ---
   if (operation === "EXPORT") {
+    if (export_mode === "SCHEMAS" && schemas) params.push(`SCHEMAS=${schemas}`);
+    else if (export_mode === "TABLES" && tables)
+      params.push(`TABLES=${tables}`);
+    else if (export_mode === "TABLESPACES" && tablespaces)
+      params.push(`TABLESPACES=${tablespaces}`);
+    else if (export_mode === "FULL") params.push("FULL=Y");
+
     if (compression !== "NONE") params.push(`COMPRESSION=${compression}`);
     if (content !== "ALL") params.push(`CONTENT=${content}`);
     if (query) params.push(`QUERY=${query}`);
@@ -65,28 +77,26 @@ export const generateParfileContent = (config: ParfileConfig): string => {
       params.push("ESTIMATE_ONLY=YES");
       params.push(`ESTIMATE=${estimate}`);
     }
-    if (reuse_dumpfiles === "Y") {
-      params.push("REUSE_DUMPFILES=Y");
-    }
-    if (export_mode === "SCHEMAS" && schemas) params.push(`SCHEMAS=${schemas}`);
-    else if (export_mode === "TABLES" && tables)
-      params.push(`TABLES=${tables}`);
-    else if (export_mode === "TABLESPACES" && tablespaces)
-      params.push(`TABLESPACES=${tablespaces}`);
-    else if (export_mode === "FULL") params.push("FULL=Y");
-  }
-
-  if (operation === "IMPORT") {
+    if (reuse_dumpfiles === "Y") params.push("REUSE_DUMPFILES=Y");
+  } else if (operation === "IMPORT") {
+    // These parameters apply to all import modes
     if (schemas) params.push(`SCHEMAS=${schemas}`);
-    if (remap_schema) params.push(`REMAP_SCHEMA=${remap_schema}`);
-    if (remap_tablespace) params.push(`REMAP_TABLESPACE=${remap_tablespace}`);
     if (table_exists_action)
       params.push(`TABLE_EXISTS_ACTION=${table_exists_action}`);
     if (sqlfile) params.push(`SQLFILE=${sqlfile}`);
-    if (transform) {
-      params.push(transform);
+    if (transform) params.push(transform);
+    if (network_link) params.push(`NETWORK_LINK=${network_link}`);
+
+    // Mode-specific remapping
+    if (import_mode === "TRANSPORTABLE") {
+      if (remap_datafile) params.push(`REMAP_DATAFILE=${remap_datafile}`);
+    } else {
+      // Standard mode
+      if (remap_schema) params.push(`REMAP_SCHEMA=${remap_schema}`);
+      if (remap_tablespace) params.push(`REMAP_TABLESPACE=${remap_tablespace}`);
     }
   }
+
   return params.join("\n");
 };
 
@@ -95,8 +105,9 @@ export const generateCommand = (
   outputMode: "parfile" | "command"
 ): string => {
   const opCommand = config.operation === "EXPORT" ? "expdp" : "impdp";
-  if (outputMode === "parfile")
+  if (outputMode === "parfile") {
     return `nohup ${opCommand} parfile=your_parfile.par &`;
+  }
 
   const parfileLines = generateParfileContent(config)
     .split("\n")

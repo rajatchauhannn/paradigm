@@ -12,6 +12,7 @@ const getInitialState = (): ParfileConfig => ({
   tables: "",
   tablespaces: "",
   table_exists_action: "",
+  import_mode: "STANDARD",
   parallel: undefined,
   compression: "NONE",
   content: "ALL",
@@ -28,6 +29,7 @@ const getInitialState = (): ParfileConfig => ({
   sqlfile: "",
   transform: "",
   network_link: "",
+  remap_datafile: "", 
   include: "",
   exclude: "",
 });
@@ -84,6 +86,7 @@ export const useParfileConfig = () => {
         compression,
         content,
         query,
+        import_mode,
         remap_schema,
         remap_tablespace,
         flashback_time,
@@ -96,6 +99,7 @@ export const useParfileConfig = () => {
         sqlfile,
         transform,
         network_link,
+        remap_datafile,
       } = getInitialState();
       setConfig((c) => ({
         ...c,
@@ -103,6 +107,7 @@ export const useParfileConfig = () => {
         compression,
         content,
         query,
+        import_mode,
         remap_schema,
         remap_tablespace,
         flashback_time,
@@ -115,6 +120,7 @@ export const useParfileConfig = () => {
         sqlfile,
         transform,
         network_link,
+        remap_datafile,
       }));
     }
   };

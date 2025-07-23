@@ -368,40 +368,115 @@ export const AdvancedOptions = ({
             {/* --- IMPORT Specific Options --- */}
             {config.operation === "IMPORT" && (
               <>
+                <div className="md:col-span-2">
+                  <label className={labelClasses}>Import Mode</label>
+                  <div className="flex gap-x-6 mt-1">
+                    <div className="flex items-center">
+                      <input
+                        id="mode_standard"
+                        type="radio"
+                        value="STANDARD"
+                        checked={config.import_mode === "STANDARD"}
+                        onChange={(e) =>
+                          setConfig((c) => ({
+                            ...c,
+                            import_mode: e.target.value as any,
+                            remap_datafile: "",
+                          }))
+                        }
+                        className="h-4 w-4 text-blue-600"
+                      />
+                      <label htmlFor="mode_standard" className="ml-2">
+                        Standard
+                      </label>
+                    </div>
+                    <div className="flex items-center">
+                      <input
+                        id="mode_transportable"
+                        type="radio"
+                        value="TRANSPORTABLE"
+                        checked={config.import_mode === "TRANSPORTABLE"}
+                        onChange={(e) =>
+                          setConfig((c) => ({
+                            ...c,
+                            import_mode: e.target.value as any,
+                            remap_schema: "", // <-- Clear the other mode's fields
+                            remap_tablespace: "",
+                          }))
+                        }
+                        className="h-4 w-4 text-blue-600"
+                      />
+                      <label htmlFor="mode_transportable" className="ml-2">
+                        Transportable
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* --- UPDATE a.remap_schema --- */}
                 <div>
                   <label htmlFor="remap_schema" className={labelClasses}>
                     Remap Schema
                   </label>
                   <input
                     id="remap_schema"
-                    type="text"
-                    placeholder="source_schema:target_schema"
-                    value={config.remap_schema}
+                    value={config.remap_schema || ""}
                     onChange={(e) =>
-                      setConfig((prev) => ({
-                        ...prev,
-                        remap_schema: e.target.value,
-                      }))
+                      setConfig((c) => ({ ...c, remap_schema: e.target.value }))
                     }
-                    className={inputClasses}
+                    placeholder="source_schema:target_schema"
+                    className={`${inputClasses} ${
+                      config.import_mode !== "STANDARD"
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={config.import_mode !== "STANDARD"}
                   />
                 </div>
+                {/* --- UPDATE b.remap_tablespace --- */}
                 <div>
                   <label htmlFor="remap_tablespace" className={labelClasses}>
                     Remap Tablespace
                   </label>
                   <input
                     id="remap_tablespace"
-                    type="text"
-                    placeholder="source_ts:target_ts"
-                    value={config.remap_tablespace}
+                    value={config.remap_tablespace || ""}
                     onChange={(e) =>
-                      setConfig((prev) => ({
-                        ...prev,
+                      setConfig((c) => ({
+                        ...c,
                         remap_tablespace: e.target.value,
                       }))
                     }
-                    className={inputClasses}
+                    placeholder="source_ts:target_ts"
+                    className={`${inputClasses} ${
+                      config.import_mode !== "STANDARD"
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={config.import_mode !== "STANDARD"}
+                  />
+                </div>
+                {/* --- UPDATE c.remap_datafile --- */}
+                <div>
+                  <label htmlFor="remap_datafile" className={labelClasses}>
+                    Remap Datafile
+                  </label>
+                  <input
+                    id="remap_datafile"
+                    value={config.remap_datafile || ""}
+                    onChange={(e) =>
+                      setConfig((c) => ({
+                        ...c,
+                        remap_datafile: e.target.value,
+                      }))
+                    }
+                    placeholder="'/path/source.dbf':'/path/target.dbf'"
+                    className={`${inputClasses} ${
+                      config.import_mode !== "TRANSPORTABLE"
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={config.import_mode !== "TRANSPORTABLE"}
                   />
                 </div>
                 <div>
