@@ -205,7 +205,7 @@ export const AdvancedOptions = ({
               </>
             )}
 
-             <div className="md:col-span-2">
+            <div className="md:col-span-2">
               <div className="flex items-center">
                 <input
                   id="metrics"
@@ -298,6 +298,29 @@ export const AdvancedOptions = ({
                     }
                     className={textareaClasses}
                   />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label htmlFor="sample" className={labelClasses}>
+                    Sample (Percentage)
+                  </label>
+                  <input
+                    id="sample"
+                    type="text"
+                    value={config.sample || ""}
+                    placeholder="schema.table_name:percentage"
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        sample: e.target.value,
+                      }))
+                    }
+                    className={inputClasses}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Export a random percentage of data. Example:
+                    `HR.EMPLOYEES:10.5`
+                  </p>
                 </div>
 
                 <div>

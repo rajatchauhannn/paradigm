@@ -19,6 +19,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     encryption_password,
     content,
     query,
+    sample,
     flashback_time,
     flashback_scn,
     estimate_only,
@@ -82,6 +83,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     if (compression !== "NONE") params.push(`COMPRESSION=${compression}`);
     if (content !== "ALL") params.push(`CONTENT=${content}`);
     if (query) params.push(`QUERY=${query}`);
+    if (sample) params.push(`SAMPLE=${sample}`);
     if (flashback_time) params.push(`FLASHBACK_TIME="${flashback_time}"`);
     else if (flashback_scn) params.push(`FLASHBACK_SCN=${flashback_scn}`);
     if (estimate_only === "YES") {
