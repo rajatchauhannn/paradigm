@@ -179,6 +179,29 @@ export const AdvancedOptions = ({
                     ))}
                   </select>
                 </div>
+                <div>
+                  <label htmlFor="encryption_password" className={labelClasses}>
+                    Encryption Password
+                  </label>
+                  <input
+                    id="encryption_password"
+                    type="password"
+                    value={config.encryption_password || ""}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        encryption_password: e.target.value,
+                      }))
+                    }
+                    className={`${inputClasses} ${
+                      !config.compression?.includes("ENCRYPTED")
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={!config.compression?.includes("ENCRYPTED")}
+                    placeholder="Enter password to encrypt dump file"
+                  />
+                </div>
               </>
             )}
 

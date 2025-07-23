@@ -15,6 +15,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     operation,
     // Export specific
     compression,
+    encryption_password,
     content,
     query,
     flashback_time,
@@ -51,6 +52,9 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     );
   }
   if (job_name) params.push(`JOB_NAME=${job_name}`);
+  if (encryption_password) {
+    params.push(`ENCRYPTION_PASSWORD=${encryption_password}`);
+  }
 
   // DIRECTORY and DUMPFILE are skipped for network imports
   if (!isNetworkImport) {

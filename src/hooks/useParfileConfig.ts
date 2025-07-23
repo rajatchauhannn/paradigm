@@ -19,6 +19,7 @@ const getInitialState = (): ParfileConfig => ({
   import_mode: "STANDARD",
   remap_data: "",
   parallel: undefined,
+  encryption_password: "",
   compression: "NONE",
   content: "ALL",
   query: "",
@@ -88,6 +89,7 @@ export const useParfileConfig = () => {
       // Reset advanced options to their initial state
       const {
         parallel,
+        encryption_password,
         compression,
         content,
         query,
@@ -114,6 +116,7 @@ export const useParfileConfig = () => {
       setConfig((c) => ({
         ...c,
         parallel,
+        encryption_password,
         compression,
         content,
         query,

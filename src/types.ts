@@ -4,7 +4,14 @@ export type Operation = "EXPORT" | "IMPORT";
 export type ExportMode = "SCHEMAS" | "TABLES" | "TABLESPACES" | "FULL";
 export type TableExistsAction = "SKIP" | "APPEND" | "TRUNCATE" | "REPLACE" | "";
 export type Content = "ALL" | "DATA_ONLY" | "METADATA_ONLY";
-export type Compression = "ALL" | "DATA_ONLY" | "METADATA_ONLY" | "NONE";
+export type Compression =
+  | "ALL"
+  | "DATA_ONLY"
+  | "METADATA_ONLY"
+  | "NONE"
+  | "ALL_ENCRYPTED"
+  | "DATA_ONLY_ENCRYPTED"
+  | "METADATA_ONLY_ENCRYPTED";
 export type ImportMode = "STANDARD" | "TRANSPORTABLE";
 export type XMLValidationMode = "" | "VALIDATE" | "DISABLE";
 export type PartitionOptions = "" | "NONE" | "MERGE" | "APPEND";
@@ -33,6 +40,7 @@ export interface ParfileConfig {
   job_name?: string;
 
   // Advanced - export
+  encryption_password?: string;
   compression?: Compression;
   content?: Content;
   query?: string;
