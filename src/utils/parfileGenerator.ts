@@ -17,6 +17,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     operation,
     // Export specific
     compression,
+    transport_full_check,
     encryption_password,
     content,
     query,
@@ -100,6 +101,9 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     }
     if (reuse_dumpfiles === "Y") params.push("REUSE_DUMPFILES=Y");
     if (filesize) params.push(`FILESIZE=${filesize}`);
+    if (transport_full_check && export_mode === "TRANSPORTABLE_TABLESPACES") {
+      params.push("TRANSPORT_FULL_CHECK=Y");
+    }
   } else if (operation === "IMPORT") {
     // These parameters apply to all import modes
     if (schemas) params.push(`SCHEMAS=${schemas}`);

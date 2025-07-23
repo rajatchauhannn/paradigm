@@ -47,6 +47,7 @@ export interface ParfileConfig {
   job_name?: string;
 
   // Advanced - export
+  transport_full_check?: boolean;
   filesize?: string;
   sample?: string;
   encryption_password?: string;

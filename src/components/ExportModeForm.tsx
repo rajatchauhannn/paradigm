@@ -13,6 +13,20 @@ interface ExportModeProps {
 }
 
 export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
+  const handleModeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newMode = e.target.value as any;
+
+    // Reset mode-specific parameters when the mode changes
+    setConfig((prev) => ({
+      ...prev,
+      export_mode: newMode,
+      // If the new mode is NOT transportable, reset the transportable-only flag.
+      transport_full_check:
+        newMode === "TRANSPORTABLE_TABLESPACES"
+          ? prev.transport_full_check
+          : false,
+    }));
+  };
   return (
     <div>
       <div className="mt-4 space-y-4">
@@ -23,12 +37,7 @@ export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
           <select
             id="export_mode"
             value={config.export_mode}
-            onChange={(e) =>
-              setConfig((prev) => ({
-                ...prev,
-                export_mode: e.target.value as any,
-              }))
-            }
+            onChange={handleModeChange}
             className={selectClasses}
           >
             <option value="SCHEMAS">Schemas</option>

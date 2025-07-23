@@ -532,6 +532,44 @@ export const AdvancedOptions = ({
                     name will be updated with %U.
                   </p>
                 </div>
+
+                <div className="md:col-span-2">
+                  <div className="flex items-center">
+                    <input
+                      id="transport_full_check"
+                      type="checkbox"
+                      className={`h-4 w-4 text-blue-600 border-gray-300 rounded ${
+                        config.export_mode !== "TRANSPORTABLE_TABLESPACES"
+                          ? "cursor-not-allowed"
+                          : ""
+                      }`}
+                      checked={!!config.transport_full_check}
+                      onChange={(e) =>
+                        setConfig((c) => ({
+                          ...c,
+                          transport_full_check: e.target.checked,
+                        }))
+                      }
+                      disabled={
+                        config.export_mode !== "TRANSPORTABLE_TABLESPACES"
+                      }
+                    />
+                    <label
+                      htmlFor="transport_full_check"
+                      className={`ml-2 block text-sm font-medium ${
+                        config.export_mode !== "TRANSPORTABLE_TABLESPACES"
+                          ? "text-gray-400"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      Enable Transport Full Check
+                    </label>
+                  </div>
+                  <p className="mt-1 text-xs text-gray-500">
+                    Only for Transportable Tablespace mode. Verifies all object
+                    dependencies are within the tablespace set.
+                  </p>
+                </div>
               </>
             )}
 
