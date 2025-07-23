@@ -426,13 +426,30 @@ export const AdvancedOptions = ({
                         used with TABLE_EXISTS_ACTION.
                       </p>
                     </div>
-                    {/* --- END OF NEW BLOCK --- */}
-
                     <div className="md:col-span-2">
-                      <label htmlFor="sqlfile" className={labelClasses}>
-                        SQL File (generates DDL)
-                      </label>
-                      {/* ... existing input for sqlfile ... */}
+                      <div className="flex items-center">
+                        <input
+                          id="skip_unusable_indexes"
+                          type="checkbox"
+                          className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                          checked={!!config.skip_unusable_indexes}
+                          onChange={(e) =>
+                            setConfig((c) => ({
+                              ...c,
+                              skip_unusable_indexes: e.target.checked,
+                            }))
+                          }
+                        />
+                        <label
+                          htmlFor="skip_unusable_indexes"
+                          className="ml-2 block text-sm font-medium text-gray-700"
+                        >
+                          Skip Unusable Indexes
+                        </label>
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500">
+                        Continue the import even if indexes fail to build.
+                      </p>
                     </div>
 
                     {/* Select for XML Validation */}

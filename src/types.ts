@@ -43,6 +43,7 @@ export interface ParfileConfig {
   reuse_dumpfiles?: "Y" | "N";
 
   // Advanced - import
+  skip_unusable_indexes?: boolean;
   partition_options?: PartitionOptions;
   data_options_skip_constraints?: boolean;
   data_options_xml_validation?: XMLValidationMode;
