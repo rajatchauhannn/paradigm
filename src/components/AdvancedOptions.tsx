@@ -33,6 +33,10 @@ export const AdvancedOptions = ({
   onShowAdvancedToggle,
   onParallelChange,
 }: AdvancedOptionsProps) => {
+  const isFullExport = config.export_mode === "FULL";
+  const isMetadataOnlyExport = config.content === "METADATA_ONLY";
+  const isTransportableImport = config.import_mode === "TRANSPORTABLE";
+
   const handleParallelInputChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -255,7 +259,10 @@ export const AdvancedOptions = ({
                 id="filter_type"
                 value={filterMode}
                 onChange={handleFilterTypeChange}
-                className={selectClasses}
+                className={`${selectClasses} ${
+                  isFullExport ? "disabled:bg-gray-100 cursor-not-allowed" : ""
+                }`}
+                disabled={isFullExport}
               >
                 {filterOptions.map((o) => (
                   <option key={o} value={o}>
@@ -268,10 +275,14 @@ export const AdvancedOptions = ({
                 rows={3}
                 value={config.include || config.exclude || ""}
                 onChange={handleFilterTextChange}
-                className={textareaClasses}
-                disabled={filterMode === "NONE"}
+                className={`${textareaClasses} ${
+                  isFullExport ? "disabled:bg-gray-100 cursor-not-allowed" : ""
+                }`}
+                disabled={filterMode === "NONE" || isFullExport}
                 placeholder={
-                  filterMode !== "NONE"
+                  isFullExport
+                    ? "Filters are disabled for FULL exports."
+                    : filterMode !== "NONE"
                     ? `Example: ${filterMode}:("TABLE:'LIKE ''EMP%'''")`
                     : "Select a filter type to begin"
                 }
@@ -296,7 +307,14 @@ export const AdvancedOptions = ({
                     onChange={(e) =>
                       setConfig((prev) => ({ ...prev, query: e.target.value }))
                     }
-                    className={textareaClasses}
+                    className={`${textareaClasses} ${
+                      !!config.sample || isFullExport || isMetadataOnlyExport
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={
+                      !!config.sample || isFullExport || isMetadataOnlyExport
+                    }
                   />
                 </div>
 
@@ -315,7 +333,14 @@ export const AdvancedOptions = ({
                         sample: e.target.value,
                       }))
                     }
-                    className={inputClasses}
+                    className={`${inputClasses} ${
+                      !!config.query || isFullExport || isMetadataOnlyExport
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={
+                      !!config.query || isFullExport || isMetadataOnlyExport
+                    }
                   />
                   <p className="mt-1 text-xs text-gray-500">
                     Export a random percentage of data. Example:
@@ -339,7 +364,12 @@ export const AdvancedOptions = ({
                         flashback_scn: "",
                       }))
                     }
-                    className={inputClasses}
+                    className={`${inputClasses} ${
+                      isMetadataOnlyExport
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={isMetadataOnlyExport}
                   />
                 </div>
 
@@ -359,7 +389,12 @@ export const AdvancedOptions = ({
                         flashback_time: "",
                       }))
                     }
-                    className={inputClasses}
+                    className={`${inputClasses} ${
+                      isMetadataOnlyExport
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={isMetadataOnlyExport}
                   />
                 </div>
 
@@ -479,7 +514,18 @@ export const AdvancedOptions = ({
                             partition_options: e.target.value as any,
                           }))
                         }
-                        className={selectClasses}
+                        className={`${selectClasses} ${
+                          !["APPEND", "MERGE"].includes(
+                            config.table_exists_action
+                          )
+                            ? "disabled:bg-gray-100 cursor-not-allowed"
+                            : ""
+                        }`}
+                        disabled={
+                          !["APPEND", "MERGE"].includes(
+                            config.table_exists_action
+                          )
+                        }
                       >
                         <option value="">(Default)</option>
                         <option value="NONE">
@@ -742,7 +788,12 @@ export const AdvancedOptions = ({
                         network_link: e.target.value,
                       }))
                     }
-                    className={inputClasses}
+                    className={`${inputClasses} ${
+                      isTransportableImport
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={isTransportableImport}
                   />
                   <p className="mt-1 text-xs text-gray-500">
                     If used, DUMPFILE and DIRECTORY are ignored.

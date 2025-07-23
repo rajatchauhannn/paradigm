@@ -64,6 +64,32 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
         "FLASHBACK is only applied to table data. It is recommended to use CONTENT=DATA_ONLY."
       );
     }
+
+    if (config.export_mode === "FULL") {
+      if (config.sample)
+        errors.push("SAMPLE cannot be used with a FULL export.");
+      if (config.query) errors.push("QUERY cannot be used with a FULL export.");
+      if (config.include || config.exclude)
+        errors.push("INCLUDE/EXCLUDE cannot be used with a FULL export.");
+    }
+    if (config.sample && config.query) {
+      errors.push("SAMPLE and QUERY cannot be used at the same time.");
+    }
+    if (config.content === "METADATA_ONLY") {
+      if (config.sample)
+        errors.push(
+          "SAMPLE requires data and is not compatible with CONTENT=METADATA_ONLY."
+        );
+      if (config.query)
+        errors.push(
+          "QUERY requires data and is not compatible with CONTENT=METADATA_ONLY."
+        );
+      if (config.flashback_scn || config.flashback_time) {
+        errors.push(
+          "FLASHBACK requires data and is not compatible with CONTENT=METADATA_ONLY."
+        );
+      }
+    }
   }
 
   // Import-Specific Validations
