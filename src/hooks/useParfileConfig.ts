@@ -17,6 +17,7 @@ const getInitialState = (): ParfileConfig => ({
   content: "ALL",
   query: "",
   remap_schema: "",
+  remap_tablespace: "",
   flashback_time: "",
   flashback_scn: "",
   version: "",
@@ -25,6 +26,8 @@ const getInitialState = (): ParfileConfig => ({
   estimate: "BLOCKS",
   reuse_dumpfiles: "N",
   sqlfile: "",
+  transform: "",
+  network_link: "",
   include: "",
   exclude: "",
 });
@@ -82,6 +85,7 @@ export const useParfileConfig = () => {
         content,
         query,
         remap_schema,
+        remap_tablespace,
         flashback_time,
         flashback_scn,
         version,
@@ -90,6 +94,8 @@ export const useParfileConfig = () => {
         estimate,
         reuse_dumpfiles,
         sqlfile,
+        transform,
+        network_link,
       } = getInitialState();
       setConfig((c) => ({
         ...c,
@@ -98,6 +104,7 @@ export const useParfileConfig = () => {
         content,
         query,
         remap_schema,
+        remap_tablespace,
         flashback_time,
         flashback_scn,
         version,
@@ -106,6 +113,8 @@ export const useParfileConfig = () => {
         estimate,
         reuse_dumpfiles,
         sqlfile,
+        transform,
+        network_link,
       }));
     }
   };

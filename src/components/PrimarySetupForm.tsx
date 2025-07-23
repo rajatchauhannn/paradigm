@@ -22,6 +22,7 @@ export const PrimarySetupForm = ({
   onLogfileSameChange,
   onDumpfileChange,
 }: PrimarySetupProps) => {
+  const isNetworkImport = config.operation === 'IMPORT' && !!config.network_link;
   return (
     // This grid is the key: it creates a 2-column layout on medium screens and up
     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
@@ -59,6 +60,7 @@ export const PrimarySetupForm = ({
             setConfig((prev) => ({ ...prev, directory: e.target.value }))
           }
           className={inputClasses}
+          disabled={isNetworkImport}
         />
       </div>
 
@@ -77,6 +79,7 @@ export const PrimarySetupForm = ({
           value={config.dumpfile}
           onChange={onDumpfileChange}
           className={inputClasses}
+          disabled={isNetworkImport}
         />
       </div>
 

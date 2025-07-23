@@ -41,5 +41,8 @@ export interface ParfileConfig {
 
   // Advanced - import
   remap_schema?: string;
+  remap_tablespace?: string;
   sqlfile?: string;
+  transform?: string
+  network_link?: string;
 }

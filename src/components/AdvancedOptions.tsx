@@ -131,8 +131,6 @@ export const AdvancedOptions = ({
               />
             </div>
 
-            
-
             {/* --- EXPORT Specific Options --- */}
             {config.operation === "EXPORT" && (
               <>
@@ -389,6 +387,24 @@ export const AdvancedOptions = ({
                   />
                 </div>
                 <div>
+                  <label htmlFor="remap_tablespace" className={labelClasses}>
+                    Remap Tablespace
+                  </label>
+                  <input
+                    id="remap_tablespace"
+                    type="text"
+                    placeholder="source_ts:target_ts"
+                    value={config.remap_tablespace}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        remap_tablespace: e.target.value,
+                      }))
+                    }
+                    className={inputClasses}
+                  />
+                </div>
+                <div>
                   <label htmlFor="sqlfile" className={labelClasses}>
                     SQL File (generates DDL)
                   </label>
@@ -405,6 +421,49 @@ export const AdvancedOptions = ({
                     }
                     className={inputClasses}
                   />
+                </div>
+                <div className="md:col-span-2">
+                  <label htmlFor="transform" className={labelClasses}>
+                    Transform
+                  </label>
+                  <textarea
+                    id="transform"
+                    rows={3}
+                    value={config.transform || ""}
+                    placeholder={`Example: SEGMENT_ATTRIBUTES:N\nOr: STORAGE:N:TABLE`}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        transform: e.target.value,
+                      }))
+                    }
+                    className={textareaClasses}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Modify DDL on the fly. Example: `SEGMENT_ATTRIBUTES:N` to
+                    strip all storage clauses.
+                  </p>
+                </div>
+                <div className="md:col-span-2">
+                  <label htmlFor="network_link" className={labelClasses}>
+                    Network Link (for direct DB-to-DB import)
+                  </label>
+                  <input
+                    id="network_link"
+                    type="text"
+                    placeholder="dblink_to_source_db"
+                    value={config.network_link}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        network_link: e.target.value,
+                      }))
+                    }
+                    className={inputClasses}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    If used, DUMPFILE and DIRECTORY are ignored.
+                  </p>
                 </div>
               </>
             )}

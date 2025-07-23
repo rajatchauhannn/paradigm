@@ -20,7 +20,9 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     tables,
     tablespaces,
     remap_schema,
+    remap_tablespace,
     table_exists_action,
+    transform,
     version,
     estimate_only,
     estimate,
@@ -28,14 +30,24 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     sqlfile,
     include,
     exclude,
+    network_link,
   } = config;
+
+  const isNetworkImport = operation === "IMPORT" && !!network_link;
 
   if (userid)
     params.push(
       userid.match(/[\s/@]/) ? `USERID='${userid}'` : `USERID=${userid}`
     );
-  if (directory) params.push(`DIRECTORY=${directory}`);
-  if (dumpfile) params.push(`DUMPFILE=${dumpfile}`);
+
+  if (network_link && isNetworkImport) {
+    params.push(`NETWORK_LINK=${network_link}`);
+  }
+  // Conditionally add DIRECTORY and DUMPFILE
+  if (!isNetworkImport) {
+    if (directory) params.push(`DIRECTORY=${directory}`);
+    if (dumpfile) params.push(`DUMPFILE=${dumpfile}`);
+  }
   if (logfile) params.push(`LOGFILE=${logfile}`);
   if (parallel && parallel > 1) params.push(`PARALLEL=${parallel}`);
   if (version) params.push(`VERSION=${version}`);
@@ -67,9 +79,13 @@ export const generateParfileContent = (config: ParfileConfig): string => {
   if (operation === "IMPORT") {
     if (schemas) params.push(`SCHEMAS=${schemas}`);
     if (remap_schema) params.push(`REMAP_SCHEMA=${remap_schema}`);
+    if (remap_tablespace) params.push(`REMAP_TABLESPACE=${remap_tablespace}`);
     if (table_exists_action)
       params.push(`TABLE_EXISTS_ACTION=${table_exists_action}`);
     if (sqlfile) params.push(`SQLFILE=${sqlfile}`);
+    if (transform) {
+      params.push(transform);
+    }
   }
   return params.join("\n");
 };
