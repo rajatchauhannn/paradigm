@@ -1,5 +1,5 @@
 // src/utils.ts
-import { type ParfileConfig } from './types';
+import { type ParfileConfig } from '../types';
 
 export interface ValidationResult {
   errors: string[];
