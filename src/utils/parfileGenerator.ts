@@ -7,6 +7,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     directory,
     dumpfile,
     logfile,
+    logtime,
     disable_cluster,
     parallel,
     job_name,
@@ -61,6 +62,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
   }
   if (job_name) params.push(`JOB_NAME=${job_name}`);
   if (metrics) params.push(`METRICS=Y`);
+  if (logtime) params.push("LOGTIME=ALL");
   if (encryption_password) {
     params.push(`ENCRYPTION_PASSWORD=${encryption_password}`);
   }

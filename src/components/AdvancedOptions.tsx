@@ -270,6 +270,32 @@ export const AdvancedOptions = ({
             </div>
 
             <div className="md:col-span-2">
+              <div className="flex items-center">
+                <input
+                  id="logtime"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                  checked={!!config.logtime}
+                  onChange={(e) =>
+                    setConfig((c) => ({
+                      ...c,
+                      logtime: e.target.checked,
+                    }))
+                  }
+                />
+                <label
+                  htmlFor="logtime"
+                  className="ml-2 block text-sm font-medium text-gray-700"
+                >
+                  Add Timestamps to Log
+                </label>
+              </div>
+              <p className="mt-1 text-xs text-gray-500">
+                Adds a timestamp to all messages in the log file (LOGTIME=ALL).
+              </p>
+            </div>
+
+            <div className="md:col-span-2">
               <label htmlFor="job_name" className={labelClasses}>
                 Job Name (for monitoring)
               </label>
