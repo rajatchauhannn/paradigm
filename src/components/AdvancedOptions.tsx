@@ -234,6 +234,34 @@ export const AdvancedOptions = ({
                 Adds detailed performance and resource usage to the log file.
               </p>
             </div>
+
+            <div className="md:col-span-2">
+              <div className="flex items-center">
+                <input
+                  id="disable_cluster"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                  checked={!!config.disable_cluster}
+                  onChange={(e) =>
+                    setConfig((c) => ({
+                      ...c,
+                      disable_cluster: e.target.checked,
+                    }))
+                  }
+                />
+                <label
+                  htmlFor="disable_cluster"
+                  className="ml-2 block text-sm font-medium text-gray-700"
+                >
+                  Disable Cluster Parallelism (RAC only)
+                </label>
+              </div>
+              <p className="mt-1 text-xs text-gray-500">
+                If checked, forces the job to run only on the current instance
+                (adds CLUSTER=N).
+              </p>
+            </div>
+
             <div className="md:col-span-2">
               <label htmlFor="job_name" className={labelClasses}>
                 Job Name (for monitoring)

@@ -7,6 +7,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     directory,
     dumpfile,
     logfile,
+    disable_cluster,
     parallel,
     job_name,
     metrics,
@@ -71,6 +72,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
   if (logfile) params.push(`LOGFILE=${logfile}`);
   if (parallel && parallel > 1) params.push(`PARALLEL=${parallel}`);
   if (version) params.push(`VERSION=${version}`);
+  if (disable_cluster) params.push("CLUSTER=N");
   if (include) params.push(`INCLUDE=${include}`);
   if (exclude) params.push(`EXCLUDE=${exclude}`);
 

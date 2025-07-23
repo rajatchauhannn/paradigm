@@ -35,6 +35,7 @@ export interface ParfileConfig {
   // Advanced - general
   parallel?: number;
   version?: string;
+  disable_cluster?: boolean;
   metrics?: boolean;
   include?: string;
   exclude?: string;
