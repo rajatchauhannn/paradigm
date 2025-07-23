@@ -1,31 +1,43 @@
-import { type compressionOptions, type contentOptions } from './constants';
+// src/types.ts
+
+export type Operation = "EXPORT" | "IMPORT";
+export type ExportMode = "SCHEMAS" | "TABLES" | "TABLESPACES" | "FULL";
+export type TableExistsAction = "SKIP" | "APPEND" | "TRUNCATE" | "REPLACE" | "";
+export type Content = "ALL" | "DATA_ONLY" | "METADATA_ONLY";
+export type Compression = "ALL" | "DATA_ONLY" | "METADATA_ONLY" | "NONE";
 
 export interface ParfileConfig {
-  operation: 'EXPORT' | 'IMPORT';
+  operation: Operation;
+  userid: string;
   directory: string;
   dumpfile: string;
   logfile: string;
-  userid?: string;
 
-  export_mode?: 'SCHEMAS' | 'TABLES' | 'FULL' | 'TABLESPACES';
+  // Export specific
+  export_mode: ExportMode;
   schemas?: string;
   tables?: string;
   tablespaces?: string;
 
-  table_exists_action?: '' | 'SKIP' | 'APPEND' | 'TRUNCATE' | 'REPLACE';
-  
-  useDefaultNaming?: boolean;
-  baseName?: string;
+  // Import specific
+  table_exists_action: TableExistsAction;
 
-  parallel?: number | undefined;
-  compression?: typeof compressionOptions[number];
-  content?: typeof contentOptions[number];
+  // Advanced - general
+  parallel?: number;
+  version?: string;
+  include?: string;
+  exclude?: string;
+
+  // Advanced - export
+  compression?: Compression;
+  content?: Content;
   query?: string;
-  remap_schema?: string;
   flashback_time?: string;
   flashback_scn?: string;
-  version?: string;
-  estimate_only?: 'YES' | 'NO';
-  estimate?: 'BLOCKS' | 'STATISTICS';
+  estimate_only?: "YES" | "NO";
+  estimate?: "BLOCKS" | "STATISTICS";
+
+  // Advanced - import
+  remap_schema?: string;
   sqlfile?: string;
 }

@@ -1,7 +1,7 @@
-import 'dotenv/config';
-import express, { type Request, type Response } from 'express';
-import cors from 'cors';
-import { GoogleGenAI } from '@google/genai';
+import "dotenv/config";
+import express, { type Request, type Response } from "express";
+import cors from "cors";
+import { GoogleGenAI } from "@google/genai";
 
 const app = express();
 app.use(cors());
@@ -12,7 +12,7 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
-app.post('/validate', async (req: Request, res: Response) => {
+app.post("/validate", async (req: Request, res: Response) => {
   console.log("\n--- [START] /api/validate request received ---");
 
   try {
@@ -23,7 +23,7 @@ app.post('/validate', async (req: Request, res: Response) => {
       console.log("[FAIL] Content too short. Sending 400 error.");
       return res
         .status(400)
-        .json({ errors: ['Input content is too short to analyze.'] });
+        .json({ errors: ["Input content is too short to analyze."] });
     }
 
     // Combine system instruction and user content into one prompt
@@ -42,34 +42,45 @@ KEEP IT AS SHORT AS POSSIBLE.
 
     // Call Gemini’s generateContent API
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: "gemini-2.5-flash",
       contents: prompt,
     });
 
     // The generated text (string) may include markdown fences—strip them out
     const text = response.text;
     if (!text) {
-      return res.status(500).json({ errors: ['AI response was empty.'], warnings: [], suggestions: [] });
+      return res.status(500).json({
+        errors: ["AI response was empty."],
+        warnings: [],
+        suggestions: [],
+      });
     }
-    const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+    const cleanedText = text
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
     console.log("[4] Cleaned text, preparing to parse JSON.");
-    const aiResponseJson = JSON.parse(cleanedText); 
+    const aiResponseJson = JSON.parse(cleanedText);
     return res.status(200).json(aiResponseJson);
-
-} catch (error: any) {
+  } catch (error: any) {
     // Catch errors from the AI call or JSON.parse
     console.error("Error during AI validation:", error);
-    return res.status(500).json({ 
-        errors: ['An error occurred while communicating with the AI service.', error.message], 
-        warnings: [], 
-        suggestions: [] 
+    return res.status(500).json({
+      errors: [
+        "An error occurred while communicating with the AI service.",
+        error.message,
+      ],
+      warnings: [],
+      suggestions: [],
     });
   }
 });
 
 const PORT = 3000; // The port your backend will run on
 app.listen(PORT, () => {
-  console.log(`[API] Server is running and listening on http://localhost:${PORT}`);
+  console.log(
+    `[API] Server is running and listening on http://localhost:${PORT}`
+  );
 });
 
 export default app;
