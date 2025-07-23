@@ -35,6 +35,7 @@ export interface ParfileConfig {
   // Advanced - general
   parallel?: number;
   version?: string;
+  metrics?: boolean;
   include?: string;
   exclude?: string;
   job_name?: string;

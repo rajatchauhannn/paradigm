@@ -9,6 +9,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     logfile,
     parallel,
     job_name,
+    metrics,
     version,
     include,
     exclude,
@@ -52,6 +53,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     );
   }
   if (job_name) params.push(`JOB_NAME=${job_name}`);
+  if (metrics) params.push(`METRICS=Y`);
   if (encryption_password) {
     params.push(`ENCRYPTION_PASSWORD=${encryption_password}`);
   }
