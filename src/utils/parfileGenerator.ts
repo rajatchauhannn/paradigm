@@ -28,6 +28,9 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     tablespaces,
     // Import specific
     table_exists_action,
+    partition_options,
+    data_options_skip_constraints,
+    data_options_xml_validation,
     import_mode,
     remap_data,
     remap_schema,
@@ -84,8 +87,23 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     if (schemas) params.push(`SCHEMAS=${schemas}`);
     if (table_exists_action)
       params.push(`TABLE_EXISTS_ACTION=${table_exists_action}`);
+    const dataOptionsFlags = [];
+    if (data_options_skip_constraints) {
+      dataOptionsFlags.push("SKIP_CONSTRAINT_ERRORS");
+    }
+    if (data_options_xml_validation === "VALIDATE") {
+      dataOptionsFlags.push("XML_VALIDATE");
+    } else if (data_options_xml_validation === "DISABLE") {
+      dataOptionsFlags.push("DISABLE_XML_VALIDATE");
+    }
+
+    if (dataOptionsFlags.length > 0) {
+      params.push(`DATA_OPTIONS=${dataOptionsFlags.join(",")}`);
+    }
+    if (partition_options)
+      params.push(`PARTITION_OPTIONS=${partition_options}`);
     if (sqlfile) params.push(`SQLFILE=${sqlfile}`);
-    if (transform) params.push(transform);
+    if (transform) params.push(`TRANSFORM=${transform}`);
     if (remap_data) params.push(`REMAP_DATA=${remap_data}`);
     if (network_link) params.push(`NETWORK_LINK=${network_link}`);
 

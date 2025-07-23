@@ -368,6 +368,99 @@ export const AdvancedOptions = ({
             {/* --- IMPORT Specific Options --- */}
             {config.operation === "IMPORT" && (
               <>
+                <div className="md:col-span-2 p-4 border rounded-md bg-gray-50">
+                  <label className={`${labelClasses} mb-2`}>Data Options</label>
+                  <div className="space-y-3">
+                    {/* Checkbox for Skip Constraints */}
+                    <div className="flex items-center">
+                      <input
+                        id="data_options_skip_constraints"
+                        type="checkbox"
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                        checked={!!config.data_options_skip_constraints}
+                        onChange={(e) =>
+                          setConfig((c) => ({
+                            ...c,
+                            data_options_skip_constraints: e.target.checked,
+                          }))
+                        }
+                      />
+                      <label
+                        htmlFor="data_options_skip_constraints"
+                        className="ml-2 block text-sm text-gray-700"
+                      >
+                        Skip Constraint Errors
+                      </label>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="partition_options"
+                        className={labelClasses}
+                      >
+                        Partition Options
+                      </label>
+                      <select
+                        id="partition_options"
+                        value={config.partition_options}
+                        onChange={(e) =>
+                          setConfig((prev) => ({
+                            ...prev,
+                            partition_options: e.target.value as any,
+                          }))
+                        }
+                        className={selectClasses}
+                      >
+                        <option value="">(Default)</option>
+                        <option value="NONE">
+                          None (Create tables as in source)
+                        </option>
+                        <option value="APPEND">
+                          Append partitions to target table
+                        </option>
+                        <option value="MERGE">
+                          Merge source partitions into target
+                        </option>
+                      </select>
+                      <p className="mt-1 text-xs text-gray-500">
+                        Controls how partitions are handled on import. Often
+                        used with TABLE_EXISTS_ACTION.
+                      </p>
+                    </div>
+                    {/* --- END OF NEW BLOCK --- */}
+
+                    <div className="md:col-span-2">
+                      <label htmlFor="sqlfile" className={labelClasses}>
+                        SQL File (generates DDL)
+                      </label>
+                      {/* ... existing input for sqlfile ... */}
+                    </div>
+
+                    {/* Select for XML Validation */}
+                    <div>
+                      <label
+                        htmlFor="data_options_xml_validation"
+                        className="block text-sm font-medium text-gray-600 mb-1"
+                      >
+                        XML Schema Validation
+                      </label>
+                      <select
+                        id="data_options_xml_validation"
+                        value={config.data_options_xml_validation}
+                        onChange={(e) =>
+                          setConfig((prev) => ({
+                            ...prev,
+                            data_options_xml_validation: e.target.value as any,
+                          }))
+                        }
+                        className={selectClasses}
+                      >
+                        <option value="">(Default)</option>
+                        <option value="VALIDATE">Enable Validation</option>
+                        <option value="DISABLE">Disable Validation</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
                 <div className="md:col-span-2">
                   <label className={labelClasses}>Import Mode</label>
                   <div className="flex gap-x-6 mt-1">

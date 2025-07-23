@@ -5,7 +5,9 @@ export type ExportMode = "SCHEMAS" | "TABLES" | "TABLESPACES" | "FULL";
 export type TableExistsAction = "SKIP" | "APPEND" | "TRUNCATE" | "REPLACE" | "";
 export type Content = "ALL" | "DATA_ONLY" | "METADATA_ONLY";
 export type Compression = "ALL" | "DATA_ONLY" | "METADATA_ONLY" | "NONE";
-export type ImportMode = "STANDARD" | "TRANSPORTABLE"; // <--- ADD THIS TYPE
+export type ImportMode = "STANDARD" | "TRANSPORTABLE";
+export type XMLValidationMode = "" | "VALIDATE" | "DISABLE";
+export type PartitionOptions = "" | "NONE" | "MERGE" | "APPEND";
 
 export interface ParfileConfig {
   operation: Operation;
@@ -41,12 +43,15 @@ export interface ParfileConfig {
   reuse_dumpfiles?: "Y" | "N";
 
   // Advanced - import
+  partition_options?: PartitionOptions;
+  data_options_skip_constraints?: boolean;
+  data_options_xml_validation?: XMLValidationMode;
   import_mode?: ImportMode;
   remap_data?: string;
   remap_schema?: string;
   remap_tablespace?: string;
   sqlfile?: string;
-  transform?: string
+  transform?: string;
   network_link?: string;
   remap_datafile?: string;
 }
