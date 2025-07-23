@@ -27,6 +27,7 @@ export interface ParfileConfig {
   version?: string;
   include?: string;
   exclude?: string;
+  job_name?: string;
 
   // Advanced - export
   compression?: Compression;

@@ -8,6 +8,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     dumpfile,
     logfile,
     parallel,
+    job_name,
     operation,
     compression,
     content,
@@ -37,6 +38,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
   if (logfile) params.push(`LOGFILE=${logfile}`);
   if (parallel && parallel > 1) params.push(`PARALLEL=${parallel}`);
   if (version) params.push(`VERSION=${version}`);
+  if (job_name) params.push(`JOB_NAME=${job_name}`);
   if (include) params.push(`INCLUDE=${config.include}`);
   if (exclude) params.push(`EXCLUDE=${config.exclude}`);
 

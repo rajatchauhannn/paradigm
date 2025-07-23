@@ -33,6 +33,12 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
     errors.push("LOGFILE must have a .log extension.");
   }
 
+  if (config.job_name && !/^[a-zA-Z0-9_]+$/.test(config.job_name)) {
+    errors.push(
+      "JOB_NAME can only contain letters, numbers, and underscores (_)."
+    );
+  }
+
   // Export-Specific Validations
   if (config.operation === "EXPORT") {
     if (config.export_mode === "SCHEMAS" && !config.schemas) {

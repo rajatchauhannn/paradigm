@@ -131,6 +131,8 @@ export const AdvancedOptions = ({
               />
             </div>
 
+            
+
             {/* --- EXPORT Specific Options --- */}
             {config.operation === "EXPORT" && (
               <>
@@ -181,6 +183,23 @@ export const AdvancedOptions = ({
                 </div>
               </>
             )}
+
+            <div className="md:col-span-2">
+              <label htmlFor="job_name" className={labelClasses}>
+                Job Name (for monitoring)
+              </label>
+              <input
+                id="job_name"
+                type="text"
+                placeholder="exp_full_prod_20240726"
+                value={config.job_name || ""}
+                onChange={(e) =>
+                  setConfig((prev) => ({ ...prev, job_name: e.target.value }))
+                }
+                className={inputClasses}
+              />
+            </div>
+            
             {/* --- Unified Filter Control (FIXED) --- */}
             <div className="md:col-span-2">
               <label htmlFor="filter_type" className={labelClasses}>
