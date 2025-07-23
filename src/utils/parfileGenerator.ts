@@ -29,6 +29,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     // Import specific
     table_exists_action,
     import_mode,
+    remap_data,
     remap_schema,
     remap_tablespace,
     remap_datafile,
@@ -85,6 +86,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
       params.push(`TABLE_EXISTS_ACTION=${table_exists_action}`);
     if (sqlfile) params.push(`SQLFILE=${sqlfile}`);
     if (transform) params.push(transform);
+    if (remap_data) params.push(`REMAP_DATA=${remap_data}`);
     if (network_link) params.push(`NETWORK_LINK=${network_link}`);
 
     // Mode-specific remapping

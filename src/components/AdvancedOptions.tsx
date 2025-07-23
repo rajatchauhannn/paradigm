@@ -520,6 +520,33 @@ export const AdvancedOptions = ({
                   </p>
                 </div>
                 <div className="md:col-span-2">
+                  <label htmlFor="remap_data" className={labelClasses}>
+                    Remap Data (Column Data Transformation)
+                  </label>
+                  <textarea
+                    id="remap_data"
+                    rows={3}
+                    value={config.remap_data || ""}
+                    placeholder={`Example: HR.EMPLOYEES.SALARY:SYS.MASK_SALARY_FUNC`}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        remap_data: e.target.value,
+                      }))
+                    }
+                    className={`${textareaClasses} ${
+                      config.import_mode !== "STANDARD"
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={config.import_mode !== "STANDARD"}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Apply a function to transform data for a specific column on
+                    import.
+                  </p>
+                </div>
+                <div className="md:col-span-2">
                   <label htmlFor="network_link" className={labelClasses}>
                     Network Link (for direct DB-to-DB import)
                   </label>
