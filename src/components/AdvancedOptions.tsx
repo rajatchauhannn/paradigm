@@ -1193,6 +1193,33 @@ SCOTT.V_SALES:SALES_DATA"
                     disabled={config.import_mode !== "STANDARD"}
                   />
                 </div>
+                <div className="md:col-span-2">
+                  <label htmlFor="remap_table" className={labelClasses}>
+                    Remap Table
+                  </label>
+                  <textarea
+                    id="remap_table"
+                    rows={3}
+                    value={config.remap_table || ""}
+                    placeholder="HR.EMPLOYEES:EMPLOYEES_BACKUP
+SCOTT.DEPT:DEPT_OLD"
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        remap_table: e.target.value,
+                      }))
+                    }
+                    className={`${textareaClasses} ${
+                      config.import_mode === "TRANSPORTABLE"
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={config.import_mode === "TRANSPORTABLE"}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Rename tables during import. One entry per line.
+                  </p>
+                </div>
                 {/* --- UPDATE c.remap_datafile --- */}
                 <div>
                   <label htmlFor="remap_datafile" className={labelClasses}>

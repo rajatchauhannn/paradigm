@@ -150,6 +150,23 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
 
   // Import-Specific Validations
   if (config.operation === "IMPORT" && !config.table_exists_action) {
+    if (config.remap_table) {
+      const lines = config.remap_table
+        .split("\n")
+        .filter((line) => line.trim().length > 0);
+      for (const line of lines) {
+        const parts = line.split(":");
+        if (parts.length !== 2 || !parts[0] || !parts[1]) {
+          errors.push(
+            `Invalid format in REMAP_TABLE: "${line}". Each line must be in the format 'source:target'.`
+          );
+        } else if (!parts[0].includes(".")) {
+          warnings.push(
+            `Best practice for REMAP_TABLE is to specify a schema: "schema.table:target" (found in "${line}").`
+          );
+        }
+      }
+    }
     if (config.remap_container && !config.remap_container.includes(":")) {
       errors.push(
         `Invalid format for REMAP_CONTAINER: "${config.remap_container}". It must contain a colon (:).`

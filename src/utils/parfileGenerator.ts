@@ -54,6 +54,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     import_mode,
     remap_data,
     remap_container,
+    remap_table,
     remap_schema,
     remap_tablespace,
     remap_datafile,
@@ -197,6 +198,14 @@ export const generateParfileContent = (config: ParfileConfig): string => {
       if (remap_schema) params.push(`REMAP_SCHEMA=${remap_schema}`);
       if (remap_tablespace) params.push(`REMAP_TABLESPACE=${remap_tablespace}`);
       if (remap_container) params.push(`REMAP_CONTAINER=${remap_container}`);
+      if (remap_table) {
+        remap_table
+          .split("\n")
+          .filter((line) => line.trim().length > 0)
+          .forEach((line) => {
+            params.push(`REMAP_TABLE=${line.trim()}`);
+          });
+      }
     }
   }
 
