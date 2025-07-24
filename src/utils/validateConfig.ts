@@ -150,6 +150,11 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
 
   // Import-Specific Validations
   if (config.operation === "IMPORT" && !config.table_exists_action) {
+    if (config.remap_container && !config.remap_container.includes(":")) {
+      errors.push(
+        `Invalid format for REMAP_CONTAINER: "${config.remap_container}". It must contain a colon (:).`
+      );
+    }
     errors.push(
       'A "Table Exists Action" must be selected for IMPORT operations.'
     );

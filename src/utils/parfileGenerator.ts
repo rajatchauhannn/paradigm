@@ -53,6 +53,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     data_options_xml_validation,
     import_mode,
     remap_data,
+    remap_container,
     remap_schema,
     remap_tablespace,
     remap_datafile,
@@ -195,6 +196,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
       // Standard mode
       if (remap_schema) params.push(`REMAP_SCHEMA=${remap_schema}`);
       if (remap_tablespace) params.push(`REMAP_TABLESPACE=${remap_tablespace}`);
+      if (remap_container) params.push(`REMAP_CONTAINER=${remap_container}`);
     }
   }
 

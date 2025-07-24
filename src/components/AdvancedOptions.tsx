@@ -1217,6 +1217,29 @@ SCOTT.V_SALES:SALES_DATA"
                   />
                 </div>
                 <div>
+                  <label htmlFor="remap_container" className={labelClasses}>
+                    Remap Container (PDB)
+                  </label>
+                  <input
+                    id="remap_container"
+                    type="text"
+                    value={config.remap_container || ""}
+                    placeholder="source_pdb:target_pdb"
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        remap_container: e.target.value,
+                      }))
+                    }
+                    className={`${inputClasses} ${
+                      config.import_mode === "TRANSPORTABLE"
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={config.import_mode === "TRANSPORTABLE"}
+                  />
+                </div>
+                <div>
                   <label htmlFor="sqlfile" className={labelClasses}>
                     SQL File (generates DDL)
                   </label>

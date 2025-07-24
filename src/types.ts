@@ -86,6 +86,7 @@ export interface ParfileConfig {
   data_options_skip_constraints?: boolean;
   data_options_xml_validation?: XMLValidationMode;
   import_mode?: ImportMode;
+  remap_container?: string; 
   remap_data?: string;
   remap_schema?: string;
   remap_tablespace?: string;
