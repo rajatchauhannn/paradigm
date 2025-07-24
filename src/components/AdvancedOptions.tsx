@@ -295,6 +295,35 @@ export const AdvancedOptions = ({
               </p>
             </div>
 
+            <div className="md:col-span-2 p-3 border border-yellow-400 rounded-md bg-yellow-50">
+              <label
+                htmlFor="abort_step"
+                className="block text-sm font-medium text-yellow-800"
+              >
+                Abort Step (Diagnostic Use Only)
+              </label>
+              <input
+                id="abort_step"
+                type="text"
+                pattern="[0-9]*" // Suggests numeric keyboard on mobile
+                value={config.abort_step || ""}
+                placeholder="Internal step number to halt job"
+                onChange={(e) => {
+                  const value = e.target.value.replace(/[^0-9]/g, "");
+                  const parsed = parseInt(value, 10);
+                  setConfig((prev) => ({
+                    ...prev,
+                    abort_step: isNaN(parsed) ? undefined : parsed,
+                  }));
+                }}
+                className={inputClasses}
+              />
+              <p className="mt-1 text-xs text-yellow-700">
+                Intentionally stops the job at a specific internal step for
+                debugging. Use with caution.
+              </p>
+            </div>
+
             <div className="md:col-span-2">
               <label htmlFor="job_name" className={labelClasses}>
                 Job Name (for monitoring)

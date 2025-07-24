@@ -40,6 +40,7 @@ export interface ParfileConfig {
   // Advanced - general
   parallel?: number;
   version?: string;
+  abort_step?: number;
   logtime?: boolean;
   disable_cluster?: boolean;
   metrics?: boolean;
