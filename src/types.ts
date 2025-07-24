@@ -26,7 +26,7 @@ export interface ParfileConfig {
   userid: string;
   directory: string;
   dumpfile: string;
-  logfile: string;
+  logfile: string; // TODO : Need to figure out how to use NOLOGFILE parameter along with this
 
   // Export specific
   export_mode: ExportMode;

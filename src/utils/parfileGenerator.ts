@@ -65,8 +65,8 @@ export const generateParfileContent = (config: ParfileConfig): string => {
   if (job_name) params.push(`JOB_NAME=${job_name}`);
   if (metrics) params.push(`METRICS=Y`);
   if (logtime) params.push("LOGTIME=ALL");
-  if (config.abort_step && config.abort_step > 0) {
-    params.push(`ABORT_STEP=${config.abort_step}`);
+  if (abort_step && abort_step > 0) {
+    params.push(`ABORT_STEP=${abort_step}`);
   }
   if (encryption_password) {
     params.push(`ENCRYPTION_PASSWORD=${encryption_password}`);
