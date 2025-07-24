@@ -8,6 +8,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     dumpfile,
     logfile,
     abort_step,
+    access_method,
     logtime,
     disable_cluster,
     parallel,
@@ -71,6 +72,9 @@ export const generateParfileContent = (config: ParfileConfig): string => {
   if (logtime) params.push("LOGTIME=ALL");
   if (abort_step && abort_step > 0) {
     params.push(`ABORT_STEP=${abort_step}`);
+  }
+  if (access_method && access_method !== "AUTOMATIC") {
+    params.push(`ACCESS_METHOD=${access_method}`);
   }
   if (compression?.includes("ENCRYPTED")) {
     params.push(`ENCRYPTION_ALGORITHM=${encryption_algorithm}`);

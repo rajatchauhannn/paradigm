@@ -1,6 +1,7 @@
 // src/components/AdvancedOptions.tsx
 import { useState } from "react";
 import {
+  type AccessMethod,
   type CompressionAlgorithm,
   type EncryptionAlgorithm,
   type EncryptionMode,
@@ -37,6 +38,11 @@ const encryptionAlgorithmOptions: EncryptionAlgorithm[] = [
   "AES192",
   "AES256",
 ];
+const accessMethodOptions: AccessMethod[] = [
+  "AUTOMATIC",
+  "DIRECT_PATH",
+  "EXTERNAL_TABLE",
+];
 
 // --- Component Props Interface ---
 interface AdvancedOptionsProps {
@@ -65,6 +71,12 @@ export const AdvancedOptions = ({
     config.content === "METADATA_ONLY" ||
     !!config.query ||
     !!config.sample;
+  const isAccessMethodDisabled =
+    (config.operation === "EXPORT" &&
+      (config.content === "METADATA_ONLY" ||
+        config.export_mode === "TRANSPORTABLE_TABLESPACES")) ||
+    (config.operation === "IMPORT" &&
+      (!!config.sqlfile || config.import_mode === "TRANSPORTABLE"));
 
   const handleParallelInputChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -470,6 +482,37 @@ export const AdvancedOptions = ({
               <p className="mt-1 text-xs text-yellow-700">
                 Intentionally stops the job at a specific internal step for
                 debugging. Use with caution.
+              </p>
+            </div>
+
+            <div className="md:col-span-2">
+              <label htmlFor="access_method" className={labelClasses}>
+                Access Method
+              </label>
+              <select
+                id="access_method"
+                value={config.access_method}
+                onChange={(e) =>
+                  setConfig((prev) => ({
+                    ...prev,
+                    access_method: e.target.value as any,
+                  }))
+                }
+                className={`${selectClasses} ${
+                  isAccessMethodDisabled
+                    ? "disabled:bg-gray-100 cursor-not-allowed"
+                    : ""
+                }`}
+                disabled={isAccessMethodDisabled}
+              >
+                {accessMethodOptions.map((o) => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1 text-xs text-gray-500">
+                Forces a specific method for loading/unloading data.
               </p>
             </div>
 

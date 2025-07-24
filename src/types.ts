@@ -23,6 +23,7 @@ export type XMLValidationMode = "" | "VALIDATE" | "DISABLE";
 export type PartitionOptions = "" | "NONE" | "MERGE" | "APPEND";
 export type EncryptionMode = "PASSWORD" | "DUAL" | "TRANSPARENT";
 export type EncryptionAlgorithm = "AES128" | "AES192" | "AES256";
+export type AccessMethod = "AUTOMATIC" | "DIRECT_PATH" | "EXTERNAL_TABLE";
 
 export interface ParfileConfig {
   operation: Operation;
@@ -43,6 +44,7 @@ export interface ParfileConfig {
   // Advanced - general
   parallel?: number;
   version?: string;
+  access_method?: AccessMethod;
   abort_step?: number;
   logtime?: boolean;
   disable_cluster?: boolean;
@@ -52,9 +54,9 @@ export interface ParfileConfig {
   job_name?: string;
 
   // Advanced - export
-  views_as_tables?: string
-  encryption_mode?: EncryptionMode; 
-  encryption_algorithm?: EncryptionAlgorithm; 
+  views_as_tables?: string;
+  encryption_mode?: EncryptionMode;
+  encryption_algorithm?: EncryptionAlgorithm;
   compression_algorithm?: CompressionAlgorithm;
   source_edition?: string;
   transport_full_check?: boolean;
