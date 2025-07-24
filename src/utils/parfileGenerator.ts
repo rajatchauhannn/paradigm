@@ -218,14 +218,8 @@ export const generateParfileContent = (config: ParfileConfig): string => {
   return params.join("\n");
 };
 
-export const generateCommand = (
-  config: ParfileConfig,
-  outputMode: "parfile" | "command"
-): string => {
+export const generateCommand = (config: ParfileConfig): string => {
   const opCommand = config.operation === "EXPORT" ? "expdp" : "impdp";
-  if (outputMode === "parfile") {
-    return `nohup ${opCommand} parfile=your_parfile.par &`;
-  }
 
   const parfileLines = generateParfileContent(config)
     .split("\n")

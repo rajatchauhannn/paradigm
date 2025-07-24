@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { type ValidationResult } from "./utils/validateConfig";
 import { validateConfig } from "./utils/validateConfig";
-import {
-  generateParfileContent,
-  generateCommand,
-} from "./utils/parfileGenerator";
+import { generateParfileContent } from "./utils/parfileGenerator";
 import { validateWithAI } from "./api/validator";
 import { useParfileConfig } from "./hooks/useParfileConfig";
 
@@ -12,8 +9,8 @@ import { OperationToggle } from "./components/OperationToggle";
 import { AdvancedOptions } from "./components/AdvancedOptions";
 import { ExportModeForm } from "./components/ExportModeForm";
 import { ImportOptionsForm } from "./components/ImportOptionsForm";
-import { CopyButton } from "./components/CopyButton";
 import { PrimarySetupForm } from "./components/PrimarySetupForm";
+import { OutputColumn } from "./components/OutputColumn";
 
 const SectionHeader = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-sm font-semibold text-gray-900 mb-3">{children}</h3>
@@ -33,9 +30,6 @@ function App() {
     handleConvertToImport,
   } = useParfileConfig();
 
-  const [outputMode, setOutputMode] = useState<"parfile" | "command">(
-    "parfile"
-  );
   const [validationResult, setValidationResult] = useState<ValidationResult>({
     errors: [],
     warnings: [],
@@ -54,10 +48,7 @@ function App() {
   const handleAiValidate = async () => {
     setIsAiValidating(true);
     setAiValidationResult(null);
-    const contentToValidate =
-      outputMode === "command"
-        ? generateCommand(config, outputMode)
-        : generateParfileContent(config);
+    const contentToValidate = generateParfileContent(config);
 
     try {
       const result = await validateWithAI(contentToValidate);
@@ -125,76 +116,12 @@ function App() {
           </div>
 
           <div className="lg:col-span-4 space-y-6 lg:sticky top-20">
-            <div className="bg-white shadow-md sm:rounded-lg">
-              <div className="p-4 flex justify-between items-center">
-                <h3 className="text-sm font-semibold">Output</h3>
-                <fieldset className="flex gap-x-4">
-                  <div className="flex items-center">
-                    <input
-                      id="mode_parfile"
-                      type="radio"
-                      value="parfile"
-                      checked={outputMode === "parfile"}
-                      onChange={(e) => setOutputMode(e.target.value as any)}
-                      className="h-4 w-4 text-blue-600"
-                    />
-                    <label htmlFor="mode_parfile" className="ml-2">
-                      Parfile + Cmd
-                    </label>
-                  </div>
-                  <div className="flex items-center">
-                    <input
-                      id="mode_command"
-                      type="radio"
-                      value="command"
-                      checked={outputMode === "command"}
-                      onChange={(e) => setOutputMode(e.target.value as any)}
-                      className="h-4 w-4 text-blue-600"
-                    />
-                    <label htmlFor="mode_command" className="ml-2">
-                      Command Only
-                    </label>
-                  </div>
-                </fieldset>
-              </div>
-              <div className="p-4 pt-0 space-y-4">
-                {outputMode === "parfile" && (
-                  <div className="relative">
-                    <textarea
-                      rows={12}
-                      readOnly
-                      value={generateParfileContent(config)}
-                      className="w-full p-2 font-mono bg-gray-100 border rounded-md"
-                    />
-                    <CopyButton
-                      contentToCopy={generateParfileContent(config)}
-                    />
-                  </div>
-                )}
-                <div className="relative">
-                  <textarea
-                    rows={outputMode === "command" ? 18 : 5}
-                    readOnly
-                    value={generateCommand(config, outputMode)}
-                    className="w-full p-2 font-mono bg-gray-100 border rounded-md"
-                  />
-                  <CopyButton
-                    contentToCopy={generateCommand(config, outputMode)}
-                  />
-                </div>
-              </div>
-              <div className="px-4 py-3 pt-0 text-right">
-                {config.operation === "EXPORT" && (
-                  <button
-                    onClick={handleConvertToImport}
-                    disabled={isInvalid}
-                    className="py-1 px-3 border border-gray-300 shadow-sm rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
-                  >
-                    Create Matching Import
-                  </button>
-                )}
-              </div>
-            </div>
+            {/* THIS IS THE ONLY CHANGE IN APP.TSX */}
+            <OutputColumn
+              config={config}
+              handleConvertToImport={handleConvertToImport}
+              isInvalid={isInvalid}
+            />
             {(isInvalid || validationResult.warnings.length > 0) && (
               <div className="bg-white shadow-md sm:rounded-lg p-4 space-y-3">
                 {isInvalid && (
