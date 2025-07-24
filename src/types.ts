@@ -48,6 +48,7 @@ export interface ParfileConfig {
   job_name?: string;
 
   // Advanced - export
+  source_edition?: string; 
   transport_full_check?: boolean;
   filesize?: string;
   sample?: string;

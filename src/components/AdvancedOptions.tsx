@@ -596,6 +596,28 @@ export const AdvancedOptions = ({
                     dependencies are within the tablespace set.
                   </p>
                 </div>
+
+                <div className="md:col-span-2">
+                  <label htmlFor="source_edition" className={labelClasses}>
+                    Source Edition (for EBR)
+                  </label>
+                  <input
+                    id="source_edition"
+                    type="text"
+                    value={config.source_edition || ""}
+                    placeholder="e.g., V2_1_2024"
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        source_edition: e.target.value,
+                      }))
+                    }
+                    className={inputClasses}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Specifies the source database edition for the export.
+                  </p>
+                </div>
               </>
             )}
 

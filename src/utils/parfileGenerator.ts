@@ -19,6 +19,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     // Export specific
     compression,
     transport_full_check,
+    source_edition,
     encryption_password,
     content,
     query,
@@ -106,6 +107,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     if (transport_full_check && export_mode === "TRANSPORTABLE_TABLESPACES") {
       params.push("TRANSPORT_FULL_CHECK=Y");
     }
+    if (source_edition) params.push(`SOURCE_EDITION=${source_edition}`);
   } else if (operation === "IMPORT") {
     // These parameters apply to all import modes
     if (schemas) params.push(`SCHEMAS=${schemas}`);
