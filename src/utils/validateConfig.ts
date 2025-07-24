@@ -10,14 +10,27 @@ export interface ValidationResult {
 export const validateConfig = (config: ParfileConfig): ValidationResult => {
   const errors: string[] = [];
   const warnings: string[] = [];
+  const isNetworkImport =
+    config.operation === "IMPORT" && !!config.network_link;
 
   // General Validations (USERID is no longer required)
-  if (!config.directory) {
-    errors.push("DIRECTORY is required.");
-  }
-  if (config.include && config.exclude) {
-    // This scenario should be prevented by UI, but good to have a backend check
-    errors.push("Cannot use both INCLUDE and EXCLUDE parameters. Choose one.");
+  if (!isNetworkImport) {
+    if (!config.directory && !config.credential) {
+      errors.push(
+        "A DIRECTORY (On-Premises) or CREDENTIAL (Cloud) must be provided."
+      );
+    }
+    if (config.directory && config.credential) {
+      // This case should be prevented by the UI, but it's a good safeguard.
+      errors.push(
+        "Cannot use both DIRECTORY and CREDENTIAL. Choose one storage destination."
+      );
+    }
+    if (config.credential && config.logfile) {
+      errors.push(
+        "A separate LOGFILE cannot be specified when using a CREDENTIAL. Log files are written to the cloud location as part of the dump file list."
+      );
+    }
   }
 
   // File Naming Validations
@@ -27,10 +40,12 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
     errors.push("DUMPFILE must have a .dmp extension.");
   }
 
-  if (!config.logfile) {
-    errors.push("LOGFILE name is required.");
-  } else if (!config.logfile.toLowerCase().endsWith(".log")) {
-    errors.push("LOGFILE must have a .log extension.");
+  if (!!config.directory && !config.credential) {
+    if (!config.logfile) {
+      errors.push("LOGFILE name is required for on-premises operations.");
+    } else if (!config.logfile.toLowerCase().endsWith(".log")) {
+      errors.push("LOGFILE must have a .log extension.");
+    }
   }
 
   if (config.job_name && !/^[a-zA-Z0-9_]+$/.test(config.job_name)) {

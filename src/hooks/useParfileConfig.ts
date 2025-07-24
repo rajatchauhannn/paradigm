@@ -3,6 +3,7 @@ import { type ParfileConfig } from "../types";
 
 const getInitialState = (): ParfileConfig => ({
   operation: "EXPORT",
+  credential: "",
   directory: "DATA_PUMP_DIR",
   dumpfile: "export.dmp",
   logfile: "export.log",

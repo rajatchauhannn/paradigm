@@ -4,6 +4,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
   const params = [];
   const {
     userid,
+    credential,
     directory,
     dumpfile,
     logfile,
@@ -91,8 +92,20 @@ export const generateParfileContent = (config: ParfileConfig): string => {
 
   // DIRECTORY and DUMPFILE are skipped for network imports
   if (!isNetworkImport) {
-    if (directory) params.push(`DIRECTORY=${directory}`);
-    if (dumpfile) params.push(`DUMPFILE=${dumpfile}`);
+    if (credential) {
+      params.push(`CREDENTIAL=${credential}`);
+    } else if (directory) {
+      params.push(`DIRECTORY=${directory}`);
+    }
+
+    if (dumpfile) {
+      // For cloud, the dumpfile might be a full URL
+      // We need to check if it needs quotes
+      const needsQuotes = dumpfile.includes("?") || dumpfile.includes("&");
+      params.push(
+        needsQuotes ? `DUMPFILE='${dumpfile}'` : `DUMPFILE=${dumpfile}`
+      );
+    }
   }
 
   if (logfile) params.push(`LOGFILE=${logfile}`);

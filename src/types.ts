@@ -28,6 +28,7 @@ export type AccessMethod = "AUTOMATIC" | "DIRECT_PATH" | "EXTERNAL_TABLE";
 export interface ParfileConfig {
   operation: Operation;
   userid: string;
+  credential?: string;
   directory: string;
   dumpfile: string;
   logfile: string; // TODO : Need to figure out how to use NOLOGFILE parameter along with this
