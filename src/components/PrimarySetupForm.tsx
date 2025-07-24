@@ -89,9 +89,6 @@ export const PrimarySetupForm = ({
 
       {/* --- Row 2: Storage Destination Radio Group --- */}
       <fieldset>
-        <legend className="block text-sm font-medium text-gray-700">
-          Storage Destination
-        </legend>
         <div className="mt-2 flex gap-x-6">
           <div className="flex items-center">
             <input
@@ -167,7 +164,7 @@ export const PrimarySetupForm = ({
                     htmlFor="logfileSameAsDumpfile"
                     className="ml-2 block text-sm"
                   >
-                    Same as dumpfile?
+                    Same as dumpfile
                   </label>
                 </div>
               </div>

@@ -33,7 +33,7 @@ export const OutputColumn = ({
             rows={12}
             readOnly
             value={parfileContent}
-            className="w-full p-2 font-mono bg-gray-100 border rounded-md text-xs focus:outline-none"
+            className="w-full p-2 font-mono bg-gray-100 border rounded-md text-xl focus:outline-none"
             spellCheck="false"
           />
           <CopyButton contentToCopy={parfileContent} />
@@ -44,7 +44,7 @@ export const OutputColumn = ({
             rows={5}
             readOnly
             value={commandText}
-            className="w-full p-2 font-mono bg-gray-100 border rounded-md text-xs focus:outline-none"
+            className="w-full p-2 font-mono bg-gray-100 border rounded-md text-xl focus:outline-none"
             spellCheck="false"
           />
           <CopyButton contentToCopy={commandText} />
