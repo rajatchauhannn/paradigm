@@ -52,6 +52,7 @@ export interface ParfileConfig {
   job_name?: string;
 
   // Advanced - export
+  views_as_tables?: string
   encryption_mode?: EncryptionMode; 
   encryption_algorithm?: EncryptionAlgorithm; 
   compression_algorithm?: CompressionAlgorithm;

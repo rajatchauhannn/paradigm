@@ -22,8 +22,9 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     compression_algorithm,
     transport_full_check,
     source_edition,
-    encryption_mode, // <-- ADD THIS
-    encryption_algorithm, // <-- ADD THIS
+    encryption_mode,
+    encryption_algorithm,
+    views_as_tables,
     encryption_password,
     content,
     query,
@@ -71,15 +72,12 @@ export const generateParfileContent = (config: ParfileConfig): string => {
   if (abort_step && abort_step > 0) {
     params.push(`ABORT_STEP=${abort_step}`);
   }
-  if (config.compression?.includes("ENCRYPTED")) {
-    params.push(`ENCRYPTION_ALGORITHM=${config.encryption_algorithm}`);
-    params.push(`ENCRYPTION_MODE=${config.encryption_mode}`);
+  if (compression?.includes("ENCRYPTED")) {
+    params.push(`ENCRYPTION_ALGORITHM=${encryption_algorithm}`);
+    params.push(`ENCRYPTION_MODE=${encryption_mode}`);
     // The password is only added if the mode requires it.
-    if (
-      config.encryption_mode !== "TRANSPARENT" &&
-      config.encryption_password
-    ) {
-      params.push(`ENCRYPTION_PASSWORD=${config.encryption_password}`);
+    if (encryption_mode !== "TRANSPARENT" && encryption_password) {
+      params.push(`ENCRYPTION_PASSWORD=${encryption_password}`);
     }
   }
 
@@ -128,6 +126,14 @@ export const generateParfileContent = (config: ParfileConfig): string => {
       params.push("TRANSPORT_FULL_CHECK=Y");
     }
     if (source_edition) params.push(`SOURCE_EDITION=${source_edition}`);
+    if (views_as_tables) {
+      views_as_tables
+        .split("\n")
+        .filter((line) => line.trim().length > 0)
+        .forEach((line) => {
+          params.push(`VIEWS_AS_TABLES=${line.trim()}`);
+        });
+    }
   } else if (operation === "IMPORT") {
     // These parameters apply to all import modes
     if (schemas) params.push(`SCHEMAS=${schemas}`);

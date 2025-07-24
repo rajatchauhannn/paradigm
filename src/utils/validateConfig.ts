@@ -109,6 +109,18 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
         );
       }
     }
+    if (config.views_as_tables) {
+      const lines = config.views_as_tables
+        .split("\n")
+        .filter((line) => line.trim().length > 0);
+      for (const line of lines) {
+        if (!line.includes(":")) {
+          errors.push(
+            `Invalid format in VIEWS_AS_TABLES: "${line}". Each line must contain a colon (:).`
+          );
+        }
+      }
+    }
   }
 
   // Import-Specific Validations

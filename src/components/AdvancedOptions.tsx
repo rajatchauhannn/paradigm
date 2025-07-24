@@ -59,6 +59,12 @@ export const AdvancedOptions = ({
   const isTransportableExport =
     config.export_mode === "TRANSPORTABLE_TABLESPACES";
   const isTransportableImport = config.import_mode === "TRANSPORTABLE";
+  const isDataFilteringIncompatible =
+    config.export_mode === "FULL" ||
+    config.export_mode === "TRANSPORTABLE_TABLESPACES" ||
+    config.content === "METADATA_ONLY" ||
+    !!config.query ||
+    !!config.sample;
 
   const handleParallelInputChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -788,6 +794,35 @@ export const AdvancedOptions = ({
                   />
                   <p className="mt-1 text-xs text-gray-500">
                     Specifies the source database edition for the export.
+                  </p>
+                </div>
+
+                <div className="md:col-span-2">
+                  <label htmlFor="views_as_tables" className={labelClasses}>
+                    Views as Tables
+                  </label>
+                  <textarea
+                    id="views_as_tables"
+                    rows={3}
+                    value={config.views_as_tables || ""}
+                    placeholder="HR.V_EMP_DEPT:EMP_DEPT_DATA
+SCOTT.V_SALES:SALES_DATA"
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        views_as_tables: e.target.value,
+                      }))
+                    }
+                    className={`${textareaClasses} ${
+                      isDataFilteringIncompatible
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={isDataFilteringIncompatible}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Export data from a view as if it were a table. One entry per
+                    line.
                   </p>
                 </div>
               </>
