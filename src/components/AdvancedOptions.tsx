@@ -1,6 +1,11 @@
 // src/components/AdvancedOptions.tsx
 import { useState } from "react";
-import { type ParfileConfig } from "../types";
+import {
+  type CompressionAlgorithm,
+  type EncryptionAlgorithm,
+  type EncryptionMode,
+  type ParfileConfig,
+} from "../types";
 import { compressionOptions, contentOptions } from "../constants";
 
 // --- Re-usable Tailwind CSS classes for consistency ---
@@ -16,6 +21,22 @@ const labelClasses = "block text-sm font-medium text-gray-700";
 const estimateOptions = ["NO", "YES"];
 const estimateMethodOptions = ["BLOCKS", "STATISTICS"];
 const filterOptions = ["NONE", "INCLUDE", "EXCLUDE"];
+const compressionAlgorithmOptions: CompressionAlgorithm[] = [
+  "BASIC",
+  "LOW",
+  "MEDIUM",
+  "HIGH",
+];
+const encryptionModeOptions: EncryptionMode[] = [
+  "PASSWORD",
+  "DUAL",
+  "TRANSPARENT",
+];
+const encryptionAlgorithmOptions: EncryptionAlgorithm[] = [
+  "AES128",
+  "AES192",
+  "AES256",
+];
 
 // --- Component Props Interface ---
 interface AdvancedOptionsProps {
@@ -156,6 +177,128 @@ export const AdvancedOptions = ({
                     className={selectClasses}
                   >
                     {compressionOptions.map((o) => (
+                      <option key={o} value={o}>
+                        {o}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="compression_algorithm"
+                    className={labelClasses}
+                  >
+                    Compression Algorithm
+                  </label>
+                  <select
+                    id="compression_algorithm"
+                    value={config.compression_algorithm}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        compression_algorithm: e.target.value as any,
+                      }))
+                    }
+                    className={`${selectClasses} ${
+                      !["ALL", "DATA_ONLY"].includes(config.compression || "")
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={
+                      !["ALL", "DATA_ONLY"].includes(config.compression || "")
+                    }
+                  >
+                    {compressionAlgorithmOptions.map((o) => (
+                      <option key={o} value={o}>
+                        {o}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="encryption_password" className={labelClasses}>
+                    Encryption Password
+                  </label>
+                  <input
+                    id="encryption_password"
+                    type="password"
+                    value={config.encryption_password || ""}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        encryption_password: e.target.value,
+                      }))
+                    }
+                    className={`${inputClasses} ${
+                      !config.compression?.includes("ENCRYPTED") ||
+                      config.encryption_mode === "TRANSPARENT"
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={
+                      !config.compression?.includes("ENCRYPTED") ||
+                      config.encryption_mode === "TRANSPARENT"
+                    }
+                    placeholder="Required for PASSWORD or DUAL mode"
+                  />
+                </div>
+
+                {/* --- ADD Encryption Mode Dropdown --- */}
+                <div>
+                  <label htmlFor="encryption_mode" className={labelClasses}>
+                    Encryption Mode
+                  </label>
+                  <select
+                    id="encryption_mode"
+                    value={config.encryption_mode}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        encryption_mode: e.target.value as any,
+                      }))
+                    }
+                    className={`${selectClasses} ${
+                      !config.compression?.includes("ENCRYPTED")
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={!config.compression?.includes("ENCRYPTED")}
+                  >
+                    {encryptionModeOptions.map((o) => (
+                      <option key={o} value={o}>
+                        {o}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* --- ADD Encryption Algorithm Dropdown --- */}
+                <div>
+                  <label
+                    htmlFor="encryption_algorithm"
+                    className={labelClasses}
+                  >
+                    Encryption Algorithm
+                  </label>
+                  <select
+                    id="encryption_algorithm"
+                    value={config.encryption_algorithm}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        encryption_algorithm: e.target.value as any,
+                      }))
+                    }
+                    className={`${selectClasses} ${
+                      !config.compression?.includes("ENCRYPTED")
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={!config.compression?.includes("ENCRYPTED")}
+                  >
+                    {encryptionAlgorithmOptions.map((o) => (
                       <option key={o} value={o}>
                         {o}
                       </option>

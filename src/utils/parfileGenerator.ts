@@ -19,8 +19,11 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     operation,
     // Export specific
     compression,
+    compression_algorithm,
     transport_full_check,
     source_edition,
+    encryption_mode, // <-- ADD THIS
+    encryption_algorithm, // <-- ADD THIS
     encryption_password,
     content,
     query,
@@ -68,8 +71,16 @@ export const generateParfileContent = (config: ParfileConfig): string => {
   if (abort_step && abort_step > 0) {
     params.push(`ABORT_STEP=${abort_step}`);
   }
-  if (encryption_password) {
-    params.push(`ENCRYPTION_PASSWORD=${encryption_password}`);
+  if (config.compression?.includes("ENCRYPTED")) {
+    params.push(`ENCRYPTION_ALGORITHM=${config.encryption_algorithm}`);
+    params.push(`ENCRYPTION_MODE=${config.encryption_mode}`);
+    // The password is only added if the mode requires it.
+    if (
+      config.encryption_mode !== "TRANSPARENT" &&
+      config.encryption_password
+    ) {
+      params.push(`ENCRYPTION_PASSWORD=${config.encryption_password}`);
+    }
   }
 
   // DIRECTORY and DUMPFILE are skipped for network imports
@@ -96,7 +107,12 @@ export const generateParfileContent = (config: ParfileConfig): string => {
       params.push(`TRANSPORTABLE_TABLESPACES=${tablespaces}`);
     else if (export_mode === "FULL") params.push("FULL=Y");
 
-    if (compression !== "NONE") params.push(`COMPRESSION=${compression}`);
+    if (compression && compression !== "NONE") {
+      params.push(`COMPRESSION=${compression}`);
+      if (["ALL", "DATA_ONLY"].includes(compression)) {
+        params.push(`COMPRESSION_ALGORITHM=${compression_algorithm}`);
+      }
+    }
     if (content) params.push(`CONTENT=${content}`);
     if (query) params.push(`QUERY=${query}`);
     if (sample) params.push(`SAMPLE=${sample}`);

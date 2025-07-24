@@ -17,9 +17,12 @@ export type Compression =
   | "ALL_ENCRYPTED"
   | "DATA_ONLY_ENCRYPTED"
   | "METADATA_ONLY_ENCRYPTED";
+export type CompressionAlgorithm = "BASIC" | "LOW" | "MEDIUM" | "HIGH";
 export type ImportMode = "STANDARD" | "TRANSPORTABLE";
 export type XMLValidationMode = "" | "VALIDATE" | "DISABLE";
 export type PartitionOptions = "" | "NONE" | "MERGE" | "APPEND";
+export type EncryptionMode = "PASSWORD" | "DUAL" | "TRANSPARENT";
+export type EncryptionAlgorithm = "AES128" | "AES192" | "AES256";
 
 export interface ParfileConfig {
   operation: Operation;
@@ -49,7 +52,10 @@ export interface ParfileConfig {
   job_name?: string;
 
   // Advanced - export
-  source_edition?: string; 
+  encryption_mode?: EncryptionMode; 
+  encryption_algorithm?: EncryptionAlgorithm; 
+  compression_algorithm?: CompressionAlgorithm;
+  source_edition?: string;
   transport_full_check?: boolean;
   filesize?: string;
   sample?: string;

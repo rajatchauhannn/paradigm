@@ -30,6 +30,9 @@ const getInitialState = (): ParfileConfig => ({
   filesize: "",
   transport_full_check: false,
   source_edition: "",
+  compression_algorithm: "BASIC",
+  encryption_mode: "PASSWORD",
+  encryption_algorithm: "AES128",
   remap_schema: "",
   remap_tablespace: "",
   flashback_time: "",
@@ -123,7 +126,10 @@ export const useParfileConfig = () => {
         transport_datafiles,
         filesize,
         transport_full_check,
+        compression_algorithm,
         source_edition,
+        encryption_mode, // <-- ADD THIS LINE
+        encryption_algorithm, // <-- ADD THIS LINE
         import_mode,
         remap_data,
         remap_schema,
@@ -162,6 +168,9 @@ export const useParfileConfig = () => {
         filesize,
         transport_full_check,
         import_mode,
+        encryption_mode, // <-- ADD THIS LINE
+        encryption_algorithm, // <-- ADD THIS LINE
+        compression_algorithm,
         source_edition,
         remap_data,
         remap_schema,
