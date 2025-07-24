@@ -12,6 +12,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     keep_master,
     access_method,
     logtime,
+    logtime_tz,
     disable_cluster,
     parallel,
     job_name,
@@ -73,7 +74,12 @@ export const generateParfileContent = (config: ParfileConfig): string => {
   }
   if (job_name) params.push(`JOB_NAME=${job_name}`);
   if (metrics) params.push(`METRICS=Y`);
-  if (logtime) params.push("LOGTIME=ALL");
+  if (logtime) {
+    params.push("LOGTIME=ALL");
+    if (logtime_tz) {
+      params.push("LOGTIME_TZ=Y");
+    }
+  }
   if (abort_step && abort_step > 0) {
     params.push(`ABORT_STEP=${abort_step}`);
   }

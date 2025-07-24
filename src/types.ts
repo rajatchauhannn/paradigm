@@ -34,6 +34,7 @@ export interface ParfileConfig {
   directory: string;
   dumpfile: string;
   logfile: string; // TODO : Need to figure out how to use NOLOGFILE parameter along with this
+  logtime_tz?: boolean; 
 
   // Export specific
   export_mode: ExportMode;

@@ -431,25 +431,51 @@ export const AdvancedOptions = ({
               </p>
             </div>
 
-            <div className="md:col-span-2">
+            <div className="md:col-span-2 space-y-2">
               <div className="flex items-center">
                 <input
                   id="logtime"
                   type="checkbox"
                   className="h-4 w-4 text-blue-600 border-gray-300 rounded"
                   checked={!!config.logtime}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const isChecked = e.target.checked;
                     setConfig((c) => ({
                       ...c,
-                      logtime: e.target.checked,
-                    }))
-                  }
+                      logtime: isChecked,
+                      // If we uncheck logtime, we must also uncheck logtime_tz
+                      logtime_tz: isChecked ? c.logtime_tz : false,
+                    }));
+                  }}
                 />
                 <label
                   htmlFor="logtime"
                   className="ml-2 block text-sm font-medium text-gray-700"
                 >
                   Add Timestamps to Log
+                </label>
+              </div>
+              <div className="flex items-center pl-6">
+                <input
+                  id="logtime_tz"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                  checked={!!config.logtime_tz}
+                  onChange={(e) =>
+                    setConfig((c) => ({
+                      ...c,
+                      logtime_tz: e.target.checked,
+                    }))
+                  }
+                  disabled={!config.logtime} // This is the key dependency logic
+                />
+                <label
+                  htmlFor="logtime_tz"
+                  className={`ml-2 block text-sm font-medium ${
+                    !config.logtime ? "text-gray-400" : "text-gray-700"
+                  }`}
+                >
+                  Include UTC Offset in Timestamps
                 </label>
               </div>
               <p className="mt-1 text-xs text-gray-500">
