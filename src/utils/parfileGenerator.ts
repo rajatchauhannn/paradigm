@@ -117,7 +117,10 @@ export const generateParfileContent = (config: ParfileConfig): string => {
 
   // --- Operation-Specific Parameters ---
   if (operation === "EXPORT") {
-    if (export_mode === "SCHEMAS" && schemas) params.push(`SCHEMAS=${schemas}`);
+    if (export_mode === "TRANSPORTABLE_PDB") {
+      params.push("TRANSPORTABLE=ALWAYS");
+    } else if (export_mode === "SCHEMAS" && schemas)
+      params.push(`SCHEMAS=${schemas}`);
     else if (export_mode === "TABLES" && tables)
       params.push(`TABLES=${tables}`);
     else if (export_mode === "TABLESPACES" && tablespaces)

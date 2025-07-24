@@ -56,6 +56,16 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
 
   // Export-Specific Validations
   if (config.operation === "EXPORT") {
+    if (config.export_mode === "TRANSPORTABLE_PDB") {
+      if (config.query)
+        errors.push("QUERY cannot be used with a TRANSPORTABLE_PDB export.");
+      if (config.sample)
+        errors.push("SAMPLE cannot be used with a TRANSPORTABLE_PDB export.");
+      if (config.views_as_tables)
+        errors.push(
+          "VIEWS_AS_TABLES cannot be used with a TRANSPORTABLE_PDB export."
+        );
+    }
     if (config.export_mode === "SCHEMAS" && !config.schemas) {
       errors.push(
         "At least one schema must be specified for SCHEMAS export mode."

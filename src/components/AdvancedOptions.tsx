@@ -68,6 +68,7 @@ export const AdvancedOptions = ({
   const isDataFilteringIncompatible =
     config.export_mode === "FULL" ||
     config.export_mode === "TRANSPORTABLE_TABLESPACES" ||
+    config.export_mode === "TRANSPORTABLE_PDB" || // <-- ADD THIS
     config.content === "METADATA_ONLY" ||
     !!config.query ||
     !!config.sample;

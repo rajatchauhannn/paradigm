@@ -6,7 +6,8 @@ export type ExportMode =
   | "TABLES"
   | "TABLESPACES"
   | "FULL"
-  | "TRANSPORTABLE_TABLESPACES";
+  | "TRANSPORTABLE_TABLESPACES"
+  | "TRANSPORTABLE_PDB";
 export type TableExistsAction = "SKIP" | "APPEND" | "TRUNCATE" | "REPLACE" | "";
 export type Content = "ALL" | "DATA_ONLY" | "METADATA_ONLY";
 export type Compression =
@@ -24,6 +25,7 @@ export type PartitionOptions = "" | "NONE" | "MERGE" | "APPEND";
 export type EncryptionMode = "PASSWORD" | "DUAL" | "TRANSPARENT";
 export type EncryptionAlgorithm = "AES128" | "AES192" | "AES256";
 export type AccessMethod = "AUTOMATIC" | "DIRECT_PATH" | "EXTERNAL_TABLE";
+export type TransportableOption = "" | "ALWAYS";
 
 export interface ParfileConfig {
   operation: Operation;
@@ -35,6 +37,7 @@ export interface ParfileConfig {
 
   // Export specific
   export_mode: ExportMode;
+  transportable_option?: TransportableOption;
   schemas?: string;
   tables?: string;
   tablespaces?: string;

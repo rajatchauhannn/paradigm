@@ -46,6 +46,7 @@ export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
             <option value="TRANSPORTABLE_TABLESPACES">
               Transportable Tablespaces
             </option>
+            <option value="TRANSPORTABLE_PDB">Transportable PDB (TRANSPORTABLE=ALWAYS)</option>
             <option value="FULL">Full Database</option>
           </select>
         </div>
