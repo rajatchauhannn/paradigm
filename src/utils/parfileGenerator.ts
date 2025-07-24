@@ -8,6 +8,7 @@ export const generateParfileContent = (config: ParfileConfig): string => {
     dumpfile,
     logfile,
     abort_step,
+    keep_master,
     access_method,
     logtime,
     disable_cluster,
@@ -75,6 +76,9 @@ export const generateParfileContent = (config: ParfileConfig): string => {
   }
   if (access_method && access_method !== "AUTOMATIC") {
     params.push(`ACCESS_METHOD=${access_method}`);
+  }
+  if (keep_master) {
+    params.push("KEEP_MASTER=Y");
   }
   if (compression?.includes("ENCRYPTED")) {
     params.push(`ENCRYPTION_ALGORITHM=${encryption_algorithm}`);

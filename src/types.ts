@@ -44,6 +44,7 @@ export interface ParfileConfig {
   // Advanced - general
   parallel?: number;
   version?: string;
+  keep_master?: boolean;
   access_method?: AccessMethod;
   abort_step?: number;
   logtime?: boolean;

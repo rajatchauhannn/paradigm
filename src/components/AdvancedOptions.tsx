@@ -517,6 +517,33 @@ export const AdvancedOptions = ({
             </div>
 
             <div className="md:col-span-2">
+              <div className="flex items-center">
+                <input
+                  id="keep_master"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                  checked={!!config.keep_master}
+                  onChange={(e) =>
+                    setConfig((c) => ({
+                      ...c,
+                      keep_master: e.target.checked,
+                    }))
+                  }
+                />
+                <label
+                  htmlFor="keep_master"
+                  className="ml-2 block text-sm font-medium text-gray-700"
+                >
+                  Keep Master Table (Diagnostic)
+                </label>
+              </div>
+              <p className="mt-1 text-xs text-gray-500">
+                Retains the job's master table after a successful run for
+                debugging.
+              </p>
+            </div>
+
+            <div className="md:col-span-2">
               <label htmlFor="job_name" className={labelClasses}>
                 Job Name (for monitoring)
               </label>
