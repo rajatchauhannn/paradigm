@@ -12,7 +12,7 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
-app.post("/validate", async (req: Request, res: Response) => {
+app.post("/api/validate", async (req: Request, res: Response) => {
   console.log("\n--- [START] /api/validate request received ---");
 
   try {

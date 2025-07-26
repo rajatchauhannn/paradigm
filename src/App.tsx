@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { type ValidationResult } from "./utils/validateConfig";
 import { validateConfig } from "./utils/validateConfig";
 import { generateParfileContent } from "./utils/parfileGenerator";
-import { validateWithAI } from "./api/validator";
+import { validateWithAI } from "./api/client";
 import { useParfileConfig } from "./hooks/useParfileConfig";
 
 import { OperationToggle } from "./components/OperationToggle";
