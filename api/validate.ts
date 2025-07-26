@@ -1,32 +1,37 @@
+// In api/validate.ts
+
 import "dotenv/config";
 import express, { type Request, type Response } from "express";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 import { GoogleGenAI } from "@google/genai";
+
+// This is correct and needed for both environments
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Initialize the Gemini client (it picks up GEMINI_API_KEY automatically)
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
+// --- PRODUCTION ONLY ---
+// This block will ONLY run on Render. It will NOT run on your local machine.
+if (process.env.NODE_ENV === "production") {
+  const buildPath = path.join(__dirname, "..");
+  app.use(express.static(buildPath));
 
+  // This catch-all MUST be inside the production block.
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(buildPath, "index.html"));
+  });
+}
+
+// --- API Route (Works in both environments) ---
 app.post("/api/validate", async (req: Request, res: Response) => {
-  console.log("\n--- [START] /api/validate request received ---");
-
   try {
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
     const { parfileContent } = req.body;
-    console.log("[1] Received content length:", parfileContent?.length);
-
-    if (!parfileContent || parfileContent.trim().length < 10) {
-      console.log("[FAIL] Content too short. Sending 400 error.");
-      return res
-        .status(400)
-        .json({ errors: ["Input content is too short to analyze."] });
-    }
-
-    // Combine system instruction and user content into one prompt
     const systemInstruction = `
 You are an expert Oracle Database Administrator. Analyze the following Oracle Data Pump parameters.
 Your response MUST be a valid JSON object with three keys: "errors", "warnings", and "suggestions".
@@ -36,47 +41,29 @@ Do not include any additional text or explanations.
 IF there are no errors, warnings, or suggestions, return empty arrays for those keys.
 KEEP IT AS SHORT AS POSSIBLE.
     `;
-
     const prompt = `${systemInstruction}\n\n${parfileContent}`;
-    console.log("[2] Sending prompt to Gemini API...");
-
-    // Call Gemini’s generateContent API
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: prompt,
     });
-
-    // The generated text (string) may include markdown fences—strip them out
     const text = response.text;
     if (!text) {
-      return res.status(500).json({
-        errors: ["AI response was empty."],
-        warnings: [],
-        suggestions: [],
-      });
+      return res.status(500).json({ errors: ["AI response was empty."] });
     }
     const cleanedText = text
       .replace(/```json/g, "")
       .replace(/```/g, "")
       .trim();
-    console.log("[4] Cleaned text, preparing to parse JSON.");
-    const aiResponseJson = JSON.parse(cleanedText);
-    return res.status(200).json(aiResponseJson);
+    return res.status(200).json(JSON.parse(cleanedText));
   } catch (error: any) {
-    // Catch errors from the AI call or JSON.parse
-    console.error("Error during AI validation:", error);
     return res.status(500).json({
-      errors: [
-        "An error occurred while communicating with the AI service.",
-        error.message,
-      ],
-      warnings: [],
-      suggestions: [],
+      errors: ["An error occurred during AI validation.", error.message],
     });
   }
 });
 
-const PORT = 3000; // The port your backend will run on
+// --- Server Listen (Works in both environments) ---
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`[API] Server is running and listening on port ${PORT}`);
 });
