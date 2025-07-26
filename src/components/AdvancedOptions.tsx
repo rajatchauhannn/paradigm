@@ -68,7 +68,7 @@ export const AdvancedOptions = ({
   const isDataFilteringIncompatible =
     config.export_mode === "FULL" ||
     config.export_mode === "TRANSPORTABLE_TABLESPACES" ||
-    config.export_mode === "TRANSPORTABLE_PDB" ||
+    config.export_mode === "TRANSPORTABLE_PDB" || // <-- ADD THIS
     config.content === "METADATA_ONLY" ||
     !!config.query ||
     !!config.sample;
@@ -145,22 +145,7 @@ export const AdvancedOptions = ({
       {showAdvanced && (
         <div className="pt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
-            {/* --- 1. Core Job Parameters --- */}
-            <div className="md:col-span-2">
-              <label htmlFor="job_name" className={labelClasses}>
-                Job Name (for monitoring)
-              </label>
-              <input
-                id="job_name"
-                type="text"
-                placeholder="exp_full_prod_20240726"
-                value={config.job_name || ""}
-                onChange={(e) =>
-                  setConfig((prev) => ({ ...prev, job_name: e.target.value }))
-                }
-                className={inputClasses}
-              />
-            </div>
+            {/* --- General Options --- */}
             <div>
               <label htmlFor="parallel" className={labelClasses}>
                 Parallel
@@ -175,6 +160,7 @@ export const AdvancedOptions = ({
                 className={inputClasses}
               />
             </div>
+
             <div>
               <label htmlFor="version" className={labelClasses}>
                 Version (for compatibility)
@@ -191,142 +177,9 @@ export const AdvancedOptions = ({
               />
             </div>
 
-            {/* --- 2. Data Filtering & Subsetting --- */}
-            <div className="md:col-span-2">
-              <label htmlFor="filter_type" className={labelClasses}>
-                Object Filter (Include/Exclude)
-              </label>
-              <select
-                id="filter_type"
-                value={filterMode}
-                onChange={handleFilterTypeChange}
-                className={`${selectClasses} ${
-                  isFullExport ? "disabled:bg-gray-100 cursor-not-allowed" : ""
-                }`}
-                disabled={isFullExport}
-              >
-                {filterOptions.map((o) => (
-                  <option key={o} value={o}>
-                    {o}
-                  </option>
-                ))}
-              </select>
-              <textarea
-                id="filter_text"
-                rows={3}
-                value={config.include || config.exclude || ""}
-                onChange={handleFilterTextChange}
-                className={`${textareaClasses} ${
-                  isFullExport ? "disabled:bg-gray-100 cursor-not-allowed" : ""
-                }`}
-                disabled={filterMode === "NONE" || isFullExport}
-                placeholder={
-                  isFullExport
-                    ? "Filters are disabled for FULL exports."
-                    : filterMode !== "NONE"
-                    ? `Example: ${filterMode}:("TABLE:'LIKE ''EMP%'''")`
-                    : "Select a filter type to begin"
-                }
-              />
-              <p className="mt-1 text-xs text-gray-500">
-                Filter objects using Data Pump syntax.
-              </p>
-            </div>
-
+            {/* --- EXPORT Specific Options --- */}
             {config.operation === "EXPORT" && (
               <>
-                <div className="md:col-span-2">
-                  <label htmlFor="query" className={labelClasses}>
-                    Query (Row Filter)
-                  </label>
-                  <textarea
-                    id="query"
-                    rows={3}
-                    value={config.query}
-                    placeholder='TABLE_NAME:"WHERE clause"'
-                    onChange={(e) =>
-                      setConfig((prev) => ({ ...prev, query: e.target.value }))
-                    }
-                    className={`${textareaClasses} ${
-                      !!config.sample || isFullExport || isMetadataOnlyExport
-                        ? "disabled:bg-gray-100 cursor-not-allowed"
-                        : ""
-                    }`}
-                    disabled={
-                      !!config.sample ||
-                      isFullExport ||
-                      isMetadataOnlyExport ||
-                      isTransportableExport
-                    }
-                  />
-                </div>
-
-                <div className="md:col-span-2">
-                  <label htmlFor="sample" className={labelClasses}>
-                    Sample (Percentage)
-                  </label>
-                  <input
-                    id="sample"
-                    type="text"
-                    value={config.sample || ""}
-                    placeholder="schema.table_name:percentage"
-                    onChange={(e) =>
-                      setConfig((prev) => ({
-                        ...prev,
-                        sample: e.target.value,
-                      }))
-                    }
-                    className={`${inputClasses} ${
-                      !!config.query || isFullExport || isMetadataOnlyExport
-                        ? "disabled:bg-gray-100 cursor-not-allowed"
-                        : ""
-                    }`}
-                    disabled={
-                      !!config.query ||
-                      isFullExport ||
-                      isMetadataOnlyExport ||
-                      isTransportableExport
-                    }
-                  />
-                  <p className="mt-1 text-xs text-gray-500">
-                    Export a random percentage of data. Example:
-                    `HR.EMPLOYEES:10.5`
-                  </p>
-                </div>
-              </>
-            )}
-
-            {/* --- 3. Operation-Specific Options --- */}
-            {config.operation === "EXPORT" && (
-              <>
-                <div className="md:col-span-2">
-                  <label htmlFor="content" className={labelClasses}>
-                    Content
-                  </label>
-                  <select
-                    id="content"
-                    value={config.content}
-                    onChange={(e) =>
-                      setConfig((prev) => ({
-                        ...prev,
-                        content: e.target.value as any,
-                      }))
-                    }
-                    className={`${selectClasses} ${
-                      isTransportableExport
-                        ? "disabled:bg-gray-100 cursor-not-allowed"
-                        : ""
-                    }`}
-                    disabled={isTransportableExport}
-                  >
-                    {contentOptions.map((o) => (
-                      <option key={o} value={o}>
-                        {o}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
                 <div>
                   <label htmlFor="compression" className={labelClasses}>
                     Compression
@@ -383,7 +236,36 @@ export const AdvancedOptions = ({
                   </select>
                 </div>
 
-                <div className="md:col-span-2">
+                <div>
+                  <label htmlFor="encryption_password" className={labelClasses}>
+                    Encryption Password
+                  </label>
+                  <input
+                    id="encryption_password"
+                    type="password"
+                    value={config.encryption_password || ""}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        encryption_password: e.target.value,
+                      }))
+                    }
+                    className={`${inputClasses} ${
+                      !config.compression?.includes("ENCRYPTED") ||
+                      config.encryption_mode === "TRANSPARENT"
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={
+                      !config.compression?.includes("ENCRYPTED") ||
+                      config.encryption_mode === "TRANSPARENT"
+                    }
+                    placeholder="Required for PASSWORD or DUAL mode"
+                  />
+                </div>
+
+                {/* --- ADD Encryption Mode Dropdown --- */}
+                <div>
                   <label htmlFor="encryption_mode" className={labelClasses}>
                     Encryption Mode
                   </label>
@@ -411,6 +293,7 @@ export const AdvancedOptions = ({
                   </select>
                 </div>
 
+                {/* --- ADD Encryption Algorithm Dropdown --- */}
                 <div>
                   <label
                     htmlFor="encryption_algorithm"
@@ -443,6 +326,33 @@ export const AdvancedOptions = ({
                 </div>
 
                 <div>
+                  <label htmlFor="content" className={labelClasses}>
+                    Content
+                  </label>
+                  <select
+                    id="content"
+                    value={config.content}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        content: e.target.value as any,
+                      }))
+                    }
+                    className={`${selectClasses} ${
+                      isTransportableExport
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={isTransportableExport}
+                  >
+                    {contentOptions.map((o) => (
+                      <option key={o} value={o}>
+                        {o}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
                   <label htmlFor="encryption_password" className={labelClasses}>
                     Encryption Password
                   </label>
@@ -457,17 +367,327 @@ export const AdvancedOptions = ({
                       }))
                     }
                     className={`${inputClasses} ${
-                      !config.compression?.includes("ENCRYPTED") ||
-                      config.encryption_mode === "TRANSPARENT"
+                      !config.compression?.includes("ENCRYPTED")
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={!config.compression?.includes("ENCRYPTED")}
+                    placeholder="Enter password to encrypt dump file"
+                  />
+                </div>
+              </>
+            )}
+
+            <div className="md:col-span-2">
+              <div className="flex items-center">
+                <input
+                  id="metrics"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                  checked={!!config.metrics}
+                  onChange={(e) =>
+                    setConfig((c) => ({
+                      ...c,
+                      metrics: e.target.checked,
+                    }))
+                  }
+                />
+                <label
+                  htmlFor="metrics"
+                  className="ml-2 block text-sm font-medium text-gray-700"
+                >
+                  Enable Metrics Logging
+                </label>
+              </div>
+              <p className="mt-1 text-xs text-gray-500">
+                Adds detailed performance and resource usage to the log file.
+              </p>
+            </div>
+
+            <div className="md:col-span-2">
+              <div className="flex items-center">
+                <input
+                  id="disable_cluster"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                  checked={!!config.disable_cluster}
+                  onChange={(e) =>
+                    setConfig((c) => ({
+                      ...c,
+                      disable_cluster: e.target.checked,
+                    }))
+                  }
+                />
+                <label
+                  htmlFor="disable_cluster"
+                  className="ml-2 block text-sm font-medium text-gray-700"
+                >
+                  Disable Cluster Parallelism (RAC only)
+                </label>
+              </div>
+              <p className="mt-1 text-xs text-gray-500">
+                If checked, forces the job to run only on the current instance
+                (adds CLUSTER=N).
+              </p>
+            </div>
+
+            <div className="md:col-span-2 space-y-2">
+              <div className="flex items-center">
+                <input
+                  id="logtime"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                  checked={!!config.logtime}
+                  onChange={(e) => {
+                    const isChecked = e.target.checked;
+                    setConfig((c) => ({
+                      ...c,
+                      logtime: isChecked,
+                      // If we uncheck logtime, we must also uncheck logtime_tz
+                      logtime_tz: isChecked ? c.logtime_tz : false,
+                    }));
+                  }}
+                />
+                <label
+                  htmlFor="logtime"
+                  className="ml-2 block text-sm font-medium text-gray-700"
+                >
+                  Add Timestamps to Log
+                </label>
+              </div>
+              <div className="flex items-center pl-6">
+                <input
+                  id="logtime_tz"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                  checked={!!config.logtime_tz}
+                  onChange={(e) =>
+                    setConfig((c) => ({
+                      ...c,
+                      logtime_tz: e.target.checked,
+                    }))
+                  }
+                  disabled={!config.logtime} // This is the key dependency logic
+                />
+                <label
+                  htmlFor="logtime_tz"
+                  className={`ml-2 block text-sm font-medium ${
+                    !config.logtime ? "text-gray-400" : "text-gray-700"
+                  }`}
+                >
+                  Include UTC Offset in Timestamps
+                </label>
+              </div>
+              <p className="mt-1 text-xs text-gray-500">
+                Adds a timestamp to all messages in the log file (LOGTIME=ALL).
+              </p>
+            </div>
+
+            <div className="md:col-span-2 p-3 border border-yellow-400 rounded-md bg-yellow-50">
+              <label
+                htmlFor="abort_step"
+                className="block text-sm font-medium text-yellow-800"
+              >
+                Abort Step (Diagnostic Use Only)
+              </label>
+              <input
+                id="abort_step"
+                type="text"
+                pattern="[0-9]*" // Suggests numeric keyboard on mobile
+                value={config.abort_step || ""}
+                placeholder="Internal step number to halt job"
+                onChange={(e) => {
+                  const value = e.target.value.replace(/[^0-9]/g, "");
+                  const parsed = parseInt(value, 10);
+                  setConfig((prev) => ({
+                    ...prev,
+                    abort_step: isNaN(parsed) ? undefined : parsed,
+                  }));
+                }}
+                className={inputClasses}
+              />
+              <p className="mt-1 text-xs text-yellow-700">
+                Intentionally stops the job at a specific internal step for
+                debugging. Use with caution.
+              </p>
+            </div>
+
+            <div className="md:col-span-2">
+              <label htmlFor="access_method" className={labelClasses}>
+                Access Method
+              </label>
+              <select
+                id="access_method"
+                value={config.access_method}
+                onChange={(e) =>
+                  setConfig((prev) => ({
+                    ...prev,
+                    access_method: e.target.value as any,
+                  }))
+                }
+                className={`${selectClasses} ${
+                  isAccessMethodDisabled
+                    ? "disabled:bg-gray-100 cursor-not-allowed"
+                    : ""
+                }`}
+                disabled={isAccessMethodDisabled}
+              >
+                {accessMethodOptions.map((o) => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1 text-xs text-gray-500">
+                Forces a specific method for loading/unloading data.
+              </p>
+            </div>
+
+            <div className="md:col-span-2">
+              <div className="flex items-center">
+                <input
+                  id="keep_master"
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                  checked={!!config.keep_master}
+                  onChange={(e) =>
+                    setConfig((c) => ({
+                      ...c,
+                      keep_master: e.target.checked,
+                    }))
+                  }
+                />
+                <label
+                  htmlFor="keep_master"
+                  className="ml-2 block text-sm font-medium text-gray-700"
+                >
+                  Keep Master Table (Diagnostic)
+                </label>
+              </div>
+              <p className="mt-1 text-xs text-gray-500">
+                Retains the job's master table after a successful run for
+                debugging.
+              </p>
+            </div>
+
+            <div className="md:col-span-2">
+              <label htmlFor="job_name" className={labelClasses}>
+                Job Name (for monitoring)
+              </label>
+              <input
+                id="job_name"
+                type="text"
+                placeholder="exp_full_prod_20240726"
+                value={config.job_name || ""}
+                onChange={(e) =>
+                  setConfig((prev) => ({ ...prev, job_name: e.target.value }))
+                }
+                className={inputClasses}
+              />
+            </div>
+
+            {/* --- Unified Filter Control (FIXED) --- */}
+            <div className="md:col-span-2">
+              <label htmlFor="filter_type" className={labelClasses}>
+                Object Filter (Include/Exclude)
+              </label>
+              <select
+                id="filter_type"
+                value={filterMode}
+                onChange={handleFilterTypeChange}
+                className={`${selectClasses} ${
+                  isFullExport ? "disabled:bg-gray-100 cursor-not-allowed" : ""
+                }`}
+                disabled={isFullExport}
+              >
+                {filterOptions.map((o) => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
+              </select>
+              <textarea
+                id="filter_text"
+                rows={3}
+                value={config.include || config.exclude || ""}
+                onChange={handleFilterTextChange}
+                className={`${textareaClasses} ${
+                  isFullExport ? "disabled:bg-gray-100 cursor-not-allowed" : ""
+                }`}
+                disabled={filterMode === "NONE" || isFullExport}
+                placeholder={
+                  isFullExport
+                    ? "Filters are disabled for FULL exports."
+                    : filterMode !== "NONE"
+                    ? `Example: ${filterMode}:("TABLE:'LIKE ''EMP%'''")`
+                    : "Select a filter type to begin"
+                }
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                Filter objects using Data Pump syntax.
+              </p>
+            </div>
+
+            {/* --- EXPORT Specific Options --- */}
+            {config.operation === "EXPORT" && (
+              <>
+                <div className="md:col-span-2">
+                  <label htmlFor="query" className={labelClasses}>
+                    Query
+                  </label>
+                  <textarea
+                    id="query"
+                    rows={3}
+                    value={config.query}
+                    placeholder='TABLE_NAME:"WHERE clause"'
+                    onChange={(e) =>
+                      setConfig((prev) => ({ ...prev, query: e.target.value }))
+                    }
+                    className={`${textareaClasses} ${
+                      !!config.sample || isFullExport || isMetadataOnlyExport
                         ? "disabled:bg-gray-100 cursor-not-allowed"
                         : ""
                     }`}
                     disabled={
-                      !config.compression?.includes("ENCRYPTED") ||
-                      config.encryption_mode === "TRANSPARENT"
+                      !!config.sample ||
+                      isFullExport ||
+                      isMetadataOnlyExport ||
+                      isTransportableExport
                     }
-                    placeholder="Required for PASSWORD or DUAL mode"
                   />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label htmlFor="sample" className={labelClasses}>
+                    Sample (Percentage)
+                  </label>
+                  <input
+                    id="sample"
+                    type="text"
+                    value={config.sample || ""}
+                    placeholder="schema.table_name:percentage"
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        sample: e.target.value,
+                      }))
+                    }
+                    className={`${inputClasses} ${
+                      !!config.query || isFullExport || isMetadataOnlyExport
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={
+                      !!config.query ||
+                      isFullExport ||
+                      isMetadataOnlyExport ||
+                      isTransportableExport
+                    }
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Export a random percentage of data. Example:
+                    `HR.EMPLOYEES:10.5`
+                  </p>
                 </div>
 
                 <div>
@@ -572,28 +792,6 @@ export const AdvancedOptions = ({
                 </div>
 
                 <div>
-                  <label htmlFor="filesize" className={labelClasses}>
-                    Filesize (per dump file)
-                  </label>
-                  <input
-                    id="filesize"
-                    type="text"
-                    value={config.filesize || ""}
-                    placeholder="e.g., 10G, 500M, 2048K"
-                    onChange={(e) =>
-                      setConfig((prev) => ({
-                        ...prev,
-                        filesize: e.target.value,
-                      }))
-                    }
-                    className={inputClasses}
-                  />
-                  <p className="mt-1 text-xs text-gray-500">
-                    Splits the export into multiple files.
-                  </p>
-                </div>
-
-                <div>
                   <label htmlFor="reuse_dumpfiles" className={labelClasses}>
                     Reuse Dumpfiles
                   </label>
@@ -613,50 +811,27 @@ export const AdvancedOptions = ({
                   </select>
                 </div>
 
-                <div className="md:col-span-2">
-                  <label htmlFor="views_as_tables" className={labelClasses}>
-                    Views as Tables
-                  </label>
-                  <textarea
-                    id="views_as_tables"
-                    rows={3}
-                    value={config.views_as_tables || ""}
-                    placeholder="HR.V_EMP_DEPT:EMP_DEPT_DATA..."
-                    onChange={(e) =>
-                      setConfig((prev) => ({
-                        ...prev,
-                        views_as_tables: e.target.value,
-                      }))
-                    }
-                    className={`${textareaClasses} ${
-                      isDataFilteringIncompatible
-                        ? "disabled:bg-gray-100 cursor-not-allowed"
-                        : ""
-                    }`}
-                    disabled={isDataFilteringIncompatible}
-                  />
-                  <p className="mt-1 text-xs text-gray-500">
-                    Export data from a view as if it were a table.
-                  </p>
-                </div>
-
-                <div className="md:col-span-2">
-                  <label htmlFor="source_edition" className={labelClasses}>
-                    Source Edition (for EBR)
+                <div>
+                  <label htmlFor="filesize" className={labelClasses}>
+                    Filesize (per dump file)
                   </label>
                   <input
-                    id="source_edition"
+                    id="filesize"
                     type="text"
-                    value={config.source_edition || ""}
-                    placeholder="e.g., V2_1_2024"
+                    value={config.filesize || ""}
+                    placeholder="e.g., 10G, 500M, 2048K"
                     onChange={(e) =>
                       setConfig((prev) => ({
                         ...prev,
-                        source_edition: e.target.value,
+                        filesize: e.target.value,
                       }))
                     }
                     className={inputClasses}
                   />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Splits the export into multiple files of this size. DUMPFILE
+                    name will be updated with %U.
+                  </p>
                 </div>
 
                 <div className="md:col-span-2">
@@ -688,15 +863,246 @@ export const AdvancedOptions = ({
                           : "text-gray-700"
                       }`}
                     >
-                      Enable Transport Full Check (for TTS)
+                      Enable Transport Full Check
                     </label>
                   </div>
+                  <p className="mt-1 text-xs text-gray-500">
+                    Only for Transportable Tablespace mode. Verifies all object
+                    dependencies are within the tablespace set.
+                  </p>
+                </div>
+
+                <div className="md:col-span-2">
+                  <label htmlFor="source_edition" className={labelClasses}>
+                    Source Edition (for EBR)
+                  </label>
+                  <input
+                    id="source_edition"
+                    type="text"
+                    value={config.source_edition || ""}
+                    placeholder="e.g., V2_1_2024"
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        source_edition: e.target.value,
+                      }))
+                    }
+                    className={inputClasses}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Specifies the source database edition for the export.
+                  </p>
+                </div>
+
+                <div className="md:col-span-2">
+                  <label htmlFor="views_as_tables" className={labelClasses}>
+                    Views as Tables
+                  </label>
+                  <textarea
+                    id="views_as_tables"
+                    rows={3}
+                    value={config.views_as_tables || ""}
+                    placeholder="HR.V_EMP_DEPT:EMP_DEPT_DATA
+SCOTT.V_SALES:SALES_DATA"
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        views_as_tables: e.target.value,
+                      }))
+                    }
+                    className={`${textareaClasses} ${
+                      isDataFilteringIncompatible
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={isDataFilteringIncompatible}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Export data from a view as if it were a table. One entry per
+                    line.
+                  </p>
                 </div>
               </>
             )}
 
+            {/* --- IMPORT Specific Options --- */}
             {config.operation === "IMPORT" && (
               <>
+                <div className="md:col-span-2 p-4 border rounded-md bg-gray-50">
+                  <label className={`${labelClasses} mb-2`}>Data Options</label>
+                  <div className="space-y-3">
+                    {/* Checkbox for Skip Constraints */}
+                    <div className="flex items-center">
+                      <input
+                        id="data_options_skip_constraints"
+                        type="checkbox"
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                        checked={!!config.data_options_skip_constraints}
+                        onChange={(e) =>
+                          setConfig((c) => ({
+                            ...c,
+                            data_options_skip_constraints: e.target.checked,
+                          }))
+                        }
+                      />
+                      <label
+                        htmlFor="data_options_skip_constraints"
+                        className="ml-2 block text-sm text-gray-700"
+                      >
+                        Skip Constraint Errors
+                      </label>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="partition_options"
+                        className={labelClasses}
+                      >
+                        Partition Options
+                      </label>
+                      <select
+                        id="partition_options"
+                        value={config.partition_options}
+                        onChange={(e) =>
+                          setConfig((prev) => ({
+                            ...prev,
+                            partition_options: e.target.value as any,
+                          }))
+                        }
+                        className={`${selectClasses} ${
+                          !["APPEND", "MERGE"].includes(
+                            config.table_exists_action
+                          )
+                            ? "disabled:bg-gray-100 cursor-not-allowed"
+                            : ""
+                        }`}
+                        disabled={
+                          !["APPEND", "MERGE"].includes(
+                            config.table_exists_action
+                          )
+                        }
+                      >
+                        <option value="">(Default)</option>
+                        <option value="NONE">
+                          None (Create tables as in source)
+                        </option>
+                        <option value="APPEND">
+                          Append partitions to target table
+                        </option>
+                        <option value="MERGE">
+                          Merge source partitions into target
+                        </option>
+                      </select>
+                      <p className="mt-1 text-xs text-gray-500">
+                        Controls how partitions are handled on import. Often
+                        used with TABLE_EXISTS_ACTION.
+                      </p>
+                    </div>
+                    <div className="md:col-span-2">
+                      <div className="flex items-center">
+                        <input
+                          id="skip_unusable_indexes"
+                          type="checkbox"
+                          className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                          checked={!!config.skip_unusable_indexes}
+                          onChange={(e) =>
+                            setConfig((c) => ({
+                              ...c,
+                              skip_unusable_indexes: e.target.checked,
+                            }))
+                          }
+                        />
+                        <label
+                          htmlFor="skip_unusable_indexes"
+                          className="ml-2 block text-sm font-medium text-gray-700"
+                        >
+                          Skip Unusable Indexes
+                        </label>
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500">
+                        Continue the import even if indexes fail to build.
+                      </p>
+                    </div>
+
+                    <div className="md:col-span-2">
+                      <div className="flex items-center">
+                        <input
+                          id="disable_streams_configuration"
+                          type="checkbox"
+                          className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                          checked={!!config.disable_streams_configuration}
+                          onChange={(e) =>
+                            setConfig((c) => ({
+                              ...c,
+                              disable_streams_configuration: e.target.checked,
+                            }))
+                          }
+                        />
+                        <label
+                          htmlFor="disable_streams_configuration"
+                          className="ml-2 block text-sm font-medium text-gray-700"
+                        >
+                          Disable Streams Configuration Import
+                        </label>
+                      </div>
+                      <p className="mt-1 text-xs text-gray-500">
+                        Prevents Oracle Streams metadata from being imported.
+                      </p>
+                    </div>
+
+                    <div className="md:col-span-2 p-3 border border-yellow-400 rounded-md bg-yellow-50">
+                      <div className="flex items-center">
+                        <input
+                          id="master_only"
+                          type="checkbox"
+                          className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                          checked={!!config.master_only}
+                          onChange={(e) =>
+                            setConfig((c) => ({
+                              ...c,
+                              master_only: e.target.checked,
+                            }))
+                          }
+                        />
+                        <label
+                          htmlFor="master_only"
+                          className="ml-2 block text-sm font-medium text-yellow-800"
+                        >
+                          Import Master Table Only (Expert Use)
+                        </label>
+                      </div>
+                      <p className="mt-1 text-xs text-yellow-700">
+                        For job recovery only. Loads the job state without
+                        importing data. Most other import options will be
+                        ignored.
+                      </p>
+                    </div>
+
+                    {/* Select for XML Validation */}
+                    <div>
+                      <label
+                        htmlFor="data_options_xml_validation"
+                        className="block text-sm font-medium text-gray-600 mb-1"
+                      >
+                        XML Schema Validation
+                      </label>
+                      <select
+                        id="data_options_xml_validation"
+                        value={config.data_options_xml_validation}
+                        onChange={(e) =>
+                          setConfig((prev) => ({
+                            ...prev,
+                            data_options_xml_validation: e.target.value as any,
+                          }))
+                        }
+                        className={selectClasses}
+                      >
+                        <option value="">(Default)</option>
+                        <option value="VALIDATE">Enable Validation</option>
+                        <option value="DISABLE">Disable Validation</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
                 <div className="md:col-span-2">
                   <label className={labelClasses}>Import Mode</label>
                   <div className="flex gap-x-6 mt-1">
@@ -729,7 +1135,7 @@ export const AdvancedOptions = ({
                           setConfig((c) => ({
                             ...c,
                             import_mode: e.target.value as any,
-                            remap_schema: "",
+                            remap_schema: "", // <-- Clear the other mode's fields
                             remap_tablespace: "",
                           }))
                         }
@@ -742,6 +1148,35 @@ export const AdvancedOptions = ({
                   </div>
                 </div>
 
+                <div className="md:col-span-2">
+                  <label htmlFor="transport_datafiles" className={labelClasses}>
+                    Transport Datafiles (Source Paths)
+                  </label>
+                  <textarea
+                    id="transport_datafiles"
+                    rows={3}
+                    value={config.transport_datafiles || ""}
+                    placeholder="'/path/to/source_file1.dbf', '/path/to/source_file2.dbf'"
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        transport_datafiles: e.target.value,
+                      }))
+                    }
+                    className={`${textareaClasses} ${
+                      config.import_mode !== "TRANSPORTABLE"
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={config.import_mode !== "TRANSPORTABLE"}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Required for Transportable mode. List the source datafile
+                    paths.
+                  </p>
+                </div>
+
+                {/* --- UPDATE a.remap_schema --- */}
                 <div>
                   <label htmlFor="remap_schema" className={labelClasses}>
                     Remap Schema
@@ -761,6 +1196,7 @@ export const AdvancedOptions = ({
                     disabled={config.import_mode !== "STANDARD"}
                   />
                 </div>
+                {/* --- UPDATE b.remap_tablespace --- */}
                 <div>
                   <label htmlFor="remap_tablespace" className={labelClasses}>
                     Remap Tablespace
@@ -789,9 +1225,10 @@ export const AdvancedOptions = ({
                   </label>
                   <textarea
                     id="remap_table"
-                    rows={2}
+                    rows={3}
                     value={config.remap_table || ""}
-                    placeholder="HR.EMPLOYEES:EMPLOYEES_BACKUP..."
+                    placeholder="HR.EMPLOYEES:EMPLOYEES_BACKUP
+SCOTT.DEPT:DEPT_OLD"
                     onChange={(e) =>
                       setConfig((prev) => ({
                         ...prev,
@@ -805,28 +1242,31 @@ export const AdvancedOptions = ({
                     }`}
                     disabled={config.import_mode === "TRANSPORTABLE"}
                   />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Rename tables during import. One entry per line.
+                  </p>
                 </div>
-                <div className="md:col-span-2">
-                  <label htmlFor="remap_data" className={labelClasses}>
-                    Remap Data (Column Data Transformation)
+                {/* --- UPDATE c.remap_datafile --- */}
+                <div>
+                  <label htmlFor="remap_datafile" className={labelClasses}>
+                    Remap Datafile
                   </label>
-                  <textarea
-                    id="remap_data"
-                    rows={2}
-                    value={config.remap_data || ""}
-                    placeholder="HR.EMPLOYEES.SALARY:SYS.MASK_SALARY_FUNC..."
+                  <input
+                    id="remap_datafile"
+                    value={config.remap_datafile || ""}
                     onChange={(e) =>
-                      setConfig((prev) => ({
-                        ...prev,
-                        remap_data: e.target.value,
+                      setConfig((c) => ({
+                        ...c,
+                        remap_datafile: e.target.value,
                       }))
                     }
-                    className={`${textareaClasses} ${
-                      config.import_mode !== "STANDARD"
+                    placeholder="'/path/source.dbf':'/path/target.dbf'"
+                    className={`${inputClasses} ${
+                      config.import_mode !== "TRANSPORTABLE"
                         ? "disabled:bg-gray-100 cursor-not-allowed"
                         : ""
                     }`}
-                    disabled={config.import_mode !== "STANDARD"}
+                    disabled={config.import_mode !== "TRANSPORTABLE"}
                   />
                 </div>
                 <div>
@@ -853,69 +1293,6 @@ export const AdvancedOptions = ({
                   />
                 </div>
                 <div>
-                  <label htmlFor="remap_datafile" className={labelClasses}>
-                    Remap Datafile
-                  </label>
-                  <input
-                    id="remap_datafile"
-                    value={config.remap_datafile || ""}
-                    onChange={(e) =>
-                      setConfig((c) => ({
-                        ...c,
-                        remap_datafile: e.target.value,
-                      }))
-                    }
-                    placeholder="'/src.dbf':'/trg.dbf'"
-                    className={`${inputClasses} ${
-                      config.import_mode !== "TRANSPORTABLE"
-                        ? "disabled:bg-gray-100 cursor-not-allowed"
-                        : ""
-                    }`}
-                    disabled={config.import_mode !== "TRANSPORTABLE"}
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label htmlFor="transport_datafiles" className={labelClasses}>
-                    Transport Datafiles (Source Paths)
-                  </label>
-                  <textarea
-                    id="transport_datafiles"
-                    rows={2}
-                    value={config.transport_datafiles || ""}
-                    placeholder="'/path/to/source_file1.dbf', '/path/to/source_file2.dbf'"
-                    onChange={(e) =>
-                      setConfig((prev) => ({
-                        ...prev,
-                        transport_datafiles: e.target.value,
-                      }))
-                    }
-                    className={`${textareaClasses} ${
-                      config.import_mode !== "TRANSPORTABLE"
-                        ? "disabled:bg-gray-100 cursor-not-allowed"
-                        : ""
-                    }`}
-                    disabled={config.import_mode !== "TRANSPORTABLE"}
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label htmlFor="transform" className={labelClasses}>
-                    Transform
-                  </label>
-                  <textarea
-                    id="transform"
-                    rows={2}
-                    value={config.transform || ""}
-                    placeholder="SEGMENT_ATTRIBUTES:N:TABLE"
-                    onChange={(e) =>
-                      setConfig((prev) => ({
-                        ...prev,
-                        transform: e.target.value,
-                      }))
-                    }
-                    className={textareaClasses}
-                  />
-                </div>
-                <div>
                   <label htmlFor="sqlfile" className={labelClasses}>
                     SQL File (generates DDL)
                   </label>
@@ -932,6 +1309,55 @@ export const AdvancedOptions = ({
                     }
                     className={inputClasses}
                   />
+                </div>
+                <div className="md:col-span-2">
+                  <label htmlFor="transform" className={labelClasses}>
+                    Transform
+                  </label>
+                  <textarea
+                    id="transform"
+                    rows={3}
+                    value={config.transform || ""}
+                    placeholder={`Example: SEGMENT_ATTRIBUTES:N\nOr: STORAGE:N:TABLE`}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        transform: e.target.value,
+                      }))
+                    }
+                    className={textareaClasses}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Modify DDL on the fly. Example: `SEGMENT_ATTRIBUTES:N` to
+                    strip all storage clauses.
+                  </p>
+                </div>
+                <div className="md:col-span-2">
+                  <label htmlFor="remap_data" className={labelClasses}>
+                    Remap Data (Column Data Transformation)
+                  </label>
+                  <textarea
+                    id="remap_data"
+                    rows={3}
+                    value={config.remap_data || ""}
+                    placeholder={`Example: HR.EMPLOYEES.SALARY:SYS.MASK_SALARY_FUNC`}
+                    onChange={(e) =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        remap_data: e.target.value,
+                      }))
+                    }
+                    className={`${textareaClasses} ${
+                      config.import_mode !== "STANDARD"
+                        ? "disabled:bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
+                    disabled={config.import_mode !== "STANDARD"}
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Apply a function to transform data for a specific column on
+                    import.
+                  </p>
                 </div>
                 <div className="md:col-span-2">
                   <label htmlFor="network_link" className={labelClasses}>
@@ -955,316 +1381,12 @@ export const AdvancedOptions = ({
                     }`}
                     disabled={isTransportableImport}
                   />
-                </div>
-                <div className="md:col-span-2 p-4 border rounded-md bg-gray-50">
-                  <label className={`${labelClasses} mb-2`}>
-                    Fine-Grained Data Options
-                  </label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
-                    <div className="md:col-span-2">
-                      <label
-                        htmlFor="partition_options"
-                        className={labelClasses}
-                      >
-                        Partition Options
-                      </label>
-                      <select
-                        id="partition_options"
-                        value={config.partition_options}
-                        onChange={(e) =>
-                          setConfig((prev) => ({
-                            ...prev,
-                            partition_options: e.target.value as any,
-                          }))
-                        }
-                        className={`${selectClasses} ${
-                          !["APPEND", "MERGE"].includes(
-                            config.table_exists_action
-                          )
-                            ? "disabled:bg-gray-100 cursor-not-allowed"
-                            : ""
-                        }`}
-                        disabled={
-                          !["APPEND", "MERGE"].includes(
-                            config.table_exists_action
-                          )
-                        }
-                      >
-                        <option value="">(Default)</option>
-                        <option value="NONE">None</option>
-                        <option value="APPEND">Append</option>
-                        <option value="MERGE">Merge</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="data_options_xml_validation"
-                        className={labelClasses}
-                      >
-                        XML Schema Validation
-                      </label>
-                      <select
-                        id="data_options_xml_validation"
-                        value={config.data_options_xml_validation}
-                        onChange={(e) =>
-                          setConfig((prev) => ({
-                            ...prev,
-                            data_options_xml_validation: e.target.value as any,
-                          }))
-                        }
-                        className={selectClasses}
-                      >
-                        <option value="">(Default)</option>
-                        <option value="VALIDATE">Enable Validation</option>
-                        <option value="DISABLE">Disable Validation</option>
-                      </select>
-                    </div>
-                    <div className="space-y-2 pt-5">
-                      <div className="flex items-center">
-                        <input
-                          id="data_options_skip_constraints"
-                          type="checkbox"
-                          className="h-4 w-4 text-blue-600"
-                          checked={!!config.data_options_skip_constraints}
-                          onChange={(e) =>
-                            setConfig((c) => ({
-                              ...c,
-                              data_options_skip_constraints: e.target.checked,
-                            }))
-                          }
-                        />
-                        <label
-                          htmlFor="data_options_skip_constraints"
-                          className="ml-2"
-                        >
-                          Skip Constraint Errors
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="skip_unusable_indexes"
-                          type="checkbox"
-                          className="h-4 w-4 text-blue-600"
-                          checked={!!config.skip_unusable_indexes}
-                          onChange={(e) =>
-                            setConfig((c) => ({
-                              ...c,
-                              skip_unusable_indexes: e.target.checked,
-                            }))
-                          }
-                        />
-                        <label htmlFor="skip_unusable_indexes" className="ml-2">
-                          Skip Unusable Indexes
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="disable_streams_configuration"
-                          type="checkbox"
-                          className="h-4 w-4 text-blue-600"
-                          checked={!!config.disable_streams_configuration}
-                          onChange={(e) =>
-                            setConfig((c) => ({
-                              ...c,
-                              disable_streams_configuration: e.target.checked,
-                            }))
-                          }
-                        />
-                        <label
-                          htmlFor="disable_streams_configuration"
-                          className="ml-2"
-                        >
-                          Disable Streams Config
-                        </label>
-                      </div>
-                    </div>
-                    <div className="md:col-span-2 p-3 border border-yellow-400 rounded-md bg-yellow-50">
-                      <div className="flex items-center">
-                        <input
-                          id="master_only"
-                          type="checkbox"
-                          className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-                          checked={!!config.master_only}
-                          onChange={(e) =>
-                            setConfig((c) => ({
-                              ...c,
-                              master_only: e.target.checked,
-                            }))
-                          }
-                        />
-                        <label
-                          htmlFor="master_only"
-                          className="ml-2 block text-sm font-medium text-yellow-800"
-                        >
-                          Import Master Table Only (Expert Use)
-                        </label>
-                      </div>
-                    </div>
-                  </div>
+                  <p className="mt-1 text-xs text-gray-500">
+                    If used, DUMPFILE and DIRECTORY are ignored.
+                  </p>
                 </div>
               </>
             )}
-
-            {/* --- 4. General Advanced & Diagnostic Controls --- */}
-            <div className="md:col-span-2">
-              <label htmlFor="access_method" className={labelClasses}>
-                Access Method
-              </label>
-              <select
-                id="access_method"
-                value={config.access_method}
-                onChange={(e) =>
-                  setConfig((prev) => ({
-                    ...prev,
-                    access_method: e.target.value as any,
-                  }))
-                }
-                className={`${selectClasses} ${
-                  isAccessMethodDisabled
-                    ? "disabled:bg-gray-100 cursor-not-allowed"
-                    : ""
-                }`}
-                disabled={isAccessMethodDisabled}
-              >
-                {accessMethodOptions.map((o) => (
-                  <option key={o} value={o}>
-                    {o}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="md:col-span-2 space-y-2">
-              <div className="flex items-center">
-                <input
-                  id="logtime"
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-                  checked={!!config.logtime}
-                  onChange={(e) => {
-                    const isChecked = e.target.checked;
-                    setConfig((c) => ({
-                      ...c,
-                      logtime: isChecked,
-                      logtime_tz: isChecked ? c.logtime_tz : false,
-                    }));
-                  }}
-                />
-                <label
-                  htmlFor="logtime"
-                  className="ml-2 block text-sm font-medium text-gray-700"
-                >
-                  Add Timestamps to Log
-                </label>
-              </div>
-              <div className="flex items-center pl-6">
-                <input
-                  id="logtime_tz"
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-                  checked={!!config.logtime_tz}
-                  onChange={(e) =>
-                    setConfig((c) => ({ ...c, logtime_tz: e.target.checked }))
-                  }
-                  disabled={!config.logtime}
-                />
-                <label
-                  htmlFor="logtime_tz"
-                  className={`ml-2 block text-sm font-medium ${
-                    !config.logtime ? "text-gray-400" : "text-gray-700"
-                  }`}
-                >
-                  Include UTC Offset in Timestamps
-                </label>
-              </div>
-            </div>
-
-            <div className="md:col-span-2">
-              <div className="flex items-center">
-                <input
-                  id="metrics"
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-                  checked={!!config.metrics}
-                  onChange={(e) =>
-                    setConfig((c) => ({ ...c, metrics: e.target.checked }))
-                  }
-                />
-                <label
-                  htmlFor="metrics"
-                  className="ml-2 block text-sm font-medium text-gray-700"
-                >
-                  Enable Metrics Logging
-                </label>
-              </div>
-            </div>
-
-            <div className="md:col-span-2">
-              <div className="flex items-center">
-                <input
-                  id="disable_cluster"
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-                  checked={!!config.disable_cluster}
-                  onChange={(e) =>
-                    setConfig((c) => ({
-                      ...c,
-                      disable_cluster: e.target.checked,
-                    }))
-                  }
-                />
-                <label
-                  htmlFor="disable_cluster"
-                  className="ml-2 block text-sm font-medium text-gray-700"
-                >
-                  Disable Cluster Parallelism (RAC only)
-                </label>
-              </div>
-            </div>
-
-            <div className="md:col-span-2">
-              <div className="flex items-center">
-                <input
-                  id="keep_master"
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-                  checked={!!config.keep_master}
-                  onChange={(e) =>
-                    setConfig((c) => ({ ...c, keep_master: e.target.checked }))
-                  }
-                />
-                <label
-                  htmlFor="keep_master"
-                  className="ml-2 block text-sm font-medium text-gray-700"
-                >
-                  Keep Master Table (Diagnostic)
-                </label>
-              </div>
-            </div>
-
-            <div className="md:col-span-2 p-3 border border-yellow-400 rounded-md bg-yellow-50">
-              <label
-                htmlFor="abort_step"
-                className="block text-sm font-medium text-yellow-800"
-              >
-                Abort Step (Diagnostic Use Only)
-              </label>
-              <input
-                id="abort_step"
-                type="text"
-                pattern="[0-9]*"
-                value={config.abort_step || ""}
-                placeholder="Internal step number to halt job"
-                onChange={(e) => {
-                  const value = e.target.value.replace(/[^0-9]/g, "");
-                  const parsed = parseInt(value, 10);
-                  setConfig((prev) => ({
-                    ...prev,
-                    abort_step: isNaN(parsed) ? undefined : parsed,
-                  }));
-                }}
-                className={inputClasses}
-              />
-            </div>
           </div>
         </div>
       )}
