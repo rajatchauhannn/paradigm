@@ -77,10 +77,8 @@ KEEP IT AS SHORT AS POSSIBLE.
 });
 
 const PORT = 3000; // The port your backend will run on
-app.listen(PORT, () => {
-  console.log(
-    `[API] Server is running and listening on http://localhost:${PORT}`
-  );
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`[API] Server is running and listening on port ${PORT}`);
 });
 
 export default app;
