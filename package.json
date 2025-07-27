@@ -9,7 +9,7 @@
     "dev:backend": "tsx watch src/api/validate.ts",
     "build": "npm run clean && npm run build:server && npm run build:client",
     "build:server": "tsc --build tsconfig.node.json",
-    "build:client": "vite build",
+    "build:client": "npx vite build",
     "clean": "rm -rf dist || true",
     "start": "node dist/api/validate.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
