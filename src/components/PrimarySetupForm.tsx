@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { type ParfileConfig } from "../types";
+import { Tooltip } from "./Tooltip";
 
 const inputClasses =
   "block w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm";
@@ -70,15 +71,22 @@ export const PrimarySetupForm = ({
     <div className="space-y-4">
       {/* --- Row 1: USERID --- */}
       <div>
-        <label
-          htmlFor="userid"
-          className="block text-sm font-medium text-gray-700"
-        >
-          USERID
-        </label>
+        <div className="flex items-center space-x-2">
+          <label
+            htmlFor="userid"
+            className="block text-sm font-medium text-gray-700"
+          >
+            USERID
+          </label>
+          <Tooltip
+            text="Specifies the database user for the operation, e.g., 'system/oracle' or '/ as sysdba'."
+            learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-5517134A-2997-4254-84E3-74A69F4E0341"
+          />
+        </div>
         <input
           id="userid"
           type="text"
+          placeholder="/ as sysdba"
           value={config.userid}
           onChange={(e) =>
             setConfig((prev) => ({ ...prev, userid: e.target.value }))

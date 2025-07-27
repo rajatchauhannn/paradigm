@@ -13,6 +13,10 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
   const isNetworkImport =
     config.operation === "IMPORT" && !!config.network_link;
 
+  if (!config.userid) {
+    errors.push("USERID is required.");
+  }
+
   // General Validations (USERID is no longer required)
   if (!isNetworkImport) {
     if (!config.directory && !config.credential) {
