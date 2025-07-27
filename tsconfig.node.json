@@ -9,8 +9,9 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "declaration": false,
-    "noEmit": false
+    "noEmit": false,
+    "types": ["node"]
   },
-  "include": ["src/api/validate.ts"],
+  "include": ["src/api/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
