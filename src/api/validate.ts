@@ -63,7 +63,7 @@ KEEP IT AS SHORT AS POSSIBLE.
 });
 
 // --- Server Listen (Works in both environments) ---
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT || "3000", 10);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`[API] Server is running and listening on port ${PORT}`);
 });

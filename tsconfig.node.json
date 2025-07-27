@@ -1,4 +1,3 @@
-// tsconfig.node.json
 {
   "compilerOptions": {
     "composite": true,
@@ -8,5 +7,5 @@
     "allowSyntheticDefaultImports": true,
     "outDir": "dist"
   },
-  "include": ["src/api/**/*.ts"]
+  "include": ["src/api/validate.ts"]
 }
