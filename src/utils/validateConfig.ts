@@ -55,6 +55,12 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
     }
   }
 
+  if (config.parallel !== undefined) {
+    if (!Number.isInteger(config.parallel) || config.parallel <= 0) {
+      errors.push("PARALLEL must be a positive whole number.");
+    }
+  }
+
   if (config.job_name && !/^[a-zA-Z0-9_]+$/.test(config.job_name)) {
     errors.push(
       "JOB_NAME can only contain letters, numbers, and underscores (_)."
