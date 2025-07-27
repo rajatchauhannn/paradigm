@@ -69,7 +69,7 @@ function App() {
       <header className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-screen-2xl mx-auto py-3 px-4 sm:px-6 lg:px-8">
           <h1 className="text-xl font-bold leading-6 text-gray-900">
-            ParfileForge
+            PARadigm - Parfile Generator
           </h1>
         </div>
       </header>
