@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "composite": true,
+    "declaration": true,
     "target": "ES2022",
     "module": "ES2022",
     "moduleResolution": "node",
@@ -9,7 +10,6 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "declaration": true,
     "noEmit": false,
     "types": ["node"]
   },
