@@ -7,11 +7,11 @@
     "dev": "concurrently \"npm:dev:backend\" \"npm:dev:frontend\"",
     "dev:frontend": "vite",
     "dev:backend": "tsx watch src/api/validate.ts",
-    "build": "npm run build:server && npm run build:client",
+    "build": "tsc && vite build",
     "build:server": "npx tsc --outDir dist --rootDir src --target ES2022 --module ES2022 --moduleResolution node --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck src/api/validate.ts",
     "build:client": "vite build",
     "clean": "rm -rf dist || true",
-    "start": "concurrently \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "start": "node dist/api/validate.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -44,5 +44,10 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
     "vite": "^7.0.4"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
