@@ -23,6 +23,6 @@
     /* THIS IS THE FIX: We override noEmit for the build script */
     "outDir": "./dist"
   },
-  "include": ["src", "api"], // <<< THIS IS THE KEY: We explicitly tell TSC to include the 'api' folder.
+  "include": ["src", "api", "functions/api/validate.ts"], // <<< THIS IS THE KEY: We explicitly tell TSC to include the 'api' folder.
   "references": [{ "path": "./tsconfig.node.json" }]
 }
