@@ -1,8 +1,8 @@
 // tsconfig.node.json
 {
   "compilerOptions": {
-    "module": "Node16",
-    "moduleResolution": "node16", // or "nodenext" / "node"
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext", // or "nodenext" / "node"
     "noEmit": false,
     "rootDir": "src",
     "outDir": "dist",
