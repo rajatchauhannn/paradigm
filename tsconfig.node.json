@@ -3,14 +3,9 @@
     "composite": true,
     "skipLibCheck": true,
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node", // ← change
     "allowSyntheticDefaultImports": true,
     "outDir": "dist",
-
-    // THIS IS THE FIX
-    // It tells TypeScript to treat 'src' as the root folder.
-    // When compiling 'src/api/validate.ts', it will create the output
-    // at 'dist/api/validate.js', which matches your start script.
     "rootDir": "src"
   },
   "include": ["src/api/validate.ts"]
