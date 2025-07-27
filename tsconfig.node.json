@@ -1,12 +1,14 @@
+// tsconfig.node.json
 {
   "compilerOptions": {
-    "composite": true,
-    "skipLibCheck": true,
-    "module": "ESNext",
-    "moduleResolution": "node", // ← change
-    "allowSyntheticDefaultImports": true,
+    "module": "Node16",
+    "moduleResolution": "node16", // or "nodenext" / "node"
+    "noEmit": false,
+    "rootDir": "src",
     "outDir": "dist",
-    "rootDir": "src"
+    "skipLibCheck": true,
+    "composite": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/api/validate.ts"]
 }
