@@ -2,18 +2,21 @@
 
 import { useState, useRef, useEffect } from "react";
 
+// Add a 'variant' prop to determine the color scheme
 interface TooltipProps {
   text: string;
   learnMoreUrl: string;
+  variant?: "info" | "warning"; // <-- New prop
 }
 
-export const Tooltip = ({ text, learnMoreUrl }: TooltipProps) => {
+export const Tooltip = ({
+  text,
+  learnMoreUrl,
+  variant = "info", // <-- Default to 'info'
+}: TooltipProps) => {
   const [isVisible, setIsVisible] = useState(false);
-  // A ref is used to store the timer ID so it can be cleared.
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // This effect ensures that if the component is removed from the screen,
-  // any pending timer is cleared to prevent errors.
   useEffect(() => {
     return () => {
       if (timerRef.current) {
@@ -22,32 +25,34 @@ export const Tooltip = ({ text, learnMoreUrl }: TooltipProps) => {
     };
   }, []);
 
-  // Fired when the mouse enters the icon OR the tooltip popup.
   const handleMouseEnter = () => {
-    // If a timer is set to hide the tooltip, cancel it.
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
-    // Show the tooltip.
     setIsVisible(true);
   };
 
-  // Fired when the mouse leaves the icon OR the tooltip popup.
   const handleMouseLeave = () => {
-    // Set a short timer to hide the tooltip.
-    // This gives the user a moment to move their mouse to the popup.
     timerRef.current = setTimeout(() => {
       setIsVisible(false);
-    }, 200); // 200ms delay
+    }, 200);
   };
+
+  // --- NEW: Define colors based on the variant ---
+  const iconColor = variant === "warning" ? "text-yellow-500" : "text-gray-400";
+  const popupBgColor = variant === "warning" ? "bg-yellow-900" : "bg-gray-800";
+  const linkColor =
+    variant === "warning"
+      ? "text-red-300 hover:text-red-100"
+      : "text-blue-400 hover:text-blue-300";
+  // --- END NEW ---
 
   return (
     <div className="relative flex items-center">
-      {/* Icon event handlers */}
       <svg
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="h-4 w-4 cursor-pointer text-gray-400"
+        className={`h-4 w-4 cursor-pointer ${iconColor}`} // <-- Apply color
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
@@ -58,15 +63,11 @@ export const Tooltip = ({ text, learnMoreUrl }: TooltipProps) => {
           clipRule="evenodd"
         />
       </svg>
-      {/* 
-        The tooltip popup itself also gets the event handlers.
-        When the mouse enters this div, it will cancel the "hide" timer.
-        When it leaves, it will start a new "hide" timer.
-      */}
       <div
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className={`absolute bottom-full left-1/2 z-20 mb-2 w-64 -translate-x-1/2 transform rounded-md bg-gray-800 p-2 text-center text-xs text-white transition-opacity ${
+        className={`absolute bottom-full left-1/2 z-20 mb-2 w-64 -translate-x-1/2 transform rounded-md p-2 text-center text-xs text-white transition-opacity ${popupBgColor} ${
+          // <-- Apply color
           isVisible
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -77,7 +78,7 @@ export const Tooltip = ({ text, learnMoreUrl }: TooltipProps) => {
           href={learnMoreUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="ml-1 font-semibold text-blue-400 hover:text-blue-300"
+          className={`ml-1 font-semibold ${linkColor}`} // <-- Apply color
           onClick={(e) => e.stopPropagation()}
         >
           Learn More.

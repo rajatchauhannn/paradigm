@@ -61,6 +61,28 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
     }
   }
 
+  if (config.version) {
+    // Regex to check for formats like 19.0, 12.2.0.1, etc.
+    // It also allows keywords COMPATIBLE and LATEST.
+    const versionRegex = /^(COMPATIBLE|LATEST|\d{1,2}(\.\d{1,2}){1,3})$/i;
+    if (!versionRegex.test(config.version)) {
+      errors.push(
+        "VERSION must be a valid version string (e.g., '19.0', '12.2.0.1') or a keyword ('COMPATIBLE', 'LATEST')."
+      );
+    }
+
+    // Conflict check for advanced compression
+    const versionMajor = parseInt(config.version.split(".")[0], 10);
+    if (
+      versionMajor < 12 &&
+      ["LOW", "MEDIUM", "HIGH"].includes(config.compression_algorithm || "")
+    ) {
+      errors.push(
+        `Advanced compression (${config.compression_algorithm}) is not compatible with VERSION=${config.version}. Use VERSION 12.1 or higher.`
+      );
+    }
+  }
+
   if (config.job_name && !/^[a-zA-Z0-9_]+$/.test(config.job_name)) {
     errors.push(
       "JOB_NAME can only contain letters, numbers, and underscores (_)."

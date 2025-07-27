@@ -8,6 +8,7 @@ import {
   type ParfileConfig,
 } from "../types";
 import { compressionOptions, contentOptions } from "../constants";
+import { Tooltip } from "./Tooltip";
 
 // --- Re-usable Tailwind CSS classes for consistency ---
 const inputClasses =
@@ -162,18 +163,28 @@ export const AdvancedOptions = ({
             </div>
 
             <div>
-              <label htmlFor="version" className={labelClasses}>
-                Version (for compatibility)
-              </label>
+              <div className="flex items-center space-x-2">
+                <label
+                  htmlFor="version"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  VERSION
+                </label>
+                <Tooltip
+                  variant="warning" // <-- Use the new warning variant
+                  text="Sets export for backward compatibility. Using this may disable newer features like advanced compression. Use with caution."
+                  learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-common-parameters.html#GUID-8E41667A-1577-4340-9B6B-45218DE1956C"
+                />
+              </div>
               <input
                 id="version"
                 type="text"
-                placeholder="COMPATIBLE | LATEST | 12.2"
+                placeholder="e.g., 12.2"
                 value={config.version || ""}
                 onChange={(e) =>
-                  setConfig((prev) => ({ ...prev, version: e.target.value }))
+                  setConfig((c) => ({ ...c, version: e.target.value }))
                 }
-                className={inputClasses}
+                className="block w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
 
