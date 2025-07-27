@@ -1,14 +1,17 @@
-// tsconfig.node.json
 {
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext", // or "nodenext" / "node"
-    "noEmit": false,
-    "rootDir": "src",
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "node",
     "outDir": "dist",
+    "rootDir": "src",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "composite": true,
-    "allowSyntheticDefaultImports": true
+    "noEmit": false,
+    "declaration": false,
+    "allowJs": false
   },
-  "include": ["src/api/validate.ts"]
+  "include": ["src/api/validate.ts"],
+  "exclude": ["node_modules", "dist", "src/**/*.test.ts"]
 }
