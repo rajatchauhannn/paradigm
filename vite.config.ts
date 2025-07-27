@@ -5,7 +5,8 @@ import react from "@vitejs/plugin-react-swc";
 export default defineConfig({
   plugins: [react()],
   build: {
-    // This prevents Vite from deleting the compiled server code.
+    // This is the crucial change.
+    // It prevents Vite from deleting the compiled server code.
     emptyOutDir: false,
   },
   server: {
