@@ -1,3 +1,4 @@
+// tsconfig.node.json
 {
   "compilerOptions": {
     "composite": true,
@@ -5,10 +6,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-    "strict": true,
-
-    /* THIS IS THE FIX */
-    "outDir": "dist" // Ensure the output directory is set here as well
+    "outDir": "dist"
   },
-  "include": ["vite.config.ts", "api/**/*.ts"] // <<< THIS IS THE KEY: Include the 'api' folder here too.
+  "include": ["src/api/**/*.ts"]
 }
