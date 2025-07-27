@@ -7,7 +7,10 @@
     "dev": "concurrently \"npm:dev:backend\" \"npm:dev:frontend\"",
     "dev:frontend": "vite",
     "dev:backend": "tsx watch src/api/validate.ts",
-    "build": "tsc --project tsconfig.node.json && vite build",
+    "build": "npm run clean && npm run build:server && npm run build:client",
+    "build:server": "tsc --project tsconfig.node.json",
+    "build:client": "vite build",
+    "clean": "rm -rf dist",
     "start": "node dist/api/validate.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
