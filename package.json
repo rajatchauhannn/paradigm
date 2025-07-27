@@ -8,7 +8,7 @@
     "dev:frontend": "vite",
     "dev:backend": "tsx watch src/api/validate.ts",
     "build": "tsc --project tsconfig.node.json && vite build",
-    "start": "node dist/api/validate.js",
+    "start": "node dist/validate.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
