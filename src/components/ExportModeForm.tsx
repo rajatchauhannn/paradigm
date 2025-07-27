@@ -1,6 +1,7 @@
 // src/components/ExportModeForm.tsx
 
 import { type ParfileConfig } from "../types";
+import { Tooltip } from "./Tooltip"; // <-- Add import
 
 const selectClasses =
   "block w-full mt-1 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md";
@@ -15,12 +16,9 @@ interface ExportModeProps {
 export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
   const handleModeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newMode = e.target.value as any;
-
-    // Reset mode-specific parameters when the mode changes
     setConfig((prev) => ({
       ...prev,
       export_mode: newMode,
-      // If the new mode is NOT transportable, reset the transportable-only flag.
       transport_full_check:
         newMode === "TRANSPORTABLE_TABLESPACES"
           ? prev.transport_full_check
@@ -31,34 +29,52 @@ export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
     <div>
       <div className="mt-4 space-y-4">
         <div>
-          <label htmlFor="export_mode" className="sr-only">
-            Export Mode
-          </label>
+          {/* MODIFIED: Added a visible label with a tooltip */}
+          <div className="flex items-center space-x-2 mb-1">
+            <label
+              htmlFor="export_mode"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Export Mode
+            </label>
+            <Tooltip
+              text="Defines the scope of the export. For example, FULL for the entire database or SCHEMAS for specific schemas."
+              learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-9B5521C5-2C47-4148-B589-9A3492659A70"
+            />
+          </div>
           <select
             id="export_mode"
             value={config.export_mode}
             onChange={handleModeChange}
             className={selectClasses}
           >
+            <option value="FULL">Full Database</option>
             <option value="SCHEMAS">Schemas</option>
             <option value="TABLES">Tables</option>
             <option value="TABLESPACES">Tablespaces</option>
             <option value="TRANSPORTABLE_TABLESPACES">
               Transportable Tablespaces
             </option>
-            <option value="TRANSPORTABLE_PDB">Transportable PDB (TRANSPORTABLE=ALWAYS)</option>
-            <option value="FULL">Full Database</option>
+            <option value="TRANSPORTABLE_PDB">
+              Transportable PDB (TRANSPORTABLE=ALWAYS)
+            </option>
           </select>
         </div>
 
         {config.export_mode === "SCHEMAS" && (
           <div>
-            <label
-              htmlFor="schemas"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Schemas
-            </label>
+            <div className="flex items-center space-x-2">
+              <label
+                htmlFor="schemas"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Schemas
+              </label>
+              <Tooltip
+                text="A comma-separated list of schemas to export. e.g., HR,SCOTT"
+                learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-EBD5E655-4999-4A83-935C-535C57B3F023"
+              />
+            </div>
             <input
               id="schemas"
               type="text"
@@ -73,12 +89,18 @@ export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
         )}
         {config.export_mode === "TABLES" && (
           <div>
-            <label
-              htmlFor="tables"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Tables
-            </label>
+            <div className="flex items-center space-x-2">
+              <label
+                htmlFor="tables"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Tables
+              </label>
+              <Tooltip
+                text="Specifies a comma-separated list of tables to export. e.g., HR.EMPLOYEES,SCOTT.DEPT"
+                learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-66F53531-3A41-477F-974F-24E8246C6572"
+              />
+            </div>
             <input
               id="tables"
               type="text"
@@ -94,16 +116,22 @@ export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
         {(config.export_mode === "TABLESPACES" ||
           config.export_mode === "TRANSPORTABLE_TABLESPACES") && (
           <div>
-            <label
-              htmlFor="tablespaces"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Tablespaces
-            </label>
+            <div className="flex items-center space-x-2">
+              <label
+                htmlFor="tablespaces"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Tablespaces
+              </label>
+              <Tooltip
+                text="A comma-separated list of tablespaces to export."
+                learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-40534419-2313-40B9-906D-96DE736E6F22"
+              />
+            </div>
             <input
               id="tablespaces"
               type="text"
-              placeholder="USERS,EXAMPLE" // <-- Changed placeholder
+              placeholder="USERS,EXAMPLE"
               value={config.tablespaces}
               onChange={(e) =>
                 setConfig((prev) => ({ ...prev, tablespaces: e.target.value }))
