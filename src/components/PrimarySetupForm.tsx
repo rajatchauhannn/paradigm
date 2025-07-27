@@ -135,12 +135,21 @@ export const PrimarySetupForm = ({
         {storageType === "ON_PREMISES" ? (
           <>
             <div>
-              <label
-                htmlFor="directory"
-                className="block text-sm font-medium text-gray-700"
-              >
-                DIRECTORY
-              </label>
+              <div className="flex items-center space-x-2">
+                {" "}
+                {/* ADD THIS WRAPPER */}
+                <label
+                  htmlFor="directory"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  DIRECTORY
+                </label>
+                {/* ADD THIS TOOLTIP */}
+                <Tooltip
+                  text="An Oracle directory object pointing to a server file system path. e.g., DATA_PUMP_DIR."
+                  learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-common-parameters.html#GUID-5D324F29-555F-4A42-A95B-8855F98C39F2"
+                />
+              </div>
               <input
                 id="directory"
                 type="text"
@@ -191,12 +200,21 @@ export const PrimarySetupForm = ({
           </>
         ) : (
           <div className="md:col-span-2">
-            <label
-              htmlFor="credential"
-              className="block text-sm font-medium text-gray-700"
-            >
-              CREDENTIAL
-            </label>
+            <div className="flex items-center space-x-2">
+              {" "}
+              {/* ADD THIS WRAPPER */}
+              <label
+                htmlFor="credential"
+                className="block text-sm font-medium text-gray-700"
+              >
+                CREDENTIAL
+              </label>
+              {/* ADD THIS TOOLTIP */}
+              <Tooltip
+                text="A pre-configured credential object in the database used to access cloud object stores."
+                learnMoreUrl="https.docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-common-parameters.html#GUID-E1389EAB-4813-42E1-B59F-3BE307B2404A"
+              />
+            </div>
             <input
               id="credential"
               type="text"

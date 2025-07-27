@@ -19,16 +19,19 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
 
   // General Validations (USERID is no longer required)
   if (!isNetworkImport) {
-    if (!config.directory && !config.credential) {
-      errors.push(
-        "A DIRECTORY (On-Premises) or CREDENTIAL (Cloud) must be provided."
-      );
-    }
-    if (config.directory && config.credential) {
-      // This case should be prevented by the UI, but it's a good safeguard.
-      errors.push(
-        "Cannot use both DIRECTORY and CREDENTIAL. Choose one storage destination."
-      );
+    if (config.credential) {
+      // Cloud Mode
+      if (config.directory) {
+        // This case should be prevented by the UI, but it's a good safeguard.
+        errors.push(
+          "Cannot use both DIRECTORY and CREDENTIAL. Choose one storage destination."
+        );
+      }
+    } else {
+      // On-Premises Mode
+      if (!config.directory) {
+        errors.push("DIRECTORY is required for on-premises operations.");
+      }
     }
     if (config.credential && config.logfile) {
       errors.push(
