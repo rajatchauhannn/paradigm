@@ -1,6 +1,7 @@
 // src/components/ImportOptionsForm.tsx
 
 import { type ParfileConfig } from "../types";
+import { Tooltip } from "./Tooltip";
 
 const selectClasses =
   "block w-full mt-1 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md";
@@ -20,6 +21,7 @@ export const ImportOptionsForm = ({
     <div>
       <div className="mt-4 space-y-4">
         <div>
+          {/* The misplaced tooltip has been removed from here */}
           <select
             id="table_exists_action"
             value={config.table_exists_action}
@@ -41,12 +43,18 @@ export const ImportOptionsForm = ({
           </select>
         </div>
         <div>
-          <label
-            htmlFor="import_schemas"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Schemas (optional filter)
-          </label>
+          <div className="flex items-center space-x-2">
+            <label
+              htmlFor="import_schemas"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Schemas (optional filter)
+            </label>
+            <Tooltip
+              text="A comma-separated list of schemas to load from the dump file. Acts as a filter for the import."
+              learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-import-utility.html#GUID-3F435529-E77A-4433-87E7-33E165A023A1"
+            />
+          </div>
           <input
             id="import_schemas"
             type="text"

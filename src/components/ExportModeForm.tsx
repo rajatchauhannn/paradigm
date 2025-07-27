@@ -1,7 +1,7 @@
 // src/components/ExportModeForm.tsx
 
 import { type ParfileConfig } from "../types";
-import { Tooltip } from "./Tooltip"; // <-- Add import
+import { Tooltip } from "./Tooltip";
 
 const selectClasses =
   "block w-full mt-1 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md";
@@ -29,19 +29,7 @@ export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
     <div>
       <div className="mt-4 space-y-4">
         <div>
-          {/* MODIFIED: Added a visible label with a tooltip */}
-          <div className="flex items-center space-x-2 mb-1">
-            <label
-              htmlFor="export_mode"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Export Mode
-            </label>
-            <Tooltip
-              text="Defines the scope of the export. For example, FULL for the entire database or SCHEMAS for specific schemas."
-              learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-9B5521C5-2C47-4148-B589-9A3492659A70"
-            />
-          </div>
+          {/* The label and tooltip have been moved to App.tsx */}
           <select
             id="export_mode"
             value={config.export_mode}

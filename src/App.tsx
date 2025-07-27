@@ -11,6 +11,7 @@ import { ExportModeForm } from "./components/ExportModeForm";
 import { ImportOptionsForm } from "./components/ImportOptionsForm";
 import { PrimarySetupForm } from "./components/PrimarySetupForm";
 import { OutputColumn } from "./components/OutputColumn";
+import { Tooltip } from "./components/Tooltip";
 
 const SectionHeader = ({ children }: { children: React.ReactNode }) => (
   <h3 className="text-sm font-semibold text-gray-900 mb-3">{children}</h3>
@@ -93,11 +94,25 @@ function App() {
               />
             </div>
             <div className="border-b border-gray-200 pb-5">
-              <SectionHeader>
-                {config.operation === "EXPORT"
-                  ? "Export Mode"
-                  : "Table Exists Action"}
-              </SectionHeader>
+              {/* This new div wrapper correctly aligns the header and tooltip */}
+              <div className="flex items-center space-x-2 mb-3">
+                <h3 className="text-sm font-semibold text-gray-900">
+                  {config.operation === "EXPORT"
+                    ? "Export Mode"
+                    : "Table Exists Action"}
+                </h3>
+                {config.operation === "EXPORT" ? (
+                  <Tooltip
+                    text="Defines the scope of the export. For example, FULL for the entire database or SCHEMAS for specific schemas."
+                    learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-9B5521C5-2C47-4148-B589-9A3492659A70"
+                  />
+                ) : (
+                  <Tooltip
+                    text="Action to take if a table already exists. SKIP: Leave existing table. APPEND: Add new rows. TRUNCATE: Delete existing rows, then add new. REPLACE: Drop existing table, create new, and add rows."
+                    learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-import-utility.html#GUID-8311B61A-2345-422E-A433-5147AA3C4532"
+                  />
+                )}
+              </div>
               {config.operation === "EXPORT" ? (
                 <ExportModeForm config={config} setConfig={setConfig} />
               ) : (
