@@ -139,7 +139,8 @@ export const generateParfileContent = (config: ParfileConfig): string => {
 
     if (compression && compression !== "NONE") {
       params.push(`COMPRESSION=${compression}`);
-      if (["ALL", "DATA_ONLY"].includes(compression)) {
+      if (["ALL", "DATA_ONLY"].includes(compression) && compression_algorithm) {
+        // Check if compression_algorithm is truthy
         params.push(`COMPRESSION_ALGORITHM=${compression_algorithm}`);
       }
     }

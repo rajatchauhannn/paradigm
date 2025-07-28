@@ -18,7 +18,7 @@ export type Compression =
   | "ALL_ENCRYPTED"
   | "DATA_ONLY_ENCRYPTED"
   | "METADATA_ONLY_ENCRYPTED";
-export type CompressionAlgorithm = "BASIC" | "LOW" | "MEDIUM" | "HIGH";
+export type CompressionAlgorithm = "BASIC" | "LOW" | "MEDIUM" | "HIGH" | ""; 
 export type ImportMode = "STANDARD" | "TRANSPORTABLE";
 export type XMLValidationMode = "" | "VALIDATE" | "DISABLE";
 export type PartitionOptions = "" | "NONE" | "MERGE" | "APPEND";

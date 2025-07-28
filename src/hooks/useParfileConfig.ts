@@ -33,7 +33,7 @@ const getInitialState = (): ParfileConfig => ({
   filesize: "",
   transport_full_check: false,
   source_edition: "",
-  compression_algorithm: "BASIC",
+  compression_algorithm: "",
   encryption_mode: "PASSWORD",
   encryption_algorithm: "AES128",
   views_as_tables: "",

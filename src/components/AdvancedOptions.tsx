@@ -2,7 +2,6 @@
 import { useState } from "react";
 import {
   type AccessMethod,
-  type CompressionAlgorithm,
   type EncryptionAlgorithm,
   type EncryptionMode,
   type ParfileConfig,
@@ -23,12 +22,6 @@ const labelClasses = "block text-sm font-medium text-gray-700";
 const estimateOptions = ["NO", "YES"];
 const estimateMethodOptions = ["BLOCKS", "STATISTICS"];
 const filterOptions = ["NONE", "INCLUDE", "EXCLUDE"];
-const compressionAlgorithmOptions: CompressionAlgorithm[] = [
-  "BASIC",
-  "LOW",
-  "MEDIUM",
-  "HIGH",
-];
 const encryptionModeOptions: EncryptionMode[] = [
   "PASSWORD",
   "DUAL",
@@ -192,58 +185,68 @@ export const AdvancedOptions = ({
             {config.operation === "EXPORT" && (
               <>
                 <div>
-                  <label htmlFor="compression" className={labelClasses}>
-                    Compression
+                  <label
+                    htmlFor="compression"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    COMPRESSION
                   </label>
                   <select
                     id="compression"
                     value={config.compression}
                     onChange={(e) =>
-                      setConfig((prev) => ({
-                        ...prev,
+                      setConfig((c) => ({
+                        ...c,
                         compression: e.target.value as any,
                       }))
                     }
-                    className={selectClasses}
+                    className="block w-full mt-1 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
                   >
-                    {compressionOptions.map((o) => (
-                      <option key={o} value={o}>
-                        {o}
+                    {/* Dynamically imported from constants.ts */}
+                    {compressionOptions.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
                       </option>
                     ))}
                   </select>
                 </div>
 
+                {/* --- COMPRESSION ALGORITHM --- */}
                 <div>
-                  <label
-                    htmlFor="compression_algorithm"
-                    className={labelClasses}
-                  >
-                    Compression Algorithm
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label
+                      htmlFor="compression_algorithm"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      COMPRESSION ALGORITHM
+                    </label>
+                    <Tooltip
+                      text="Specifies the compression algorithm. Only active when COMPRESSION is ALL or DATA_ONLY. Higher levels use more CPU."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-F81B5F5F-9F40-4EB0-99B8-47C45179DE5E"
+                    />
+                  </div>
                   <select
                     id="compression_algorithm"
                     value={config.compression_algorithm}
                     onChange={(e) =>
-                      setConfig((prev) => ({
-                        ...prev,
+                      setConfig((c) => ({
+                        ...c,
                         compression_algorithm: e.target.value as any,
                       }))
                     }
-                    className={`${selectClasses} ${
-                      !["ALL", "DATA_ONLY"].includes(config.compression || "")
-                        ? "disabled:bg-gray-100 cursor-not-allowed"
-                        : ""
-                    }`}
+                    // --- THIS IS THE KEY LOGIC ---
                     disabled={
                       !["ALL", "DATA_ONLY"].includes(config.compression || "")
                     }
+                    className="block w-full mt-1 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {compressionAlgorithmOptions.map((o) => (
-                      <option key={o} value={o}>
-                        {o}
-                      </option>
-                    ))}
+                    <option value="" disabled>
+                      -- Select --
+                    </option>
+                    <option value="BASIC">BASIC (Default)</option>
+                    <option value="LOW">LOW</option>
+                    <option value="MEDIUM">MEDIUM</option>
+                    <option value="HIGH">HIGH</option>
                   </select>
                 </div>
 
