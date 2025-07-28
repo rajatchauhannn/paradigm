@@ -652,18 +652,21 @@ export const AdvancedOptions = ({
                     : "Select a filter type to begin"
                 }
               />
-              <p className="mt-1 text-xs text-gray-500">
-                Filter objects using Data Pump syntax.
-              </p>
             </div>
 
             {/* --- EXPORT Specific Options --- */}
             {config.operation === "EXPORT" && (
               <>
                 <div className="md:col-span-2">
-                  <label htmlFor="query" className={labelClasses}>
-                    Query
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="query" className={labelClasses}>
+                      Query
+                    </label>
+                    <Tooltip
+                      text="Filters exported rows using a WHERE clause. Format is table_name:\'your_where_clause\'."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-CDA1477D-4710-452A-ABA5-D29A0F3E3852"
+                    />
+                  </div>
                   <textarea
                     id="query"
                     rows={3}

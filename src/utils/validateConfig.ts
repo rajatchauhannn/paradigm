@@ -194,6 +194,15 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
         }
       }
     }
+    if (config.query) {
+      // This regex checks for a basic structure: some_text:"some_text"
+      const queryRegex = /.+:".+"/;
+      if (!queryRegex.test(config.query)) {
+        warnings.push(
+          "The format for QUERY may be invalid. It should be 'schema.table:\"WHERE clause\"'."
+        );
+      }
+    }
   }
   if (config.compression?.includes("ENCRYPTED")) {
     if (
