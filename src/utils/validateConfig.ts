@@ -39,6 +39,11 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
       );
     }
   }
+  if (config.abort_step !== undefined) {
+    if (!Number.isInteger(config.abort_step) || config.abort_step <= 0) {
+      errors.push("ABORT_STEP must be a positive whole number.");
+    }
+  }
 
   // File Naming Validations
   if (!config.dumpfile) {
