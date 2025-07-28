@@ -182,6 +182,16 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
       }
     }
   }
+  if (config.compression?.includes("ENCRYPTED")) {
+    if (
+      ["PASSWORD", "DUAL"].includes(config.encryption_mode || "") &&
+      !config.encryption_password
+    ) {
+      errors.push(
+        `ENCRYPTION_PASSWORD is required for ${config.encryption_mode} mode.`
+      );
+    }
+  }
 
   // Import-Specific Validations
   if (config.operation === "IMPORT" && !config.table_exists_action) {

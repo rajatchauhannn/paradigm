@@ -251,9 +251,18 @@ export const AdvancedOptions = ({
                 </div>
 
                 <div>
-                  <label htmlFor="encryption_password" className={labelClasses}>
-                    Encryption Password
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label
+                      htmlFor="encryption_password"
+                      className={labelClasses}
+                    >
+                      Encryption Password
+                    </label>
+                    <Tooltip
+                      text="The password used for encrypting the dump file. Required when Encryption Mode is PASSWORD or DUAL."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-CB4ABB85-AA7B-4C8C-BC1E-AD41E9EE21C9"
+                    />
+                  </div>
                   <input
                     id="encryption_password"
                     type="password"
@@ -280,9 +289,15 @@ export const AdvancedOptions = ({
 
                 {/* --- ADD Encryption Mode Dropdown --- */}
                 <div>
-                  <label htmlFor="encryption_mode" className={labelClasses}>
-                    Encryption Mode
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="encryption_mode" className={labelClasses}>
+                      Encryption Mode
+                    </label>
+                    <Tooltip
+                      text="Method for encryption. PASSWORD uses the provided password. TRANSPARENT and DUAL require a configured Oracle Wallet."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-F0A139F0-2357-4388-9660-59EF1E6B1E8C"
+                    />
+                  </div>
                   <select
                     id="encryption_mode"
                     value={config.encryption_mode}
@@ -365,29 +380,6 @@ export const AdvancedOptions = ({
                       </option>
                     ))}
                   </select>
-                </div>
-                <div>
-                  <label htmlFor="encryption_password" className={labelClasses}>
-                    Encryption Password
-                  </label>
-                  <input
-                    id="encryption_password"
-                    type="password"
-                    value={config.encryption_password || ""}
-                    onChange={(e) =>
-                      setConfig((prev) => ({
-                        ...prev,
-                        encryption_password: e.target.value,
-                      }))
-                    }
-                    className={`${inputClasses} ${
-                      !config.compression?.includes("ENCRYPTED")
-                        ? "disabled:bg-gray-100 cursor-not-allowed"
-                        : ""
-                    }`}
-                    disabled={!config.compression?.includes("ENCRYPTED")}
-                    placeholder="Enter password to encrypt dump file"
-                  />
                 </div>
               </>
             )}
