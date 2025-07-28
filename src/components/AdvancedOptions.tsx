@@ -690,9 +690,15 @@ export const AdvancedOptions = ({
                 </div>
 
                 <div className="md:col-span-2">
-                  <label htmlFor="sample" className={labelClasses}>
-                    Sample (Percentage)
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="sample" className={labelClasses}>
+                      Sample (Percentage)
+                    </label>
+                    <Tooltip
+                      text="Exports a random sample of data. Format: schema.table:percentage. Disabled if QUERY is used, or for FULL, METADATA_ONLY, or Transportable exports."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-29EEAD6A-02BF-4053-98F6-43BE8BE187AA"
+                    />
+                  </div>
                   <input
                     id="sample"
                     type="text"
@@ -716,10 +722,6 @@ export const AdvancedOptions = ({
                       isTransportableExport
                     }
                   />
-                  <p className="mt-1 text-xs text-gray-500">
-                    Export a random percentage of data. Example:
-                    `HR.EMPLOYEES:10.5`
-                  </p>
                 </div>
 
                 <div>

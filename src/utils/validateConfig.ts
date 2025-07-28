@@ -204,6 +204,15 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
       }
     }
   }
+  if (config.sample) {
+    // This regex checks for some_text:some_number
+    const sampleRegex = /.+:\d+(\.\d+)?$/;
+    if (!sampleRegex.test(config.sample)) {
+      warnings.push(
+        "The format for SAMPLE may be invalid. It should be 'schema.table:percentage'."
+      );
+    }
+  }
   if (config.compression?.includes("ENCRYPTED")) {
     if (
       ["PASSWORD", "DUAL"].includes(config.encryption_mode || "") &&
