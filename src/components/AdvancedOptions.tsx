@@ -526,9 +526,15 @@ export const AdvancedOptions = ({
             </div>
 
             <div className="md:col-span-2">
-              <label htmlFor="access_method" className={labelClasses}>
-                Access Method
-              </label>
+              <div className="flex items-center space-x-2">
+                <label htmlFor="access_method" className={labelClasses}>
+                  Access Method
+                </label>
+                <Tooltip
+                  text="Forces a specific method for loading/unloading data. Disabled if the operation doesn't involve moving table row data (e.g., metadata-only, transportable)."
+                  learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-CC93E4A7-EAC5-4EE9-94C0-3ADEA925DB0C"
+                />
+              </div>
               <select
                 id="access_method"
                 value={config.access_method}
@@ -551,9 +557,6 @@ export const AdvancedOptions = ({
                   </option>
                 ))}
               </select>
-              <p className="mt-1 text-xs text-gray-500">
-                Forces a specific method for loading/unloading data.
-              </p>
             </div>
 
             <div className="md:col-span-2">
