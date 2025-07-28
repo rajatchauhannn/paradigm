@@ -587,9 +587,15 @@ export const AdvancedOptions = ({
             </div>
 
             <div className="md:col-span-2">
-              <label htmlFor="job_name" className={labelClasses}>
-                Job Name (for monitoring)
-              </label>
+              <div className="flex items-center space-x-2">
+                <label htmlFor="job_name" className={labelClasses}>
+                  Job Name
+                </label>
+                <Tooltip
+                  text="Assigns a custom name to the Data Pump job, visible in DBA_DATAPUMP_JOBS. Use only letters, numbers, and underscores."
+                  learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-C146E99F-CBAB-43B4-A802-A8D5AD5898AE"
+                />
+              </div>
               <input
                 id="job_name"
                 type="text"
@@ -604,9 +610,16 @@ export const AdvancedOptions = ({
 
             {/* --- Unified Filter Control (FIXED) --- */}
             <div className="md:col-span-2">
-              <label htmlFor="filter_type" className={labelClasses}>
-                Object Filter (Include/Exclude)
-              </label>
+              <div className="flex items-center space-x-2">
+                <label htmlFor="filter_type" className={labelClasses}>
+                  Object Filter (Include/Exclude)
+                </label>
+                <Tooltip
+                  text="Filter objects using Data Pump syntax. Format is generally OBJECT_TYPE:\'filter_clause\'. Disabled for FULL export."
+                  learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-61DE40D4-B427-4228-A454-34816D69557C"
+                />
+              </div>
+
               <select
                 id="filter_type"
                 value={filterMode}

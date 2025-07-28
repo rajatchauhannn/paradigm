@@ -44,6 +44,14 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
       errors.push("ABORT_STEP must be a positive whole number.");
     }
   }
+  if (
+    (config.include && !config.include.includes(":")) ||
+    (config.exclude && !config.exclude.includes(":"))
+  ) {
+    warnings.push(
+      "INCLUDE/EXCLUDE filter might be invalid. The syntax typically requires a colon, e.g., 'OBJECT_TYPE:\"filter_clause\"'."
+    );
+  }
 
   // File Naming Validations
   if (!config.dumpfile) {
