@@ -872,9 +872,15 @@ export const AdvancedOptions = ({
                 </div>
 
                 <div>
-                  <label htmlFor="filesize" className={labelClasses}>
-                    Filesize (per dump file)
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="filesize" className={labelClasses}>
+                      Filesize (per dump file)
+                    </label>
+                    <Tooltip
+                      text="Splits the export into multiple files, each with this maximum size. Examples: 10G, 500M, 2048K."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-C11CA2A6-367A-40E6-A2D3-9E3775B1D4A2"
+                    />
+                  </div>
                   <input
                     id="filesize"
                     type="text"
@@ -888,10 +894,6 @@ export const AdvancedOptions = ({
                     }
                     className={inputClasses}
                   />
-                  <p className="mt-1 text-xs text-gray-500">
-                    Splits the export into multiple files of this size. DUMPFILE
-                    name will be updated with %U.
-                  </p>
                 </div>
 
                 <div className="md:col-span-2">
@@ -933,9 +935,15 @@ export const AdvancedOptions = ({
                 </div>
 
                 <div className="md:col-span-2">
-                  <label htmlFor="source_edition" className={labelClasses}>
-                    Source Edition (for EBR)
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="source_edition" className={labelClasses}>
+                      Source Edition (for EBR)
+                    </label>
+                    <Tooltip
+                      text="For databases with Edition-Based Redefinition (EBR), this specifies the source database edition for the export."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-9BCE2098-A930-4547-8758-E3A9C2A7A20B"
+                    />
+                  </div>
                   <input
                     id="source_edition"
                     type="text"
@@ -949,15 +957,18 @@ export const AdvancedOptions = ({
                     }
                     className={inputClasses}
                   />
-                  <p className="mt-1 text-xs text-gray-500">
-                    Specifies the source database edition for the export.
-                  </p>
                 </div>
 
                 <div className="md:col-span-2">
-                  <label htmlFor="views_as_tables" className={labelClasses}>
-                    Views as Tables
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="views_as_tables" className={labelClasses}>
+                      Views as Tables
+                    </label>
+                    <Tooltip
+                      text="Export data from a view as if it were a table. Format is 'MY_VIEW:MY_NEW_TABLE', one per line. Disabled for FULL or Transportable exports."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-E4E45E81-5391-43BE-B27D-B763EF79A885"
+                    />
+                  </div>
                   <textarea
                     id="views_as_tables"
                     rows={3}
@@ -977,10 +988,6 @@ SCOTT.V_SALES:SALES_DATA"
                     }`}
                     disabled={isDataFilteringIncompatible}
                   />
-                  <p className="mt-1 text-xs text-gray-500">
-                    Export data from a view as if it were a table. One entry per
-                    line.
-                  </p>
                 </div>
               </>
             )}
