@@ -811,9 +811,15 @@ export const AdvancedOptions = ({
                 </div>
 
                 <div>
-                  <label htmlFor="estimate" className={labelClasses}>
-                    Estimation Method
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="estimate" className={labelClasses}>
+                      Estimation Method
+                    </label>
+                    <Tooltip
+                      text="BLOCKS uses filesystem block sizes for a physical estimate. STATISTICS uses database optimizer stats for a logical estimate. Only active when 'Estimate Only' is YES."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-C04D8927-DB81-4BC3-A41C-181ED85FC6F7"
+                    />
+                  </div>
                   <select
                     id="estimate"
                     value={config.estimate}
@@ -839,9 +845,16 @@ export const AdvancedOptions = ({
                 </div>
 
                 <div>
-                  <label htmlFor="reuse_dumpfiles" className={labelClasses}>
-                    Reuse Dumpfiles
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="reuse_dumpfiles" className={labelClasses}>
+                      Reuse Dumpfiles
+                    </label>
+                    <Tooltip
+                      variant="warning"
+                      text="If YES, will overwrite any existing dump files with the same names in the destination. Use with caution."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-65DCC12E-E370-46E0-86C0-4EDFDD78DF25"
+                    />
+                  </div>
                   <select
                     id="reuse_dumpfiles"
                     value={config.reuse_dumpfiles}
