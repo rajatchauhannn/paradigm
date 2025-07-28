@@ -67,20 +67,19 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 font-sans text-sm">
-      <header className="bg-white shadow-sm sticky top-0 z-10">
+      <header className="bg-white shadow-sm sticky z-10">
         {/* INCREASED PADDING: py-3 is now py-4 for more vertical space */}
         <div className="max-w-screen-2xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center">
-            {/* BIGGER LOGO & MARGIN: h-8 is now h-12, mr-3 is now mr-4 */}
+          <a href="/" className="flex items-center text-gray-900 no-underline">
             <img
               src="/logo.png"
               alt="PARadigm Logo"
-              className="h-20 w-auto mr-4"
+              className="h-16 w-auto mr-4"
             />
-            <h1 className="text-xl font-bold leading-6 text-gray-900">
+            <h1 className="text-xl font-bold leading-6">
               AI-Powered Oracle Data Pump Parfile Generator
             </h1>
-          </div>
+          </a>
         </div>
       </header>
       <main className="max-w-screen-2xl mx-auto py-4 sm:px-6 lg:px-8">
