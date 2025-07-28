@@ -213,6 +213,17 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
       );
     }
   }
+  if (config.flashback_scn && !/^\d+$/.test(config.flashback_scn)) {
+    errors.push("FLASHBACK_SCN must be a positive number.");
+  }
+  if (
+    config.flashback_time &&
+    !config.flashback_time.toUpperCase().includes("TO_TIMESTAMP")
+  ) {
+    warnings.push(
+      "FLASHBACK_TIME format may be invalid. It should typically be a TO_TIMESTAMP(...) string."
+    );
+  }
   if (config.compression?.includes("ENCRYPTED")) {
     if (
       ["PASSWORD", "DUAL"].includes(config.encryption_mode || "") &&

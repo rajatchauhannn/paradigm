@@ -725,9 +725,15 @@ export const AdvancedOptions = ({
                 </div>
 
                 <div>
-                  <label htmlFor="flashback_time" className={labelClasses}>
-                    Flashback Time
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="flashback_time" className={labelClasses}>
+                      Flashback Time
+                    </label>
+                    <Tooltip
+                      text="Export data as it existed at a past time. Use a TO_TIMESTAMP string. Disabled for METADATA_ONLY exports."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-D408B112-1A81-4F68-BEFF-7403A9588DDB"
+                    />
+                  </div>
                   <input
                     id="flashback_time"
                     type="text"
@@ -750,9 +756,16 @@ export const AdvancedOptions = ({
                 </div>
 
                 <div>
-                  <label htmlFor="flashback_scn" className={labelClasses}>
-                    Flashback SCN
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="flashback_scn" className={labelClasses}>
+                      Flashback SCN
+                    </label>
+                    <Tooltip
+                      text="Export data as it existed at a past System Change Number (SCN). You can only use this OR Flashback Time. Disabled for METADATA_ONLY exports."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-CB8386E5-CA76-4D4A-884E-F97BFC58B230"
+                    />
+                  </div>
+
                   <input
                     id="flashback_scn"
                     type="text"
