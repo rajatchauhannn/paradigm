@@ -9,7 +9,7 @@ export type ExportMode =
   | "TRANSPORTABLE_TABLESPACES"
   | "TRANSPORTABLE_PDB";
 export type TableExistsAction = "SKIP" | "APPEND" | "TRUNCATE" | "REPLACE" | "";
-export type Content = "ALL" | "DATA_ONLY" | "METADATA_ONLY";
+export type Content = "ALL" | "DATA_ONLY" | "METADATA_ONLY" | "";
 export type Compression =
   | "ALL"
   | "DATA_ONLY"
@@ -18,7 +18,7 @@ export type Compression =
   | "ALL_ENCRYPTED"
   | "DATA_ONLY_ENCRYPTED"
   | "METADATA_ONLY_ENCRYPTED";
-export type CompressionAlgorithm = "BASIC" | "LOW" | "MEDIUM" | "HIGH" | ""; 
+export type CompressionAlgorithm = "BASIC" | "LOW" | "MEDIUM" | "HIGH" | "";
 export type ImportMode = "STANDARD" | "TRANSPORTABLE";
 export type XMLValidationMode = "" | "VALIDATE" | "DISABLE";
 export type PartitionOptions = "" | "NONE" | "MERGE" | "APPEND";
@@ -34,7 +34,7 @@ export interface ParfileConfig {
   directory: string;
   dumpfile: string;
   logfile: string; // TODO : Need to figure out how to use NOLOGFILE parameter along with this
-  logtime_tz?: boolean; 
+  logtime_tz?: boolean;
 
   // Export specific
   export_mode: ExportMode;
@@ -88,7 +88,7 @@ export interface ParfileConfig {
   data_options_xml_validation?: XMLValidationMode;
   import_mode?: ImportMode;
   remap_table?: string;
-  remap_container?: string; 
+  remap_container?: string;
   remap_data?: string;
   remap_schema?: string;
   remap_tablespace?: string;

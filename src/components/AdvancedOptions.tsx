@@ -164,9 +164,13 @@ export const AdvancedOptions = ({
                   VERSION
                 </label>
                 <Tooltip
-                  variant="warning" // <-- Use the new warning variant
-                  text="Sets export for backward compatibility. Using this may disable newer features like advanced compression. Use with caution."
-                  learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-common-parameters.html#GUID-8E41667A-1577-4340-9B6B-45218DE1956C"
+                  variant="warning"
+                  text={
+                    config.operation === "EXPORT"
+                      ? "Sets export for backward compatibility. Using this may disable newer features. Use with caution."
+                      : "Specifies the version of the source dump file. Should match the VERSION used during export."
+                  }
+                  learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-2877B4DB-0082-438F-AC9B-18D1686F5DDC"
                 />
               </div>
               <input
@@ -374,6 +378,9 @@ export const AdvancedOptions = ({
                     }`}
                     disabled={isTransportableExport}
                   >
+                    <option value="" disabled>
+                      -- Default (ALL) --
+                    </option>
                     {contentOptions.map((o) => (
                       <option key={o} value={o}>
                         {o}
