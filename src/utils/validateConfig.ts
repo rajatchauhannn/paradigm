@@ -275,6 +275,19 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
         }
       }
     }
+    if (config.remap_schema && !config.remap_schema.includes(":")) {
+      warnings.push("REMAP_SCHEMA format may be invalid. Use 'source:target'.");
+    }
+    if (config.remap_tablespace && !config.remap_tablespace.includes(":")) {
+      warnings.push(
+        "REMAP_TABLESPACE format may be invalid. Use 'source:target'."
+      );
+    }
+    if (config.remap_datafile && !config.remap_datafile.includes(":")) {
+      warnings.push(
+        "REMAP_DATAFILE format may be invalid. Use 'source:target'."
+      );
+    }
   }
 
   return { errors, warnings };

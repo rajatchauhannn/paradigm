@@ -1276,9 +1276,15 @@ SCOTT.V_SALES:SALES_DATA"
 
                 {/* --- UPDATE a.remap_schema --- */}
                 <div>
-                  <label htmlFor="remap_schema" className={labelClasses}>
-                    Remap Schema
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="remap_schema" className={labelClasses}>
+                      Remap Schema
+                    </label>
+                    <Tooltip
+                      text="Imports objects from a source schema into a different target schema. Format: source_schema:target_schema."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-A697AD50-B366-4989-AA40-151D7089E810"
+                    />
+                  </div>
                   <input
                     id="remap_schema"
                     value={config.remap_schema || ""}
@@ -1296,9 +1302,15 @@ SCOTT.V_SALES:SALES_DATA"
                 </div>
                 {/* --- UPDATE b.remap_tablespace --- */}
                 <div>
-                  <label htmlFor="remap_tablespace" className={labelClasses}>
-                    Remap Tablespace
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="remap_tablespace" className={labelClasses}>
+                      Remap Tablespace
+                    </label>
+                    <Tooltip
+                      text="Moves objects from a source tablespace to a different target tablespace. Format: source_ts:target_ts."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-A697AD50-B366-4989-AA40-151D7089E810"
+                    />
+                  </div>
                   <input
                     id="remap_tablespace"
                     value={config.remap_tablespace || ""}
@@ -1318,9 +1330,15 @@ SCOTT.V_SALES:SALES_DATA"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label htmlFor="remap_table" className={labelClasses}>
-                    Remap Table
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="remap_table" className={labelClasses}>
+                      Remap Table
+                    </label>
+                    <Tooltip
+                      text="Renames a table during import. Format: source_table:target_table. Use one entry per line."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-A697AD50-B366-4989-AA40-151D7089E810"
+                    />
+                  </div>
                   <textarea
                     id="remap_table"
                     rows={3}
@@ -1346,9 +1364,15 @@ SCOTT.DEPT:DEPT_OLD"
                 </div>
                 {/* --- UPDATE c.remap_datafile --- */}
                 <div>
-                  <label htmlFor="remap_datafile" className={labelClasses}>
-                    Remap Datafile
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="remap_datafile" className={labelClasses}>
+                      Remap Datafile
+                    </label>
+                    <Tooltip
+                      text="Used in Transportable mode to specify the new location of a datafile. Format: 'source_path':'target_path'."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-A697AD50-B366-4989-AA40-151D7089E810"
+                    />
+                  </div>
                   <input
                     id="remap_datafile"
                     value={config.remap_datafile || ""}
@@ -1368,9 +1392,15 @@ SCOTT.DEPT:DEPT_OLD"
                   />
                 </div>
                 <div>
-                  <label htmlFor="remap_container" className={labelClasses}>
-                    Remap Container (PDB)
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="remap_container" className={labelClasses}>
+                      Remap Container (PDB)
+                    </label>
+                    <Tooltip
+                      text="Used during a PDB import to change the name of the source container. Format: source_pdb:target_pdb."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-A697AD50-B366-4989-AA40-151D7089E810"
+                    />
+                  </div>
                   <input
                     id="remap_container"
                     type="text"
