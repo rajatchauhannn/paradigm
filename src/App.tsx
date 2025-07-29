@@ -100,7 +100,7 @@ function App() {
               />
               {/* This h1 now has the correct dark mode text color */}
               <h1 className="text-xl font-bold leading-6 text-gray-900 dark:text-gray-100">
-                AI-Powered Oracle Data Pump Parfile Generator
+                AI-Validated Parfile Constructor
               </h1>
             </a>
 
