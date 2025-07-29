@@ -89,7 +89,7 @@ function App() {
 
   return (
     <div className="min-h-screen font-sans text-sm text-gray-900 dark:text-gray-200">
-      <header className="bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-10">
+      <header className="bg-white dark:bg-slate-700 shadow-sm dark:shadow-none sticky top-0 z-10 border-b border-transparent dark:border-slate-600">
         <div className="max-w-screen-2xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
             <a href="/" className="flex items-center no-underline">
