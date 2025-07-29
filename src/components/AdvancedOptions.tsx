@@ -1012,20 +1012,33 @@ SCOTT.V_SALES:SALES_DATA"
                           }))
                         }
                       />
-                      <label
-                        htmlFor="data_options_skip_constraints"
-                        className="ml-2 block text-sm text-gray-700"
-                      >
-                        Skip Constraint Errors
-                      </label>
+                      <div className="flex items-center space-x-2">
+                        <label
+                          htmlFor="data_options_skip_constraints"
+                          className="block text-sm text-gray-700 pl-2"
+                        >
+                          Skip Constraint Errors
+                        </label>
+                        <Tooltip
+                          text="Allows the import to continue even if data rows violate foreign key or other constraints. Errors will be logged."
+                          learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-4C789FC4-F600-4E6A-A8DA-508230BCB667"
+                        />
+                      </div>
                     </div>
                     <div>
-                      <label
-                        htmlFor="partition_options"
-                        className={labelClasses}
-                      >
-                        Partition Options
-                      </label>
+                      <div className="flex items-center space-x-2">
+                        <label
+                          htmlFor="partition_options"
+                          className={labelClasses}
+                        >
+                          Partition Options
+                        </label>
+                        <Tooltip
+                          text="Controls how partitions are handled. Only active if Table Exists Action is APPEND or TRUNCATE."
+                          learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-A697AD50-B366-4989-AA40-151D7089E810"
+                        />
+                      </div>
+
                       <select
                         id="partition_options"
                         value={config.partition_options}
@@ -1036,14 +1049,14 @@ SCOTT.V_SALES:SALES_DATA"
                           }))
                         }
                         className={`${selectClasses} ${
-                          !["APPEND", "MERGE"].includes(
+                          !["APPEND", "TRUNCATE"].includes(
                             config.table_exists_action
                           )
                             ? "disabled:bg-gray-100 cursor-not-allowed"
                             : ""
                         }`}
                         disabled={
-                          !["APPEND", "MERGE"].includes(
+                          !["APPEND", "TRUNCATE"].includes(
                             config.table_exists_action
                           )
                         }
@@ -1146,12 +1159,19 @@ SCOTT.V_SALES:SALES_DATA"
 
                     {/* Select for XML Validation */}
                     <div>
-                      <label
-                        htmlFor="data_options_xml_validation"
-                        className="block text-sm font-medium text-gray-600 mb-1"
-                      >
-                        XML Schema Validation
-                      </label>
+                      <div className="flex items-center space-x-2">
+                        <label
+                          htmlFor="data_options_xml_validation"
+                          className="block text-sm font-medium text-gray-600 mb-1"
+                        >
+                          XML Schema Validation
+                        </label>
+                        <Tooltip
+                          text="Controls whether XML data is validated against its schema during import. Disabling can improve performance."
+                          learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-4C789FC4-F600-4E6A-A8DA-508230BCB667"
+                        />
+                      </div>
+
                       <select
                         id="data_options_xml_validation"
                         value={config.data_options_xml_validation}
