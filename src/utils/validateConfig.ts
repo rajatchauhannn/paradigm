@@ -288,6 +288,14 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
         "REMAP_DATAFILE format may be invalid. Use 'source:target'."
       );
     }
+    if (config.sqlfile && !config.sqlfile.toLowerCase().endsWith(".sql")) {
+      warnings.push("SQLFILE should typically have a .sql extension.");
+    }
+    if (config.transform && !config.transform.includes(":")) {
+      warnings.push(
+        "TRANSFORM format may be invalid. The syntax typically requires a colon, e.g., 'SEGMENT_ATTRIBUTES:N'."
+      );
+    }
   }
 
   return { errors, warnings };

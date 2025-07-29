@@ -1358,9 +1358,6 @@ SCOTT.DEPT:DEPT_OLD"
                     }`}
                     disabled={config.import_mode === "TRANSPORTABLE"}
                   />
-                  <p className="mt-1 text-xs text-gray-500">
-                    Rename tables during import. One entry per line.
-                  </p>
                 </div>
                 {/* --- UPDATE c.remap_datafile --- */}
                 <div>
@@ -1421,9 +1418,15 @@ SCOTT.DEPT:DEPT_OLD"
                   />
                 </div>
                 <div>
-                  <label htmlFor="sqlfile" className={labelClasses}>
-                    SQL File (generates DDL)
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="sqlfile" className={labelClasses}>
+                      SQL File (generates DDL)
+                    </label>
+                    <Tooltip
+                      text="Writes all DDL for the job to a file instead of executing it. No data will be imported."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-import-utility.html#GUID-E505809D-5A49-4340-9844-4A828859F544"
+                    />
+                  </div>
                   <input
                     id="sqlfile"
                     type="text"
@@ -1439,9 +1442,15 @@ SCOTT.DEPT:DEPT_OLD"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label htmlFor="transform" className={labelClasses}>
-                    Transform
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="transform" className={labelClasses}>
+                      Transform
+                    </label>
+                    <Tooltip
+                      text="Alters object DDL during import. Example: 'SEGMENT_ATTRIBUTES:N' removes all storage clauses."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-import-utility.html#GUID-E505809D-5A49-4340-9844-4A828859F544"
+                    />
+                  </div>
                   <textarea
                     id="transform"
                     rows={3}
