@@ -296,6 +296,14 @@ export const validateConfig = (config: ParfileConfig): ValidationResult => {
         "TRANSFORM format may be invalid. The syntax typically requires a colon, e.g., 'SEGMENT_ATTRIBUTES:N'."
       );
     }
+    if (
+      config.remap_data &&
+      (!config.remap_data.includes(":") || !config.remap_data.includes("."))
+    ) {
+      warnings.push(
+        "REMAP_DATA format may be invalid. Use 'schema.table.column:function'."
+      );
+    }
   }
 
   return { errors, warnings };

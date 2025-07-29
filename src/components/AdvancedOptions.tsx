@@ -1464,15 +1464,17 @@ SCOTT.DEPT:DEPT_OLD"
                     }
                     className={textareaClasses}
                   />
-                  <p className="mt-1 text-xs text-gray-500">
-                    Modify DDL on the fly. Example: `SEGMENT_ATTRIBUTES:N` to
-                    strip all storage clauses.
-                  </p>
                 </div>
                 <div className="md:col-span-2">
-                  <label htmlFor="remap_data" className={labelClasses}>
-                    Remap Data (Column Data Transformation)
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="remap_data" className={labelClasses}>
+                      Remap Data (Column Data Transformation)
+                    </label>
+                    <Tooltip
+                      text="Applies a function to transform data for a specific column on import. Format: schema.table.column:function_name"
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-import-utility.html#GUID-E505809D-5A49-4340-9844-4A828859F544"
+                    />
+                  </div>
                   <textarea
                     id="remap_data"
                     rows={3}
@@ -1491,15 +1493,17 @@ SCOTT.DEPT:DEPT_OLD"
                     }`}
                     disabled={config.import_mode !== "STANDARD"}
                   />
-                  <p className="mt-1 text-xs text-gray-500">
-                    Apply a function to transform data for a specific column on
-                    import.
-                  </p>
                 </div>
                 <div className="md:col-span-2">
-                  <label htmlFor="network_link" className={labelClasses}>
-                    Network Link (for direct DB-to-DB import)
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label htmlFor="network_link" className={labelClasses}>
+                      Network Link (for direct DB-to-DB import)
+                    </label>
+                    <Tooltip
+                      text="Performs a direct DB-to-DB import over a database link. If used, the DUMPFILE, DIRECTORY, and CREDENTIAL parameters are ignored and disabled."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-import-utility.html#GUID-05906A9F-2944-4F54-934E-87A6E4461B94"
+                    />
+                  </div>
                   <input
                     id="network_link"
                     type="text"
@@ -1518,9 +1522,6 @@ SCOTT.DEPT:DEPT_OLD"
                     }`}
                     disabled={isTransportableImport}
                   />
-                  <p className="mt-1 text-xs text-gray-500">
-                    If used, DUMPFILE and DIRECTORY are ignored.
-                  </p>
                 </div>
               </>
             )}
