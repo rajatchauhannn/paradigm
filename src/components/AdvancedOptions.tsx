@@ -1191,7 +1191,13 @@ SCOTT.V_SALES:SALES_DATA"
                   </div>
                 </div>
                 <div className="md:col-span-2">
-                  <label className={labelClasses}>Import Mode</label>
+                  <div className="flex items-center space-x-2">
+                    <label className={labelClasses}>Import Mode</label>
+                    <Tooltip
+                      text="Standard mode is for regular imports. Transportable is for importing tablespaces whose datafiles have already been moved to the target."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-BBDE50A3-4B7C-4A0A-8964-F689EF95651F"
+                    />
+                  </div>
                   <div className="flex gap-x-6 mt-1">
                     <div className="flex items-center">
                       <input
@@ -1236,9 +1242,18 @@ SCOTT.V_SALES:SALES_DATA"
                 </div>
 
                 <div className="md:col-span-2">
-                  <label htmlFor="transport_datafiles" className={labelClasses}>
-                    Transport Datafiles (Source Paths)
-                  </label>
+                  <div className="flex items-center space-x-2">
+                    <label
+                      htmlFor="transport_datafiles"
+                      className={labelClasses}
+                    >
+                      Transport Datafiles (Source Paths)
+                    </label>
+                    <Tooltip
+                      text="Required for Transportable mode. A comma-separated list of the datafile paths as they exist on the target system."
+                      learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-A697AD50-B366-4989-AA40-151D7089E810"
+                    />
+                  </div>
                   <textarea
                     id="transport_datafiles"
                     rows={3}
@@ -1257,10 +1272,6 @@ SCOTT.V_SALES:SALES_DATA"
                     }`}
                     disabled={config.import_mode !== "TRANSPORTABLE"}
                   />
-                  <p className="mt-1 text-xs text-gray-500">
-                    Required for Transportable mode. List the source datafile
-                    paths.
-                  </p>
                 </div>
 
                 {/* --- UPDATE a.remap_schema --- */}
