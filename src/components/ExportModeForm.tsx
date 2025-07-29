@@ -4,10 +4,9 @@ import { type ParfileConfig } from "../types";
 import { Tooltip } from "./Tooltip";
 
 const selectClasses =
-  "block w-full mt-1 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md";
+  "block w-full mt-1 pl-3 pr-10 py-2 text-base bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md";
 const inputClasses =
-  "block w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm";
-
+  "block w-full mt-1 px-3 py-2 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 sm:text-sm";
 interface ExportModeProps {
   config: ParfileConfig;
   setConfig: React.Dispatch<React.SetStateAction<ParfileConfig>>;
@@ -52,7 +51,7 @@ export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
             <div className="flex items-center space-x-2">
               <label
                 htmlFor="schemas"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Schemas
               </label>
@@ -78,7 +77,7 @@ export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
             <div className="flex items-center space-x-2">
               <label
                 htmlFor="tables"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Tables
               </label>
@@ -105,7 +104,7 @@ export const ExportModeForm = ({ config, setConfig }: ExportModeProps) => {
             <div className="flex items-center space-x-2">
               <label
                 htmlFor="tablespaces"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Tablespaces
               </label>

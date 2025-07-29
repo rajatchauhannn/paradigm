@@ -5,7 +5,7 @@ import { type ParfileConfig } from "../types";
 import { Tooltip } from "./Tooltip";
 
 const inputClasses =
-  "block w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm";
+  "block w-full mt-1 px-3 py-2 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm text-gray-900 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 sm:text-sm";
 const disabledClasses =
   "disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed";
 
@@ -74,7 +74,7 @@ export const PrimarySetupForm = ({
         <div className="flex items-center space-x-2">
           <label
             htmlFor="userid"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             USERID
           </label>
@@ -109,7 +109,7 @@ export const PrimarySetupForm = ({
             />
             <label
               htmlFor="on_premises"
-              className="ml-2 block text-sm text-gray-900"
+              className="ml-2 block text-sm text-gray-900 dark:text-gray-300"
             >
               On-Premises
             </label>
@@ -123,7 +123,10 @@ export const PrimarySetupForm = ({
               onChange={() => handleStorageTypeChange("CLOUD")}
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
             />
-            <label htmlFor="cloud" className="ml-2 block text-sm text-gray-900">
+            <label
+              htmlFor="cloud"
+              className="ml-2 block text-sm text-gray-900 dark:text-gray-300"
+            >
               Cloud
             </label>
           </div>
@@ -140,7 +143,7 @@ export const PrimarySetupForm = ({
                 {/* ADD THIS WRAPPER */}
                 <label
                   htmlFor="directory"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
                   DIRECTORY
                 </label>
@@ -165,7 +168,7 @@ export const PrimarySetupForm = ({
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="logfile"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
                   LOGFILE
                 </label>
@@ -179,7 +182,7 @@ export const PrimarySetupForm = ({
                   />
                   <label
                     htmlFor="logfileSameAsDumpfile"
-                    className="ml-2 block text-sm"
+                    className="ml-2 block text-sm text-gray-900 dark:text-gray-300"
                   >
                     Same as dumpfile
                   </label>
@@ -205,7 +208,7 @@ export const PrimarySetupForm = ({
               {/* ADD THIS WRAPPER */}
               <label
                 htmlFor="credential"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 CREDENTIAL
               </label>
@@ -231,7 +234,7 @@ export const PrimarySetupForm = ({
         <div className="md:col-span-2">
           <label
             htmlFor="dumpfile"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             DUMPFILE
           </label>

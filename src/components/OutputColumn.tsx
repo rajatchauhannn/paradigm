@@ -22,7 +22,7 @@ export const OutputColumn = ({
   const commandText = generateCommand(config);
 
   return (
-    <div className="bg-white shadow-md sm:rounded-lg">
+    <div className="bg-white dark:bg-slate-800 shadow-md sm:rounded-lg">
       <div className="p-4 flex justify-between items-center">
         <h3 className="text-sm font-semibold">Output</h3>
       </div>
@@ -33,7 +33,7 @@ export const OutputColumn = ({
             rows={12}
             readOnly
             value={parfileContent}
-            className="w-full p-2 font-mono bg-gray-100 border rounded-md text-xl focus:outline-none"
+            className="w-full p-2 font-mono bg-gray-100 dark:bg-slate-700 dark:text-gray-200 dark:border-slate-600 border rounded-md text-xl focus:outline-none"
             spellCheck="false"
           />
           <CopyButton contentToCopy={parfileContent} />
@@ -44,7 +44,7 @@ export const OutputColumn = ({
             rows={5}
             readOnly
             value={commandText}
-            className="w-full p-2 font-mono bg-gray-100 border rounded-md text-xl focus:outline-none"
+            className="w-full p-2 font-mono bg-gray-100 dark:bg-slate-700 dark:text-gray-200 dark:border-slate-600 border rounded-md text-xl focus:outline-none"
             spellCheck="false"
           />
           <CopyButton contentToCopy={commandText} />
@@ -55,7 +55,7 @@ export const OutputColumn = ({
           <button
             onClick={handleConvertToImport}
             disabled={isInvalid}
-            className="py-1 px-3 border border-gray-300 shadow-sm rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+            className="py-1 px-3 border border-gray-300 dark:border-slate-500 shadow-sm rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-slate-600 hover:bg-gray-50 dark:hover:bg-slate-500 disabled:opacity-50"
           >
             Create Matching Import
           </button>

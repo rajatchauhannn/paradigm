@@ -11,13 +11,13 @@ import { Tooltip } from "./Tooltip";
 
 // --- Re-usable Tailwind CSS classes for consistency ---
 const inputClasses =
-  "block w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm";
+  "block w-full mt-1 px-3 py-2 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md shadow-sm text-gray-900 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 sm:text-sm";
 const selectClasses =
-  "block w-full mt-1 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md";
+  "block w-full mt-1 pl-3 pr-10 py-2 text-base bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md";
 const textareaClasses =
-  "shadow-sm focus:ring-blue-500 focus:border-blue-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md";
-const labelClasses = "block text-sm font-medium text-gray-700";
-
+  "shadow-sm focus:ring-red-500 focus:border-red-500 mt-1 block w-full sm:text-sm bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md text-gray-900 dark:text-gray-200";
+const labelClasses =
+  "block text-sm font-medium text-gray-700 dark:text-gray-300";
 // --- Static options ---
 const estimateOptions = ["NO", "YES"];
 const estimateMethodOptions = ["BLOCKS", "STATISTICS"];
@@ -129,7 +129,7 @@ export const AdvancedOptions = ({
         />
         <label
           htmlFor="showAdvanced"
-          className="ml-3 block text-sm font-medium text-gray-700"
+          className="ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300"
         >
           Show Advanced Options
         </label>
@@ -157,10 +157,7 @@ export const AdvancedOptions = ({
 
             <div>
               <div className="flex items-center space-x-2">
-                <label
-                  htmlFor="version"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="version" className={labelClasses}>
                   VERSION
                 </label>
                 <Tooltip
@@ -181,7 +178,7 @@ export const AdvancedOptions = ({
                 onChange={(e) =>
                   setConfig((c) => ({ ...c, version: e.target.value }))
                 }
-                className="block w-full mt-1 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className={inputClasses}
               />
             </div>
 
@@ -189,10 +186,7 @@ export const AdvancedOptions = ({
             {config.operation === "EXPORT" && (
               <>
                 <div>
-                  <label
-                    htmlFor="compression"
-                    className="block text-sm font-medium text-gray-700"
-                  >
+                  <label htmlFor="compression" className={labelClasses}>
                     COMPRESSION
                   </label>
                   <select
@@ -204,7 +198,7 @@ export const AdvancedOptions = ({
                         compression: e.target.value as any,
                       }))
                     }
-                    className="block w-full mt-1 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                    className={selectClasses}
                   >
                     {/* Dynamically imported from constants.ts */}
                     {compressionOptions.map((opt) => (
@@ -220,7 +214,7 @@ export const AdvancedOptions = ({
                   <div className="flex items-center space-x-2">
                     <label
                       htmlFor="compression_algorithm"
-                      className="block text-sm font-medium text-gray-700"
+                      className={labelClasses}
                     >
                       COMPRESSION ALGORITHM
                     </label>
@@ -242,7 +236,9 @@ export const AdvancedOptions = ({
                     disabled={
                       !["ALL", "DATA_ONLY"].includes(config.compression || "")
                     }
-                    className="block w-full mt-1 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                    className={
+                      selectClasses + "disabled:bg-gray-100 cursor-not-allowed"
+                    }
                   >
                     <option value="" disabled>
                       -- Select --
@@ -405,10 +401,7 @@ export const AdvancedOptions = ({
                     }))
                   }
                 />
-                <label
-                  htmlFor="metrics"
-                  className="ml-2 block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="metrics" className={labelClasses + " ml-2"}>
                   Enable Metrics Logging
                 </label>
               </div>
@@ -433,7 +426,7 @@ export const AdvancedOptions = ({
                 />
                 <label
                   htmlFor="disable_cluster"
-                  className="ml-2 block text-sm font-medium text-gray-700"
+                  className={labelClasses + " ml-2"}
                 >
                   Disable Cluster Parallelism (RAC only)
                 </label>
@@ -461,10 +454,7 @@ export const AdvancedOptions = ({
                     }));
                   }}
                 />
-                <label
-                  htmlFor="logtime"
-                  className="ml-2 block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="logtime" className={labelClasses + " ml-2"}>
                   Add Timestamps to Log
                 </label>
               </div>
@@ -496,10 +486,10 @@ export const AdvancedOptions = ({
               </p>
             </div>
 
-            <div className="md:col-span-2 p-3 border border-yellow-400 rounded-md bg-yellow-50">
+            <div className="md:col-span-2 p-3 border border-yellow-400 dark:border-yellow-800 rounded-md bg-yellow-50 dark:bg-yellow-900/30">
               <label
                 htmlFor="abort_step"
-                className="block text-sm font-medium text-yellow-800"
+                className="block text-sm font-medium text-yellow-800 dark:text-yellow-300"
               >
                 Abort Step (Diagnostic Use Only)
               </label>
@@ -519,7 +509,7 @@ export const AdvancedOptions = ({
                 }}
                 className={inputClasses}
               />
-              <p className="mt-1 text-xs text-yellow-700">
+              <p className="mt-1 text-xs text-yellow-700 dark:text-yellow-400">
                 Intentionally stops the job at a specific internal step for
                 debugging. Use with caution.
               </p>
@@ -573,10 +563,7 @@ export const AdvancedOptions = ({
                     }))
                   }
                 />
-                <label
-                  htmlFor="keep_master"
-                  className="ml-2 block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor="keep_master" className={labelClasses + " ml-2"}>
                   Keep Master Table (Diagnostic)
                 </label>
               </div>
@@ -995,7 +982,7 @@ SCOTT.V_SALES:SALES_DATA"
             {/* --- IMPORT Specific Options --- */}
             {config.operation === "IMPORT" && (
               <>
-                <div className="md:col-span-2 p-4 border rounded-md bg-gray-50">
+                <div className="md:col-span-2 p-4 border dark:border-slate-700 rounded-md bg-gray-50 dark:bg-slate-800/50">
                   <label className={`${labelClasses} mb-2`}>Data Options</label>
                   <div className="space-y-3">
                     {/* Checkbox for Skip Constraints */}
@@ -1015,7 +1002,7 @@ SCOTT.V_SALES:SALES_DATA"
                       <div className="flex items-center space-x-2">
                         <label
                           htmlFor="data_options_skip_constraints"
-                          className="block text-sm text-gray-700 pl-2"
+                          className={labelClasses + " ml-2"}
                         >
                           Skip Constraint Errors
                         </label>
@@ -1093,7 +1080,7 @@ SCOTT.V_SALES:SALES_DATA"
                         />
                         <label
                           htmlFor="skip_unusable_indexes"
-                          className="ml-2 block text-sm font-medium text-gray-700"
+                          className={labelClasses + " ml-2"}
                         >
                           Skip Unusable Indexes
                         </label>
@@ -1119,7 +1106,7 @@ SCOTT.V_SALES:SALES_DATA"
                         />
                         <label
                           htmlFor="disable_streams_configuration"
-                          className="ml-2 block text-sm font-medium text-gray-700"
+                          className={labelClasses + " ml-2"}
                         >
                           Disable Streams Configuration Import
                         </label>
@@ -1129,7 +1116,7 @@ SCOTT.V_SALES:SALES_DATA"
                       </p>
                     </div>
 
-                    <div className="md:col-span-2 p-3 border border-yellow-400 rounded-md bg-yellow-50">
+                    <div className="md:col-span-2 p-3 border border-yellow-400 dark:border-yellow-800 rounded-md bg-yellow-50 dark:bg-yellow-900/30">
                       <div className="flex items-center">
                         <input
                           id="master_only"
@@ -1145,7 +1132,7 @@ SCOTT.V_SALES:SALES_DATA"
                         />
                         <label
                           htmlFor="master_only"
-                          className="ml-2 block text-sm font-medium text-yellow-800"
+                          className="block text-sm font-medium text-yellow-800 dark:text-yellow-300 ml-2"
                         >
                           Import Master Table Only (Expert Use)
                         </label>
@@ -1162,7 +1149,7 @@ SCOTT.V_SALES:SALES_DATA"
                       <div className="flex items-center space-x-2">
                         <label
                           htmlFor="data_options_xml_validation"
-                          className="block text-sm font-medium text-gray-600 mb-1"
+                          className={labelClasses}
                         >
                           XML Schema Validation
                         </label>

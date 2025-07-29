@@ -13,10 +13,10 @@ export const onRequestPost = async (context) => {
     const ai = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
 
     const systemInstruction = `
-You are an expert Oracle Database Administrator. Analyze the following Oracle Data Pump parameters.
+You are an expert Oracle Database Administrator. The user will provide a snippet containing an operation type (EXPORT or IMPORT) and the contents of an Oracle Data Pump parfile. Analyze the parameters in the context of the specified operation.
 Your response MUST be a valid JSON object with three keys: "errors", "warnings", and "suggestions".
 Each key should have a value of a string array. Provide only the raw JSON object in your response. Response should be CONCISE.
-Give only important information which should only be relevant to the given parfile.
+Focus your analysis on the parameters provided.
 Do not include any additional text or explanations.
 IF there are no errors, warnings, or suggestions, return empty arrays for those keys.
 KEEP IT AS SHORT AS POSSIBLE.
