@@ -225,7 +225,7 @@ export const AdvancedOptions = ({
                       COMPRESSION ALGORITHM
                     </label>
                     <Tooltip
-                      text="Specifies the compression algorithm. Only active when COMPRESSION is ALL or DATA_ONLY. Higher levels use more CPU."
+                      text="Specifies the compression algorithm. 'LOW', 'MEDIUM', and 'HIGH' require Oracle 12c+. Only active when COMPRESSION is ALL or DATA_ONLY."
                       learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-F81B5F5F-9F40-4EB0-99B8-47C45179DE5E"
                     />
                   </div>
@@ -1394,7 +1394,7 @@ SCOTT.DEPT:DEPT_OLD"
                       Remap Container (PDB)
                     </label>
                     <Tooltip
-                      text="Used during a PDB import to change the name of the source container. Format: source_pdb:target_pdb."
+                      text="Used during a PDB import (12c+) to change the name of the source container. Format: source_pdb:target_pdb."
                       learnMoreUrl="https://docs.oracle.com/en/database/oracle/oracle-database/19/sutil/oracle-data-pump-export-utility.html#GUID-A697AD50-B366-4989-AA40-151D7089E810"
                     />
                   </div>
