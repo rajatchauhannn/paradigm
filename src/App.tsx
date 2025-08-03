@@ -262,7 +262,8 @@ function App() {
               <div className="border-t border-gray-200 p-4 space-y-3">
                 {!aiValidationResult && !isAiValidating && (
                   <div className="text-center text-xs text-gray-500 dark:text-gray-400 py-3">
-                    <p>Click for an extra layer of checks.</p>
+                    <p>Click for an extra layer of checks</p>
+                    <p className="text-gray-300 dark:text-gray-600">AI models may make mistakes</p>
                   </div>
                 )}
                 {aiValidationResult?.errors?.length > 0 && (
