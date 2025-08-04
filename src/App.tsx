@@ -212,7 +212,7 @@ function App() {
             {(isInvalid || validationResult.warnings.length > 0) && (
               <div className="bg-white dark:bg-slate-800 shadow-md sm:rounded-lg p-4 space-y-3">
                 {isInvalid && (
-                  <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-3 border border-transparent dark:border-red-800/60">
+                  <div className="rounded-md bg-red-50 dark:bg-red-900/30 p-3 border border-transparent dark:border-red-800/60">
                     <h3 className="text-xs font-bold text-red-800 dark:text-red-200">
                       Configuration Errors
                     </h3>
@@ -226,11 +226,11 @@ function App() {
                   </div>
                 )}
                 {!isInvalid && validationResult.warnings.length > 0 && (
-                  <div className="rounded-md bg-yellow-50 p-3">
-                    <h3 className="text-xs font-bold text-yellow-800">
-                      Warnings
+                  <div className="rounded-md bg-yellow-50 dark:bg-yellow-900/30 p-3 border border-transparent dark:border-yellow-800/60">
+                    <h3 className="text-xs font-bold text-yellow-800 dark:text-yellow-200">
+                      Configuration Warnings
                     </h3>
-                    <div className="mt-2 text-xs text-yellow-700">
+                    <div className="mt-2 text-xs text-yellow-700 dark:text-yellow-300 list-disc pl-4 space-y-1">
                       <ul className="list-disc pl-4 space-y-1">
                         {validationResult.warnings.map((w) => (
                           <li key={w}>{w}</li>
@@ -263,7 +263,9 @@ function App() {
                 {!aiValidationResult && !isAiValidating && (
                   <div className="text-center text-xs text-gray-500 dark:text-gray-400 py-3">
                     <p>Click for an extra layer of checks</p>
-                    <p className="text-gray-300 dark:text-gray-600">AI models may make mistakes</p>
+                    <p className="text-gray-300 dark:text-gray-600">
+                      AI models may make mistakes
+                    </p>
                   </div>
                 )}
                 {aiValidationResult?.errors?.length > 0 && (
