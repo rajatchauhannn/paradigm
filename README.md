@@ -1,10 +1,3 @@
-Of course. A great project deserves a great README. This is the front door for any developer who discovers your work.
-
-Based on everything we've built and discussed, here is a comprehensive, professional README.md file for PARadigm. It covers the project's purpose, its key features (especially the AI), and how others can run it locally.
-
-Just copy and paste this into a README.md file in the root of your project.
-
-Generated markdown
 # PARadigm: AI-Validated Parfile Constructor
 
 ![PARadigm Logo](./public/logo.png)
